@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_button"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/speech_bubbles"
+            android:title="@string/nav_chat" />
+        <item
+            android:id="@+id/nav_washinsa"
+            android:icon="@drawable/laundry_service"
+            android:title="@string/nav_washinsa" />
+        <item
+            android:id="@+id/nav_timetable"
+            android:icon="@drawable/time_planning"
+            android:title="@string/nav_timetable" />
+    </group>
+
+    <item android:title="@string/nav_other">
+        <menu>
+            <item
+                android:id="@+id/nav_preferences"
+                android:icon="@drawable/settings_gears"
+                android:title="@string/nav_preferences" />
+        </menu>
+    </item>
+
+</menu>

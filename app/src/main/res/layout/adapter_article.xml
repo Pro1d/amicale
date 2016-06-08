@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/adapter_horizontal_margin"
+    android:layout_marginRight="@dimen/adapter_horizontal_margin"
+    android:layout_marginTop="@dimen/adapter_vertical_margin"
+    android:layout_marginBottom="@dimen/adapter_vertical_margin"
+    card_view:contentPaddingLeft="@dimen/adapter_horizontal_padding"
+    card_view:contentPaddingRight="@dimen/adapter_horizontal_padding"
+    card_view:contentPaddingTop="@dimen/adapter_vertical_padding"
+    card_view:contentPaddingBottom="@dimen/adapter_vertical_padding"
+    card_view:cardCornerRadius="@dimen/adapter_news_corner_radius">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/adapter_article_tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textColor="@color/adapter_article_date_text_color"
+            android:gravity="end"
+            tools:text="Mar. 12 Déc. 2012" />
+
+        <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
+            android:id="@+id/adapter_article_sl_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/adapter_article_image_height"
+            card_view:cardCornerRadius="@dimen/adapter_article_image_corner_radius">
+
+            <ImageView
+                android:src="@drawable/side_nav_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/adapter_article_image_description"/>
+
+        </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
+
+        <TextView
+            android:id="@+id/adapter_article_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/adapter_article_title_text_size"
+            android:textColor="@color/adapter_article_title_text_color"
+            tools:text="Title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/adapter_news_tv_content"
+            android:textColor="@color/adapter_article_content_text_color"
+            tools:text="@string/app_name" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

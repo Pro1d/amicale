@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/chat_ll_input">
+         	<android.support.v7.widget.RecyclerView
+                android:id="@+id/chat_rv_list"
+         	    android:layout_width="match_parent"
+         	    android:layout_height="match_parent">
+
+         	</android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/chat_ll_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/chat_ll_input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/chat_ib_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_camera"
+                android:contentDescription="@string/chat_button_take_picture_description"/>
+
+            <EditText
+                android:id="@+id/chat_et_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textMultiLine"
+                android:maxLength="1000"
+                android:maxLines="5"
+                android:labelFor="@+id/chat_ib_send"
+                android:hint="@string/chat_input_hint">
+
+                <requestFocus />
+            </EditText>
+
+            <ImageButton
+                android:id="@+id/chat_ib_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_send"
+                android:contentDescription="@string/chat_button_send_description"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chat_ll_input_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
+                android:id="@+id/chat_sl_picture_async"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/chat_image_preview_height"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/chat_iv_picture_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/chat_image_preview_height"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/chat_image_preview_description"/>
+
+            </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
+
+            <ImageButton
+                android:id="@+id/chat_ib_clear_picture"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/chat_button_clear_picture_description"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
