@@ -13,7 +13,7 @@
     <string name="nav_home">Home</string>
     <string name="nav_washinsa">WashINSA</string>
     <string name="nav_chat">Chat</string>
-    <string name="nav_timetable">Planex</string>
+    <string name="nav_timetable">Planex &#10162;</string>
     <string name="nav_other">Other</string>
     <string name="nav_preferences">Settings</string>
 
@@ -50,6 +50,13 @@
     <string name="prefs_chat_nickname_title">Nickname</string>
     <string name="prefs_chat_nickname_summary">Your name used in the chat</string>
     <string name="prefs_chat_nickname_dialog_title">Nickname for the chat</string>
+
+    <!-- Planex -->
+    <string name="planex_dialog_title">Planex!</string>
+    <string name="planex_dialog_message">Planex is the best app to get your timetable in one click. Beautiful, simple and efficient! It includes a widget for your lock screen.</string>
+    <string name="planex_cancel_button">Back</string>
+    <string name="planex_install_button">I want it now!</string>
+    <string name="planex_package_name" translatable="false">com.pijodev.insatpe</string>
 
     <!-- Navigation header -->
     <string name="navigation_header_email" translatable="false">amicale@amicale-insat.fr</string>

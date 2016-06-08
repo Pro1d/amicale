@@ -33,4 +33,5 @@
     <color name="washinsa_refresh_color3">@color/adapter_washinsa_machine_state_icon_finished</color>
     <color name="washinsa_refresh_color4">@color/adapter_washinsa_machine_state_icon_disused</color>
     <color name="washinsa_refresh_color5">@color/adapter_washinsa_machine_state_icon_unknown</color>
+
 </resources>

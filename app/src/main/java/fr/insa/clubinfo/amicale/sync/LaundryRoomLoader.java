@@ -2,7 +2,6 @@ package fr.insa.clubinfo.amicale.sync;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,8 +13,8 @@ import java.util.Locale;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.interfaces.OnLaundryRoomUpdatedListener;
-import fr.insa.clubinfo.amicale.models.LaundryRoom;
 import fr.insa.clubinfo.amicale.models.LaundryMachine;
+import fr.insa.clubinfo.amicale.models.LaundryRoom;
 
 /**
  * Created by Proïd on 05/06/2016.
@@ -74,7 +73,7 @@ public class LaundryRoomLoader {
         m.setNumber(json.get("machine").getAsInt());
 
         // Machine description
-        m.setDescription(json.get("type").getAsString().trim());
+        m.setDescription(json.get("type").getAsString().replaceAll("^\\s+", "").replaceAll("\\s+$", ""));
 
         // Machine type
         if(m.getDescription().toLowerCase(Locale.FRENCH).contains("lave")) {

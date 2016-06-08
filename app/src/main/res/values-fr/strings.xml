@@ -13,9 +13,9 @@
     <string name="nav_home">Accueil</string>
     <string name="nav_washinsa">WashINSA</string>
     <string name="nav_chat">Chat</string>
-    <string name="nav_timetable">Planex</string>
-    <string name="nav_preferences">Réglages</string>
+    <string name="nav_timetable">Planex &#10162;</string>
     <string name="nav_other">Autre</string>
+    <string name="nav_preferences">Réglages</string>
 
     <!-- WashINSA -->
     <string name="washinsa_category_drying">Sèche-linges</string>
@@ -50,6 +50,12 @@
     <string name="prefs_chat_nickname_title">Pseudo</string>
     <string name="prefs_chat_nickname_summary">Votre nom affiché dans le chat</string>
     <string name="prefs_chat_nickname_dialog_title">Pseudo pour le chat</string>
+
+    <!-- Planex -->
+    <string name="planex_dialog_title">Planex !</string>
+    <string name="planex_dialog_message">Planex est la meilleur application pour accéder à votre emploi du temps en un clic. Jolie, simple et éfficace ! Elle inclue aussi un widget pour votre écran de vérouillage.</string>
+    <string name="planex_cancel_button">Retour</string>
+    <string name="planex_install_button">Je la veux !</string>
 
     <!-- Navigation header -->
     <string name="navigation_drawer_open">Ouvrir menu de navigation</string>

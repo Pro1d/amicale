@@ -2,6 +2,8 @@ package fr.insa.clubinfo.amicale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import fr.insa.clubinfo.amicale.dialogs.StartPlanexDialog;
 import fr.insa.clubinfo.amicale.fragments.ChatFragment;
 import fr.insa.clubinfo.amicale.fragments.HomeFragment;
 import fr.insa.clubinfo.amicale.fragments.PreferencesFragment;
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new PreferencesFragment();
                 break;
             case R.id.nav_timetable:
+                StartPlanexDialog.startPlanex(this);
                 // TODO ?
                 break;
         }
