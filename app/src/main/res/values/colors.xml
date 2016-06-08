@@ -25,8 +25,8 @@
     <color name="adapter_washinsa_machine_state_icon_finished_light">#ffcc8e</color>
     <color name="adapter_washinsa_machine_state_icon_unknown">#66a1b3</color>
     <color name="adapter_washinsa_machine_state_icon_unknown_light">#c9dbe1</color>
-    <color name="adapter_washinsa_machine_state_icon_disused">#afafaf</color>
-    <color name="adapter_washinsa_machine_state_icon_disused_light">#dfdfdf</color>
+    <color name="adapter_washinsa_machine_state_icon_disused">#c7c7c7</color>
+    <color name="adapter_washinsa_machine_state_icon_disused_light">#e6e6e6</color>
 
     <color name="washinsa_refresh_color1">@color/adapter_washinsa_machine_state_icon_busy</color>
     <color name="washinsa_refresh_color2">@color/adapter_washinsa_machine_state_icon_free</color>

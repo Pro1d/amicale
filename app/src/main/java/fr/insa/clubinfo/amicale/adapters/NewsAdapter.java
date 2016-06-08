@@ -1,5 +1,6 @@
 package fr.insa.clubinfo.amicale.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,14 +39,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (news.getArticle(position).getImage() != null) {
-            holder.image.showImageView(news.getArticle(position).getImage());
+        Drawable image = news.getArticle(position).getImage();
+        if (image != null) {
+            holder.image.showImageView(image);
             holder.image.setVisibility(View.VISIBLE);
         }
         else
             holder.image.setVisibility(View.GONE);
 
-        holder.content.setText(news.getArticle(position).getContent());
+        String content = news.getArticle(position).getContent();
+        if(!content.isEmpty()) {
+            holder.content.setText(content);
+            holder.content.setVisibility(View.VISIBLE);
+        } else
+            holder.content.setVisibility(View.GONE);
+
         holder.title.setText(news.getArticle(position).getTitle());
         holder.date.setText(new Date(news.getArticle(position).getDate()).toText());
     }

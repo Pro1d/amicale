@@ -35,10 +35,14 @@ public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedLi
         loader.loadAsync(true);
     }
 
+    boolean initialLoadDone = false;
     @Override
     public void onResume() {
         super.onResume();
-        loader.loadAsync(false);
+        if(!initialLoadDone) {
+            loader.loadAsync(false);
+            initialLoadDone = true;
+        }
     }
 
     @Override

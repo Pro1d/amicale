@@ -32,8 +32,7 @@
         <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
             android:id="@+id/adapter_article_sl_image"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/adapter_article_image_height"
-            card_view:cardCornerRadius="@dimen/adapter_article_image_corner_radius">
+            android:layout_height="@dimen/adapter_article_image_height">
 
             <ImageView
                 android:src="@drawable/side_nav_bar"
