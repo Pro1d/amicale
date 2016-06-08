@@ -2,8 +2,6 @@ package fr.insa.clubinfo.amicale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +22,6 @@ public class MainActivity extends AppCompatActivity
 
     private int currentFragmentId = -1;
     private NavigationView navigationView;
-    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -97,7 +94,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_timetable:
                 StartPlanexDialog.startPlanex(this);
-                // TODO ?
                 break;
         }
 

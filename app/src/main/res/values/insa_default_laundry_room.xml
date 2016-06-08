@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_dryers_description">SECHE LINGE 14 KG</string>
-    <string name="default_washing_machine_description">LAVE LINGE 6 KG</string>
+    <string name="default_dryers_description" translatable="false">SECHE LINGE 14 KG</string>
+    <string name="default_washing_machine_description" translatable="false">LAVE LINGE 6 KG</string>
     <integer name="default_dryers_count">3</integer>
     <integer name="default_washing_machine_count">9</integer>
 </resources>

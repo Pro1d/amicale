@@ -42,7 +42,6 @@ public class LaundryRoomLoader {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
                             if (e != null || result == null) {
-                                e.printStackTrace();
                                 LaundryRoom laundryRoom = createDefaultLaundry();
                                 listener.onLaundryRoomSyncFailed(laundryRoom);
                             } else {
@@ -101,7 +100,7 @@ public class LaundryRoomLoader {
         return m;
     }
 
-    public LaundryRoom createDefaultLaundry() {
+    private LaundryRoom createDefaultLaundry() {
         // Getting default values
         Resources res = context.getResources();
         int dryersCount = res.getInteger(R.integer.default_dryers_count);

@@ -24,7 +24,7 @@ public class StartPlanexDialog {
         }
     }
 
-    public static void showGettingPlanexDialog(final Context context) {
+    private static void showGettingPlanexDialog(final Context context) {
         if (dialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.planex_dialog_title);
@@ -51,8 +51,7 @@ public class StartPlanexDialog {
 
     private static Intent getPlanexIntent(Context context) {
         String planexPackageName = context.getResources().getString(R.string.planex_package_name);
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(planexPackageName);
-        return intent;
+        return context.getPackageManager().getLaunchIntentForPackage(planexPackageName);
     }
 
     private static void startPlanex(Intent planexIntent, Context context) {
