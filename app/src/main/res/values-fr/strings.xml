@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Global -->
+    <string name="app_name">Amicale</string>
+
+    <!-- Title -->
+    <string name="title_home">Accueil</string>
+    <string name="title_washinsa">WashINSA</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_preferences">Réglages</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_washinsa">WashINSA</string>
+    <string name="nav_chat">Chat</string>
+    <string name="nav_timetable">Planex</string>
+    <string name="nav_preferences">Réglages</string>
+    <string name="nav_other">Autre</string>
+
+    <!-- Navigation header -->
+    <string name="navigation_drawer_open">Ouvrir menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer menu de navigation</string>
+
+    <!-- WashINSA -->
+    <string name="washinsa_category_drying">Sèche-linges</string>
+    <string name="washinsa_category_washing">Machines à laver</string>
+    <string name="washinsa_machine_state_free">Libre</string>
+    <plurals name="washinsa_machine_state_running">
+        <item quantity="zero">Disponible dans moins d\'une minute</item>
+        <item quantity="one">Disponible dans %d minute</item>
+        <item quantity="other">Disponible dans %d minutes</item>
+    </plurals>
+
+    <!-- Chat -->
+    <string name="chat_input_hint">Nouveau message</string>
+    <string name="chat_button_send_description">Envoyer</string>
+    <string name="chat_image_preview_description">Photo jointe</string>
+    <string name="chat_button_clear_picture_description">Supprimer la photo</string>
+    <string name="chat_button_take_picture_description">Joindre une photo</string>
+    <string name="adapter_chat_message_image_description">Photo jointe</string>
+
+    <!-- News -->
+    <string name="adapter_article_image_description">Image jointe</string>
+
+    <!-- General Error message -->
+    <string name="loading_error_message">Chargement impossible&#8230;</string>
+
+    <!-- Preferences -->
+    <string name="prefs_category_chat_title">Chat</string>
+    <string name="prefs_chat_nickname_key">chat_nickname</string>
+    <string name="prefs_chat_nickname_title">Pseudo</string>
+    <string name="prefs_chat_nickname_summary">Votre nom affiché dans le chat</string>
+    <string name="prefs_chat_nickname_dialog_title">Pseudo pour le chat</string>
+
+</resources>

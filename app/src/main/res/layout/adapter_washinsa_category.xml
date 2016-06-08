@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@color/adapter_washinsa_category_background"
+    card_view:contentPaddingLeft="@dimen/adapter_horizontal_padding"
+    card_view:contentPaddingRight="@dimen/adapter_horizontal_padding"
+    card_view:contentPaddingTop="@dimen/adapter_vertical_padding"
+    card_view:contentPaddingBottom="@dimen/adapter_vertical_padding"
+    android:layout_marginLeft="@dimen/adapter_horizontal_margin"
+    android:layout_marginRight="@dimen/adapter_horizontal_margin"
+    android:layout_marginTop="@dimen/adapter_vertical_margin"
+    android:layout_marginBottom="@dimen/adapter_vertical_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/adapter_washinsa_tv_category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Category" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
