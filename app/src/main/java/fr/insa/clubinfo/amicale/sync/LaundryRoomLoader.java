@@ -31,23 +31,28 @@ public class LaundryRoomLoader {
         this.context = context;
     }
 
-    public void loadAsync() {
-        currentTask = Ion.with(context).load("http://92.222.86.168/washinsa/json")
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        if(e != null || result == null) {
-                            e.printStackTrace();
-                            LaundryRoom laundryRoom = createDefaultLaundry();
-                            listener.onLaundryRoomSyncFailed(laundryRoom);
+    public void loadAsync(boolean loadDefault) {
+        if(loadDefault) {
+            LaundryRoom laundryRoom = createDefaultLaundry();
+            listener.onLaundryRoomLoaded(laundryRoom);
+        }
+        else {
+            currentTask = Ion.with(context).load("http://92.222.86.168/washinsa/json")
+                    .asJsonObject()
+                    .setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            if (e != null || result == null) {
+                                e.printStackTrace();
+                                LaundryRoom laundryRoom = createDefaultLaundry();
+                                listener.onLaundryRoomSyncFailed(laundryRoom);
+                            } else {
+                                LaundryRoom laundryRoom = createLaundryRoomFromJson(result);
+                                listener.onLaundryRoomLoaded(laundryRoom);
+                            }
                         }
-                        else {
-                            LaundryRoom laundryRoom = createLaundryRoomFromJson(result);
-                            listener.onLaundryRoomLoaded(laundryRoom);
-                        }
-                    }
-                });
+                    });
+        }
     }
 
     private LaundryRoom createLaundryRoomFromJson(JsonObject json) {
