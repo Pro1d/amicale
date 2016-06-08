@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import fr.insa.clubinfo.amicale.R;
-import fr.insa.clubinfo.amicale.models.Launderette;
+import fr.insa.clubinfo.amicale.models.LaundryRoom;
 import fr.insa.clubinfo.amicale.models.LaundryMachine;
 
 /**
@@ -22,11 +22,11 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
     private static final int layoutViewTitle = R.layout.adapter_washinsa_category;
     private static final int layoutViewItem = R.layout.adapter_washinsa_machine;
 
-    private Launderette launderette;
+    private LaundryRoom laundryRoom;
     private final Context context;
 
-    public WashINSAAdapter(Launderette launderette, Context context) {
-        this.launderette = launderette;
+    public WashINSAAdapter(LaundryRoom laundryRoom, Context context) {
+        this.laundryRoom = laundryRoom;
         this.context = context;
     }
 
@@ -58,43 +58,59 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
         else {
             LaundryMachine machine;
             if (isDryerPosition(position))
-                machine = launderette.getDryer(position - 1);
+                machine = laundryRoom.getDryer(position - 1);
             else
-                machine = launderette.getWashingMachine(position - 2 - launderette.getDryersCount());
+                machine = laundryRoom.getWashingMachine(position - 2 - laundryRoom.getDryersCount());
 
             holder.description.setText(machine.getDescription());
-            if(machine.getState() == LaundryMachine.State.BUSY) {
-                String txt = context.getResources().getQuantityString(R.plurals.washinsa_machine_state_running, machine.getMinutesRemaining(), machine.getMinutesRemaining());
-                holder.availability.setText(txt);
-                holder.number.setBackgroundResource(R.drawable.background_busy_machine_number);
+            switch(machine.getState()) {
+                case FREE:
+                    holder.availability.setText(R.string.washinsa_machine_state_free);
+                    holder.number.setBackgroundResource(R.drawable.background_free_machine_number);
+                    break;
+                case BUSY:
+                    int minutes = machine.getMinutesRemaining();
+                    String txt = context.getResources().getQuantityString(R.plurals.washinsa_machine_state_running, minutes, minutes);
+                    holder.availability.setText(txt);
+                    holder.number.setBackgroundResource(R.drawable.background_busy_machine_number);
+                    break;
+                case DISUSED:
+                    holder.availability.setText(R.string.washinsa_machine_state_disused);
+                    holder.number.setBackgroundResource(R.drawable.background_disused_machine_number);
+                    break;
+                case FINISHED:
+                    holder.availability.setText(R.string.washinsa_machine_state_finished);
+                    holder.number.setBackgroundResource(R.drawable.background_finished_machine_number);
+                    break;
+                case UNKNOWN:
+                    holder.availability.setText(R.string.washinsa_machine_state_unknown);
+                    holder.number.setBackgroundResource(R.drawable.background_unknown_machine_number);
+                    break;
             }
-            else {
-                holder.availability.setText(R.string.washinsa_machine_state_free);
-                holder.number.setBackgroundResource(R.drawable.background_free_machine_number);
-            }
+
             holder.number.setText(String.format(Locale.getDefault(), "%d", machine.getNumber()));
         }
     }
 
     @Override
     public int getItemCount() {
-        if(launderette == null)
+        if(laundryRoom == null)
             return 0;
         else
-            return launderette.getMachinesCount() + 2; // category title count = 2
+            return laundryRoom.getMachinesCount() + 2; // category title count = 2
     }
 
-    public void update(Launderette launderette) {
-        this.launderette = launderette;
+    public void update(LaundryRoom laundryRoom) {
+        this.laundryRoom = laundryRoom;
         this.notifyDataSetChanged();
     }
 
     private boolean isDryerPosition(int position) {
-        return launderette != null && position < launderette.getDryersCount()+1;
+        return laundryRoom != null && position < laundryRoom.getDryersCount()+1;
     }
 
     private boolean isCategoryTitlePosition(int position) {
-        return launderette != null && (position == 0 || position == launderette.getDryersCount()+1);
+        return laundryRoom != null && (position == 0 || position == laundryRoom.getDryersCount()+1);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

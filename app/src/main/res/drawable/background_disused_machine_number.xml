@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:color="@color/adapter_washinsa_machine_state_icon_stroke"
+        android:width="@dimen/adapter_washinsa_number_background_stroke_width"/>
+    <!--solid android:color="#4B1"/-->
+    <gradient
+        android:type="linear"
+        android:angle="135"
+        android:centerX="75%"
+        android:centerY="75%"
+        android:startColor="@color/adapter_washinsa_machine_state_icon_disused_light"
+        android:centerColor="@color/adapter_washinsa_machine_state_icon_disused"
+        android:endColor="@color/adapter_washinsa_machine_state_icon_disused"
+        android:useLevel="false"
+        />
+</shape>

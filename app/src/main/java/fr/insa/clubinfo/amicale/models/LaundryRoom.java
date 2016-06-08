@@ -2,7 +2,7 @@ package fr.insa.clubinfo.amicale.models;
 
 import java.util.ArrayList;
 
-public class Launderette {
+public class LaundryRoom {
 	private final ArrayList<LaundryMachine> washingMachines = new ArrayList<>();
 	private final ArrayList<LaundryMachine> dryers = new ArrayList<>();
 
@@ -22,10 +22,10 @@ public class Launderette {
 		return dryers.get(index);
 	}
 
-	public void addWashingMachine(LaundryMachine machine) {
-		washingMachines.add(machine);
-	}
-	public void addDryingMachine(LaundryMachine machine) {
-		dryers.add(machine);
+	public void addMachine(LaundryMachine machine) {
+		if(machine.getType() == LaundryMachine.Type.WASHING)
+			washingMachines.add(machine);
+		else
+			dryers.add(machine);
 	}
 }

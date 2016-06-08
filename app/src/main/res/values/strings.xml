@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Global -->
     <string name="app_name">Amicale</string>
@@ -16,16 +17,13 @@
     <string name="nav_other">Other</string>
     <string name="nav_preferences">Settings</string>
 
-    <string name="navigation_drawer_open">Open navigation</string>
-    <string name="navigation_drawer_close">Close navigation</string>
-
-    <!-- Navigation header -->
-    <string name="navigation_header_email" translatable="false">amicale@amicale-insat.fr</string>
-
     <!-- WashINSA -->
     <string name="washinsa_category_drying">Dryers</string>
     <string name="washinsa_category_washing">Washing machines</string>
     <string name="washinsa_machine_state_free">Free</string>
+    <string name="washinsa_machine_state_disused">Disused</string>
+    <string name="washinsa_machine_state_unknown">Unknown state</string>
+    <string name="washinsa_machine_state_finished">Finished</string>
     <plurals name="washinsa_machine_state_running">
         <item quantity="zero">Available in less than one minute</item>
         <item quantity="one">Available in %d minute</item>
@@ -52,5 +50,11 @@
     <string name="prefs_chat_nickname_title">Nickname</string>
     <string name="prefs_chat_nickname_summary">Your name used in the chat</string>
     <string name="prefs_chat_nickname_dialog_title">Nickname for the chat</string>
+
+    <!-- Navigation header -->
+    <string name="navigation_header_email" translatable="false">amicale@amicale-insat.fr</string>
+
+    <string name="navigation_drawer_open">Open navigation</string>
+    <string name="navigation_drawer_close">Close navigation</string>
 
 </resources>

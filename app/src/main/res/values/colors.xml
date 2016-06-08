@@ -21,4 +21,10 @@
     <color name="adapter_washinsa_machine_state_icon_busy_light">#ffa391</color>
     <color name="adapter_washinsa_machine_state_icon_free">#2da101</color>
     <color name="adapter_washinsa_machine_state_icon_free_light">#9ddc72</color>
+    <color name="adapter_washinsa_machine_state_icon_finished">#ffaa00</color>
+    <color name="adapter_washinsa_machine_state_icon_finished_light">#ffda91</color>
+    <color name="adapter_washinsa_machine_state_icon_unknown">#66a1b3</color>
+    <color name="adapter_washinsa_machine_state_icon_unknown_light">#c9dbe1</color>
+    <color name="adapter_washinsa_machine_state_icon_disused">#afafaf</color>
+    <color name="adapter_washinsa_machine_state_icon_disused_light">#dfdfdf</color>
 </resources>

@@ -3,10 +3,10 @@ package fr.insa.clubinfo.amicale.models;
 public class LaundryMachine {
 	public enum Type {WASHING, DRYER}
 
-    public enum State {FREE, BUSY}
+    public enum State {FREE, BUSY, DISUSED, FINISHED, UNKNOWN}
 
     private Type type;
-	private State state;
+	private State state = State.UNKNOWN;
 	private String description;
 	private int number;
 	private int minutesRemaining;
@@ -50,9 +50,5 @@ public class LaundryMachine {
 
     public void setMinutesRemaining(int minutesRemaining) {
         this.minutesRemaining = minutesRemaining;
-        if(minutesRemaining < 0)
-            state = State.FREE;
-        else
-            state = State.BUSY;
     }
 }

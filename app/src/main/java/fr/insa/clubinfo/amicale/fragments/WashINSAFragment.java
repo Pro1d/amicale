@@ -12,19 +12,19 @@ import android.widget.Toast;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.WashINSAAdapter;
-import fr.insa.clubinfo.amicale.interfaces.OnLaunderetteUpdatedListener;
-import fr.insa.clubinfo.amicale.models.Launderette;
-import fr.insa.clubinfo.amicale.sync.LaunderetteLoader;
+import fr.insa.clubinfo.amicale.interfaces.OnLaundryRoomUpdatedListener;
+import fr.insa.clubinfo.amicale.models.LaundryRoom;
+import fr.insa.clubinfo.amicale.sync.LaundryRoomLoader;
 
-public class WashINSAFragment extends Fragment implements OnLaunderetteUpdatedListener {
+public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedListener {
     private WashINSAAdapter adapter;
-    private Launderette launderette;
-    private LaunderetteLoader loader;
+    private LaundryRoom laundryRoom;
+    private LaundryRoomLoader loader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loader = new LaunderetteLoader(this);
+        loader = new LaundryRoomLoader(getActivity(), this);
     }
 
     @Override
@@ -44,8 +44,10 @@ public class WashINSAFragment extends Fragment implements OnLaunderetteUpdatedLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.title_washinsa);
 
+        adapter = new WashINSAAdapter(laundryRoom, getActivity());
+
         View view = inflater.inflate(R.layout.fragment_washinsa, container, false);
-        adapter = new WashINSAAdapter(launderette, getActivity());
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.washinsa_rv_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -54,13 +56,18 @@ public class WashINSAFragment extends Fragment implements OnLaunderetteUpdatedLi
     }
 
     @Override
-    public void onLaunderetteLoaded(Launderette launderette) {
-        this.launderette = launderette;
-        adapter.update(launderette);
+    public void onLaundryRoomLoaded(LaundryRoom laundryRoom) {
+        this.laundryRoom = laundryRoom;
+        adapter.update(laundryRoom);
     }
 
     @Override
-    public void onLaunderetteSyncFailed() {
+    public void onLaundryRoomSyncFailed(LaundryRoom defaultLaundryRoom) {
+        if(laundryRoom == null) {
+            this.laundryRoom = defaultLaundryRoom;
+            adapter.update(defaultLaundryRoom);
+        }
+
         Toast.makeText(getActivity(), R.string.loading_error_message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -17,14 +17,13 @@
     <string name="nav_preferences">Réglages</string>
     <string name="nav_other">Autre</string>
 
-    <!-- Navigation header -->
-    <string name="navigation_drawer_open">Ouvrir menu de navigation</string>
-    <string name="navigation_drawer_close">Fermer menu de navigation</string>
-
     <!-- WashINSA -->
     <string name="washinsa_category_drying">Sèche-linges</string>
     <string name="washinsa_category_washing">Machines à laver</string>
     <string name="washinsa_machine_state_free">Libre</string>
+    <string name="washinsa_machine_state_disused">Hors service</string>
+    <string name="washinsa_machine_state_unknown">État inconnu</string>
+    <string name="washinsa_machine_state_finished">Terminé</string>
     <plurals name="washinsa_machine_state_running">
         <item quantity="zero">Disponible dans moins d\'une minute</item>
         <item quantity="one">Disponible dans %d minute</item>
@@ -51,5 +50,9 @@
     <string name="prefs_chat_nickname_title">Pseudo</string>
     <string name="prefs_chat_nickname_summary">Votre nom affiché dans le chat</string>
     <string name="prefs_chat_nickname_dialog_title">Pseudo pour le chat</string>
+
+    <!-- Navigation header -->
+    <string name="navigation_drawer_open">Ouvrir menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer menu de navigation</string>
 
 </resources>
