@@ -1,7 +1,6 @@
 
 package fr.insa.clubinfo.amicale.adapters;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
-import me.relex.photodraweeview.PhotoDraweeView;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by Proïd on 10/06/2016.
@@ -19,7 +18,7 @@ import me.relex.photodraweeview.PhotoDraweeView;
 
 public class DraweePagerAdapter extends PagerAdapter {
     private ImageList provider;
-    private final ArrayList<PhotoDraweeView> views = new ArrayList<>();
+    private final ArrayList<PhotoView> views = new ArrayList<>();
     private final ViewPager attachedViewPager;
 
     public DraweePagerAdapter(ViewPager pager) {
@@ -41,7 +40,7 @@ public class DraweePagerAdapter extends PagerAdapter {
 
         // Add views and set image if necessary
         while(views.size() < count) {
-            PhotoDraweeView v = createView(null, images.getImage(views.size()));
+            PhotoView v = createView(null, images.getImage(views.size()));
             addView(v, views.size());
         }
         notifyDataSetChanged();
@@ -80,15 +79,13 @@ public class DraweePagerAdapter extends PagerAdapter {
         return view;
     }
 
-    private PhotoDraweeView createView(PhotoDraweeView recycleView, Bitmap image) {
-        final PhotoDraweeView photoDraweeView = (recycleView == null ? new PhotoDraweeView(attachedViewPager.getContext()) : recycleView);
-        photoDraweeView.setImageBitmap(image);
-        photoDraweeView.setScale(1.0f);
-        photoDraweeView.update(0,0);
-        return photoDraweeView;
+    private PhotoView createView(PhotoView recycleView, Bitmap image) {
+        final PhotoView photoView = (recycleView == null ? new PhotoView(attachedViewPager.getContext()) : recycleView);
+        photoView.setImageBitmap(image);
+        return photoView;
     }
 
-    private int addView(PhotoDraweeView v, int position) {
+    private int addView(PhotoView v, int position) {
         views.add(position, v);
         return position;
     }

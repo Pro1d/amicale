@@ -1,13 +1,10 @@
 package fr.insa.clubinfo.amicale.views;
 
-import android.content.Context;
 import android.view.View;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.DraweePagerAdapter;
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
-import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
-import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by Proïd on 10/06/2016.
@@ -31,11 +28,9 @@ public class ImageViewer {
     private boolean isVisible = false;
 
     private ImageViewer(View viewer, View defaultView) {
-        CircleIndicator indicator = (CircleIndicator) viewer.findViewById(R.id.image_viewer_circle_indicator);
         viewPager = (MultiTouchViewPager) viewer.findViewById(R.id.image_viewer_multi_touch_view_pager);
         adapter = new DraweePagerAdapter(viewPager);
-        viewPager.setAdapter(adapter);
-        indicator.setViewPager(viewPager);
+        viewPager.setAdapter(adapter);;
         fullscreenViewer = viewer;
         this.defaultView = defaultView;
     }
