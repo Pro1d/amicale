@@ -42,8 +42,10 @@ public class LaundryRoomLoader {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
                             if (e != null || result == null) {
+                                // TODO e == canceled
+                                listener.onLaundryRoomSyncCanceled();/*
                                 LaundryRoom laundryRoom = createDefaultLaundry();
-                                listener.onLaundryRoomSyncFailed(laundryRoom);
+                                listener.onLaundryRoomSyncFailed(laundryRoom);*/
                             } else {
                                 LaundryRoom laundryRoom = createLaundryRoomFromJson(result);
                                 listener.onLaundryRoomLoaded(laundryRoom);

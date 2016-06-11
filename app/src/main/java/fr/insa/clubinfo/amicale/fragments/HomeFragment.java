@@ -1,6 +1,5 @@
 package fr.insa.clubinfo.amicale.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,12 +11,14 @@ import android.widget.Toast;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.NewsAdapter;
+import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.interfaces.OnNewsUpdatedListener;
 import fr.insa.clubinfo.amicale.models.Article;
 import fr.insa.clubinfo.amicale.models.News;
 import fr.insa.clubinfo.amicale.sync.NewsLoader;
+import fr.insa.clubinfo.amicale.views.ImageViewer;
 
-public class HomeFragment extends Fragment implements OnNewsUpdatedListener {
+public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnImageClickedListener {
     private NewsAdapter adapter;
     private NewsLoader loader;
     private News news;
@@ -42,7 +43,7 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         // Recycler view
-        adapter = new NewsAdapter(news);
+        adapter = new NewsAdapter(news, this);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.news_rv_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,5 +68,26 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener {
         this.news = news;
         adapter.update(news);
         // TODO update last item only
+    }
+
+    @Override
+    public void onNewsSyncCanceled() {
+
+    }
+
+    @Override
+    public void onImageClicked(int position) {
+        ImageViewer.getImageViewer().show(news, news.getImagePosition(position));
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        ImageViewer imageViewer = ImageViewer.getImageViewer();
+        if (imageViewer.isVisible()) {
+            imageViewer.hide();
+            return true;
+        }
+        else
+            return false;
     }
 }

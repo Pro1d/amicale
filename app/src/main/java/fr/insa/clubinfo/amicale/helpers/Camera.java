@@ -3,6 +3,8 @@ package fr.insa.clubinfo.amicale.helpers;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -18,9 +20,9 @@ import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
  */
 
 public class Camera {
-    private final File file = new File(Environment.getExternalStorageDirectory(),  "fr_insa_clubinfo_amicale_helpers_picture.jpg");
+    private final File file = new File(Environment.getExternalStorageDirectory(),  ".amicale_chat_picture.jpg");
     private static final int TAKE_PICTURE = 1;
-    private AsyncTask<File, Void, Drawable> currentTask;
+    private AsyncTask<File, Void, Bitmap> currentTask;
     private final OnPictureTakenListener listener;
 
     public Camera(OnPictureTakenListener listener) {
@@ -49,7 +51,7 @@ public class Camera {
     }
 
     private void loadImageAsync() {
-        currentTask = new AsyncTask<File, Void, Drawable>() {
+        currentTask = new AsyncTask<File, Void, Bitmap>() {
 
             @Override
             protected void onPreExecute() {
@@ -57,19 +59,19 @@ public class Camera {
             }
 
             @Override
-            protected Drawable doInBackground(File... params) {
+            protected Bitmap doInBackground(File... params) {
                 File file = params[0];
 
-                return Drawable.createFromPath(file.getPath());
+                return BitmapFactory.decodeFile(file.getPath());
             }
 
             @Override
-            protected void onPostExecute(Drawable drawable) {
+            protected void onPostExecute(Bitmap drawable) {
                 listener.onPictureLoaded(drawable);
             }
 
             @Override
-            protected void onCancelled(Drawable drawable) {
+            protected void onCancelled(Bitmap drawable) {
                 listener.onPictureLoaded(null);
             }
         }.execute(file);

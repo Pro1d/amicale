@@ -11,4 +11,5 @@ public interface OnNewsUpdatedListener {
     void onNewsLoaded(News news);
     void onNewsSyncFailed();
     void onNewArticleReceived(News news, Article article);
+    void onNewsSyncCanceled();
 }

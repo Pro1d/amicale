@@ -38,5 +38,6 @@
     <dimen name="adapter_article_image_corner_radius">5dp</dimen>
     <dimen name="adapter_article_image_height">120dp</dimen>
     <dimen name="adapter_article_title_text_size">20sp</dimen>
+    <dimen name="adapter_article_padding_image">5dp</dimen>
 
 </resources>

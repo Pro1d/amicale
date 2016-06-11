@@ -9,4 +9,5 @@ import fr.insa.clubinfo.amicale.models.LaundryRoom;
 public interface OnLaundryRoomUpdatedListener {
     void onLaundryRoomLoaded(LaundryRoom laundryRoom);
     void onLaundryRoomSyncFailed(LaundryRoom defaultLaundryRoom);
+    void onLaundryRoomSyncCanceled();
 }

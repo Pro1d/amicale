@@ -1,22 +1,22 @@
 package fr.insa.clubinfo.amicale.models;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 
 import java.util.GregorianCalendar;
 
 public class ChatMessage {
 
-	private Drawable image;
+	private Bitmap image;
 	private boolean hasImage = false;
 	private String content;
 	private boolean self;
 	private GregorianCalendar date;
 
-	public Drawable getImage() {
+	public Bitmap getImage() {
 		return image;
 	}
 
-	public void setImage(Drawable image) {
+	public void setImage(Bitmap image) {
 		this.image = image;
 		hasImage = true;
 	}

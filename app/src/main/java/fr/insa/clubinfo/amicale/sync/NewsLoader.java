@@ -37,8 +37,10 @@ public class NewsLoader {
                             "L'application android est trop plus mieux que " +
                             "celle des aïe machins alors voilà quoi.");
                     a.setDate(new GregorianCalendar());
-                    Bitmap bmp = BitmapFactory.decodeResource(((Fragment)listener).getResources(), R.drawable.logo_amicale_icon);
-                    a.setImage(new BitmapDrawable(((Fragment)listener).getResources(), bmp));
+                    if(Math.random() > 0.5) {
+                        Bitmap bmp = BitmapFactory.decodeResource(((Fragment) listener).getResources(), R.drawable.logo_amicale_icon);
+                        a.setImage(bmp);
+                    }
                     n.addArticle(a);
                 }
                 return n;
@@ -51,7 +53,7 @@ public class NewsLoader {
 
             @Override
             protected void onCancelled(News news) {
-                listener.onNewsSyncFailed();
+                listener.onNewsSyncCanceled();
             }
         }.execute();
     }

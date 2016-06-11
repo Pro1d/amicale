@@ -1,5 +1,6 @@
 package fr.insa.clubinfo.amicale.adapters;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.helpers.Date;
+import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.models.News;
 import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 
@@ -21,9 +23,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private static final int layoutViewArticle = R.layout.adapter_article;
 
     private News news;
+    OnImageClickedListener imageClickedListener;
 
-    public NewsAdapter(News news) {
+    public NewsAdapter(News news, OnImageClickedListener imageClickedListener) {
         this.news = news;
+        this.imageClickedListener = imageClickedListener;
     }
 
     @Override
@@ -38,10 +42,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Drawable image = news.getArticle(position).getImage();
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        Bitmap image = news.getArticle(position).getImage();
         if (image != null) {
             holder.image.showImageView(image);
+            holder.image.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    if(imageClickedListener != null)
+                        imageClickedListener.onImageClicked(position);
+                }
+            });
             holder.image.setVisibility(View.VISIBLE);
         }
         else

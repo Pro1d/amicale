@@ -27,7 +27,8 @@
             android:textStyle="italic"
             android:textColor="@color/adapter_article_date_text_color"
             android:gravity="end"
-            tools:text="Mar. 12 Déc. 2012" />
+            tools:text="Mar. 12 Déc. 2012"
+            android:paddingBottom="@dimen/adapter_article_padding_image"/>
 
         <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
             android:id="@+id/adapter_article_sl_image"
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:contentDescription="@string/adapter_article_image_description"/>
+                android:contentDescription="@string/adapter_article_image_description" />
 
         </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
 
@@ -50,7 +51,8 @@
             android:gravity="center_horizontal"
             android:textSize="@dimen/adapter_article_title_text_size"
             android:textColor="@color/adapter_article_title_text_color"
-            tools:text="Title" />
+            tools:text="Title"
+            android:paddingTop="@dimen/adapter_article_padding_image"/>
 
         <TextView
             android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 package fr.insa.clubinfo.amicale.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -96,6 +95,11 @@ public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedLi
         }
 
         Toast.makeText(getActivity(), R.string.loading_error_message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLaundryRoomSyncCanceled() {
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override

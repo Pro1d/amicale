@@ -34,4 +34,7 @@
     <color name="washinsa_refresh_color4">@color/adapter_washinsa_machine_state_icon_disused</color>
     <color name="washinsa_refresh_color5">@color/adapter_washinsa_machine_state_icon_unknown</color>
 
+    <!-- Fullscreen image viewer -->
+    <color name="fullscreen_image_viewer">#222</color>
+
 </resources>

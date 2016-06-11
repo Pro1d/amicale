@@ -11,4 +11,5 @@ public interface ChatMessageListener {
     void onChatLoaded(Chat chat);
     void onChatSyncFailed();
     void onNewChatMessageReceived(Chat chat, ChatMessage msg);
+    void onChatSyncCanceled();
 }

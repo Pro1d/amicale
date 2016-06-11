@@ -42,7 +42,7 @@ public class ChatLoader {
 
             @Override
             protected void onCancelled(Chat chat) {
-                listener.onChatSyncFailed();
+                listener.onChatSyncCanceled();
             }
         }.execute();
     }

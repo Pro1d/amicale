@@ -1,5 +1,6 @@
 package fr.insa.clubinfo.amicale.adapters;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import fr.insa.clubinfo.amicale.R;
+import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.models.Chat;
 import fr.insa.clubinfo.amicale.models.ChatMessage;
 import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
@@ -22,9 +24,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     private static final int layoutViewSelf = R.layout.adapter_message_chat_self;
 
     private Chat chat;
+    private OnImageClickedListener imageClickedListener;
 
-    public ChatMessageAdapter(Chat chat) {
+    public ChatMessageAdapter(Chat chat, OnImageClickedListener imageClickedListener) {
         this.chat = chat;
+        this.imageClickedListener = imageClickedListener;
     }
 
     @Override
@@ -42,9 +46,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         ChatMessage msg = chat.getMessage(position);
-        Drawable image = msg.getImage();
+        Bitmap image = msg.getImage();
         if(msg.hasImage()) {
             if(image != null)
                 holder.switchImgAsync.showImageView(image);
@@ -52,6 +56,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 // TODO load image ?
                 holder.switchImgAsync.showProgressView();
             holder.switchImgAsync.setVisibility(View.VISIBLE);
+            holder.switchImgAsync.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    if(imageClickedListener != null)
+                        imageClickedListener.onImageClicked(position);
+                }
+            });
         }
         else
             holder.switchImgAsync.setVisibility(View.GONE);

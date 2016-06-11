@@ -1,6 +1,7 @@
 package fr.insa.clubinfo.amicale.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -63,10 +64,10 @@ public class SwitchImageViewAsyncLayout extends FrameLayout {
         ((ImageView)getChildAt(imageViewIndex)).setImageDrawable(null);
     }
 
-    public void showImageView(Drawable drawable) {
+    public void showImageView(Bitmap drawable) {
         getChildAt(progressBarIndex).setVisibility(View.GONE);
         getChildAt(imageViewIndex).setVisibility(View.VISIBLE);
         if(drawable != null)
-            ((ImageView)getChildAt(imageViewIndex)).setImageDrawable(drawable);
+            ((ImageView)getChildAt(imageViewIndex)).setImageBitmap(drawable);
     }
 }

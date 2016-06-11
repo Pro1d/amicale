@@ -1,7 +1,7 @@
 package fr.insa.clubinfo.amicale.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,13 +18,15 @@ import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.ChatMessageAdapter;
 import fr.insa.clubinfo.amicale.helpers.Camera;
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;
+import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
 import fr.insa.clubinfo.amicale.models.Chat;
 import fr.insa.clubinfo.amicale.models.ChatMessage;
 import fr.insa.clubinfo.amicale.sync.ChatLoader;
+import fr.insa.clubinfo.amicale.views.ImageViewer;
 import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 
-public class ChatFragment extends Fragment implements ChatMessageListener, OnPictureTakenListener {
+public class ChatFragment extends Fragment implements ChatMessageListener, OnPictureTakenListener, OnImageClickedListener {
     private Chat chat;
     private ChatLoader loader;
     private ChatMessageAdapter adapter;
@@ -36,7 +38,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private SwitchImageViewAsyncLayout switchImgAsync;
 
     private Camera camera;
-    private Drawable currentPicture;
+    private Bitmap currentPicture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
         // Recycler view
-        adapter = new ChatMessageAdapter(chat);
+        adapter = new ChatMessageAdapter(chat, this);
         recyclerView = (RecyclerView) view.findViewById(R.id.chat_rv_list);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -129,6 +131,11 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     @Override
+    public void onChatSyncCanceled() {
+
+    }
+
+    @Override
     public void onNewChatMessageReceived(Chat chat, ChatMessage msg) {
         // chat.addMessage(msg);
         this.chat = chat;
@@ -156,7 +163,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     @Override
-    public void onPictureLoaded(Drawable drawable) {
+    public void onPictureLoaded(Bitmap drawable) {
         // Getting image, save and display
         switchImgAsync.showImageView(drawable);
         currentPicture = drawable;
@@ -166,5 +173,21 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         camera.onActivityResult(requestCode, resultCode);
+    }
+
+    @Override
+    public void onImageClicked(int position) {
+        ImageViewer.getImageViewer().show(chat, chat.getImagePosition(position));
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        ImageViewer imageViewer = ImageViewer.getImageViewer();
+        if (imageViewer.isVisible()) {
+            imageViewer.hide();
+            return true;
+        }
+        else
+            return false;
     }
 }

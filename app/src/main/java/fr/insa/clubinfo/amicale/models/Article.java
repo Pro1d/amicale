@@ -1,5 +1,6 @@
 package fr.insa.clubinfo.amicale.models;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import java.util.GregorianCalendar;
@@ -7,7 +8,7 @@ import java.util.GregorianCalendar;
 public class Article {
 
 	private String title;
-	private Drawable image;
+	private Bitmap image;
 	private boolean hasImage;
 	private String content;
 	private GregorianCalendar date;
@@ -28,11 +29,11 @@ public class Article {
 		this.title = title;
 	}
 
-	public Drawable getImage() {
+	public Bitmap getImage() {
 		return image;
 	}
 
-	public void setImage(Drawable image) {
+	public void setImage(Bitmap image) {
 		this.image = image;
 	}
 
