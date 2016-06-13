@@ -29,6 +29,12 @@
         <item quantity="one">Available in %d minute</item>
         <item quantity="other">Available in %d minutes</item>
     </plurals>
+    <string name="washinsa_alarm_dialog_title">Notice me&#8230;</string>
+    <string name="washinsa_alarm_dialog_content">minutes before the end.</string>
+    <string name="washinsa_alarm_dialog_cancel">Cancel</string>
+    <string name="washinsa_alarm_dialog_create">Add alarm</string>
+    <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
+    <string name="washinsa_alarm_notif_content" formatted="false">The machine n°%d ends at %02d:%02d</string>
 
     <!-- Chat -->
     <string name="chat_input_hint">New message</string>

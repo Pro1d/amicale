@@ -16,12 +16,12 @@ import uk.co.senab.photoview.PhotoView;
  * Created by Proïd on 10/06/2016.
  */
 
-public class DraweePagerAdapter extends PagerAdapter {
+public class ImagePagerAdapter extends PagerAdapter {
     private ImageList provider;
     private final ArrayList<PhotoView> views = new ArrayList<>();
     private final ViewPager attachedViewPager;
 
-    public DraweePagerAdapter(ViewPager pager) {
+    public ImagePagerAdapter(ViewPager pager) {
         attachedViewPager = pager;
     }
 

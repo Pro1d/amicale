@@ -29,6 +29,12 @@
         <item quantity="one">Disponible dans %d minute</item>
         <item quantity="other">Disponible dans %d minutes</item>
     </plurals>
+    <string name="washinsa_alarm_dialog_title">Me prévenir&#8230;</string>
+    <string name="washinsa_alarm_dialog_content">minutes avant la fin.</string>
+    <string name="washinsa_alarm_dialog_cancel">Annuler</string>
+    <string name="washinsa_alarm_dialog_create">Ajouter l\'alarme</string>
+    <string name="washinsa_alarm_notif_title">WashINSAlarme</string>
+    <string name="washinsa_alarm_notif_content" formatted="false">La machine n°%d se termine à %02d:%02d</string>
 
     <!-- Chat -->
     <string name="chat_input_hint">Nouveau message</string>
@@ -53,7 +59,7 @@
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex !</string>
-    <string name="planex_dialog_message">Planex est la meilleur application pour accéder à votre emploi du temps en un clic. Jolie, simple et éfficace ! Elle inclue aussi un widget pour votre écran de vérouillage.</string>
+    <string name="planex_dialog_message">Jolie, simple et éfficace, Planex est la meilleur application pour accéder à votre emploi du temps en un clic. Elle inclue aussi un widget pour votre écran de vérouillage.</string>
     <string name="planex_cancel_button">Retour</string>
     <string name="planex_install_button">Je la veux !</string>
 

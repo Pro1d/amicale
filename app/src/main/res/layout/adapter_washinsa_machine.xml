@@ -1,48 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chauthai.swipereveallayout.SwipeRevealLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_marginLeft="@dimen/adapter_horizontal_margin"
-    android:layout_marginRight="@dimen/adapter_horizontal_margin"
-    android:layout_marginTop="@dimen/adapter_vertical_margin"
-    android:layout_marginBottom="@dimen/adapter_vertical_margin"
-    android:paddingLeft="@dimen/adapter_horizontal_padding"
-    android:paddingRight="@dimen/adapter_horizontal_padding"
-    android:paddingTop="@dimen/adapter_vertical_padding"
-    android:paddingBottom="@dimen/adapter_vertical_padding">
+    app:dragEdge="right"
+    app:mode="normal"><!-- This view does not resize its children on screen orientation changed -->
 
-    <TextView
-        android:id="@+id/adapter_washinsa_tv_number"
-        android:layout_width="@dimen/adapter_washinsa_number_size"
-        android:layout_height="@dimen/adapter_washinsa_number_size"
-        android:gravity="center"
-        android:textSize="@dimen/adapter_washinsa_number_text_size"
-        android:textStyle="bold"
-        android:background="@drawable/background_busy_machine_number"
-        tools:text="42" />
-
-    <LinearLayout
+    <ImageButton
+        android:id="@+id/adapter_washinsa_ib_alarm"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_alarm_add_black_24dp"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/adapter_horizontal_spacing"
-        android:paddingRight="@dimen/adapter_horizontal_spacing">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/adapter_horizontal_margin"
+        android:layout_marginRight="@dimen/adapter_horizontal_margin"
+        android:layout_marginTop="@dimen/adapter_vertical_margin"
+        android:layout_marginBottom="@dimen/adapter_vertical_margin"
+        android:paddingLeft="@dimen/adapter_horizontal_padding"
+        android:paddingRight="@dimen/adapter_horizontal_padding"
+        android:paddingTop="@dimen/adapter_vertical_padding"
+        android:paddingBottom="@dimen/adapter_vertical_padding"
+        android:background="#fff">
 
         <TextView
-            android:id="@+id/adapter_washinsa_tv_description"
-            android:layout_width="wrap_content"
+            android:id="@+id/adapter_washinsa_tv_number"
+            android:layout_width="@dimen/adapter_washinsa_number_size"
+            android:layout_height="@dimen/adapter_washinsa_number_size"
+            android:gravity="center"
+            android:textSize="@dimen/adapter_washinsa_number_text_size"
+            android:textStyle="bold"
+            android:background="@drawable/background_busy_machine_number"
+            tools:text="42" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/adapter_washinsa_description_text_size"
-            tools:text="WASHING MACHINE 6 KG" />
-        <TextView
-            android:id="@+id/adapter_washinsa_tv_availability"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/adapter_washinsa_availability_text_size"
-            android:text="@string/washinsa_machine_state_free"/>
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/adapter_horizontal_spacing"
+            android:paddingRight="@dimen/adapter_horizontal_spacing">
+
+            <TextView
+                android:id="@+id/adapter_washinsa_tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/adapter_washinsa_description_text_size"
+                tools:text="WASHING MACHINE 6 KG" />
+            <TextView
+                android:id="@+id/adapter_washinsa_tv_availability"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/adapter_washinsa_availability_text_size"
+                android:text="@string/washinsa_machine_state_free"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

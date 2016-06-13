@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "fr.insa.clubinfo.amicale"
         minSdkVersion 18
-        targetSdkVersion 23
+        targetSdkVersion 18
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,4 +30,6 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.+'
     // PhotoView : image fullscreen and swipe
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
+    // SwipeRevealLayout
+    compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.2.1'
 }

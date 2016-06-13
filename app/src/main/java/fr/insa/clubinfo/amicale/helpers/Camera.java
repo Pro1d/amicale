@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -21,7 +20,7 @@ import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
 
 public class Camera {
     private final File file = new File(Environment.getExternalStorageDirectory(),  ".amicale_chat_picture.jpg");
-    private static final int TAKE_PICTURE = 1;
+    private static final int TAKE_PICTURE_REQUEST_CODE = 1;
     private AsyncTask<File, Void, Bitmap> currentTask;
     private final OnPictureTakenListener listener;
 
@@ -33,11 +32,11 @@ public class Camera {
     public void startCameraIntent(Fragment fragment) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        fragment.startActivityForResult(intent, TAKE_PICTURE);
+        fragment.startActivityForResult(intent, TAKE_PICTURE_REQUEST_CODE);
     }
 
     public void onActivityResult(int requestCode, int resultCode) {
-        if (requestCode == TAKE_PICTURE) {
+        if (requestCode == TAKE_PICTURE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK)
                 loadImageAsync();
         }
@@ -61,8 +60,17 @@ public class Camera {
             @Override
             protected Bitmap doInBackground(File... params) {
                 File file = params[0];
-
+                BitmapFactory.Options opt = new BitmapFactory.Options();
                 return BitmapFactory.decodeFile(file.getPath());
+                /*
+                get image size without allocate memory for bitmap data
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeResource(getResources(), R.id.myimage, options);
+                int imageHeight = options.outHeight;
+                int imageWidth = options.outWidth;
+                String imageType = options.outMimeType;
+                 */
             }
 
             @Override

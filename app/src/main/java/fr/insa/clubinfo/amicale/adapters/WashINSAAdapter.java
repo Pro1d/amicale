@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Locale;
 
 import fr.insa.clubinfo.amicale.R;
+import fr.insa.clubinfo.amicale.interfaces.OnWashINSAAlarmButtonClickedListener;
 import fr.insa.clubinfo.amicale.models.LaundryRoom;
 import fr.insa.clubinfo.amicale.models.LaundryMachine;
 
@@ -24,10 +26,12 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
 
     private LaundryRoom laundryRoom;
     private final Context context;
+    private OnWashINSAAlarmButtonClickedListener buttonListener;
 
-    public WashINSAAdapter(LaundryRoom laundryRoom, Context context) {
+    public WashINSAAdapter(LaundryRoom laundryRoom, Context context, OnWashINSAAlarmButtonClickedListener buttonListener) {
         this.laundryRoom = laundryRoom;
         this.context = context;
+        this.buttonListener = buttonListener;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         // Category title
         if(isCategoryTitlePosition(position)) {
             if(isDryerPosition(position)) {
@@ -56,7 +60,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
         }
         // Machine state
         else {
-            LaundryMachine machine;
+            final LaundryMachine machine;
             if (isDryerPosition(position))
                 machine = laundryRoom.getDryer(position - 1);
             else
@@ -89,6 +93,12 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
             }
 
             holder.number.setText(String.format(Locale.getDefault(), "%d", machine.getNumber()));
+            holder.alarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buttonListener.onAlarmButtonClicked(machine);
+                }
+            });
         }
     }
 
@@ -118,6 +128,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
         final TextView description;
         final TextView availability;
         final TextView number;
+        final ImageButton alarm;
 
         public ViewHolder(View view) {
             super(view);
@@ -125,6 +136,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
             description = (TextView) view.findViewById(R.id.adapter_washinsa_tv_description);
             availability = (TextView) view.findViewById(R.id.adapter_washinsa_tv_availability);
             number = (TextView) view.findViewById(R.id.adapter_washinsa_tv_number);
+            alarm = (ImageButton) view.findViewById(R.id.adapter_washinsa_ib_alarm);
         }
     }
 }

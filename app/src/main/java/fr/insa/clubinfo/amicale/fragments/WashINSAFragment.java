@@ -12,11 +12,14 @@ import android.widget.Toast;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.WashINSAAdapter;
+import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmDialog;
 import fr.insa.clubinfo.amicale.interfaces.OnLaundryRoomUpdatedListener;
+import fr.insa.clubinfo.amicale.interfaces.OnWashINSAAlarmButtonClickedListener;
+import fr.insa.clubinfo.amicale.models.LaundryMachine;
 import fr.insa.clubinfo.amicale.models.LaundryRoom;
 import fr.insa.clubinfo.amicale.sync.LaundryRoomLoader;
 
-public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedListener, SwipeRefreshLayout.OnRefreshListener {
+public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedListener, SwipeRefreshLayout.OnRefreshListener, OnWashINSAAlarmButtonClickedListener {
     private WashINSAAdapter adapter;
     private LaundryRoom laundryRoom;
     private LaundryRoomLoader loader;
@@ -55,7 +58,7 @@ public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.title_washinsa);
 
-        adapter = new WashINSAAdapter(laundryRoom, getActivity());
+        adapter = new WashINSAAdapter(laundryRoom, getActivity(), this);
 
         View view = inflater.inflate(R.layout.fragment_washinsa, container, false);
 
@@ -106,5 +109,10 @@ public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedLi
     public void onRefresh() {
         // Called by SwipeRefreshLayout when the user pull to refresh
         loader.loadAsync(false);
+    }
+
+    @Override
+    public void onAlarmButtonClicked(LaundryMachine machine) {
+        WashINSAAlarmDialog.showSettingWashINSAAlarmDialog(getActivity());
     }
 }

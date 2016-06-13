@@ -3,7 +3,7 @@ package fr.insa.clubinfo.amicale.views;
 import android.view.View;
 
 import fr.insa.clubinfo.amicale.R;
-import fr.insa.clubinfo.amicale.adapters.DraweePagerAdapter;
+import fr.insa.clubinfo.amicale.adapters.ImagePagerAdapter;
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
 
 /**
@@ -21,7 +21,7 @@ public class ImageViewer {
         return staticImageViewer;
     }
 
-    private DraweePagerAdapter adapter;
+    private ImagePagerAdapter adapter;
     MultiTouchViewPager viewPager;
     private View fullscreenViewer;
     private View defaultView;
@@ -29,7 +29,7 @@ public class ImageViewer {
 
     private ImageViewer(View viewer, View defaultView) {
         viewPager = (MultiTouchViewPager) viewer.findViewById(R.id.image_viewer_multi_touch_view_pager);
-        adapter = new DraweePagerAdapter(viewPager);
+        adapter = new ImagePagerAdapter(viewPager);
         viewPager.setAdapter(adapter);;
         fullscreenViewer = viewer;
         this.defaultView = defaultView;
