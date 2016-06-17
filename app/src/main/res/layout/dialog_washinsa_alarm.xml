@@ -16,7 +16,8 @@
         android:text="@string/washinsa_alarm_create_dialog_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="7dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
         style="@style/AppTheme.AlertDialog"/>
 
 </LinearLayout>

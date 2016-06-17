@@ -3,7 +3,6 @@ package fr.insa.clubinfo.amicale.sync;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 
 import java.util.GregorianCalendar;

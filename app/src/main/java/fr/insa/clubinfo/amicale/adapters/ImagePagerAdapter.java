@@ -17,7 +17,6 @@ import uk.co.senab.photoview.PhotoView;
  */
 
 public class ImagePagerAdapter extends PagerAdapter {
-    private ImageList provider;
     private final ArrayList<PhotoView> views = new ArrayList<>();
     private final ViewPager attachedViewPager;
 
@@ -26,7 +25,6 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
     public void update(ImageList images) {
-        provider = images;
         int count = images.getCount();
 
         // Delete last views if too many
@@ -85,16 +83,13 @@ public class ImagePagerAdapter extends PagerAdapter {
         return photoView;
     }
 
-    private int addView(PhotoView v, int position) {
+    private void addView(PhotoView v, int position) {
         views.add(position, v);
-        return position;
     }
 
-    private int removeView(int position) {
+    private void removeView(int position) {
         attachedViewPager.setAdapter(null);
         views.remove(position);
         attachedViewPager.setAdapter(this);
-
-        return position;
     }
 }

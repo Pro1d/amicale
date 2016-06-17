@@ -21,16 +21,16 @@ public class ImageViewer {
         return staticImageViewer;
     }
 
-    private ImagePagerAdapter adapter;
-    MultiTouchViewPager viewPager;
-    private View fullscreenViewer;
-    private View defaultView;
+    private final ImagePagerAdapter adapter;
+    private final MultiTouchViewPager viewPager;
+    private final View fullscreenViewer;
+    private final View defaultView;
     private boolean isVisible = false;
 
     private ImageViewer(View viewer, View defaultView) {
         viewPager = (MultiTouchViewPager) viewer.findViewById(R.id.image_viewer_multi_touch_view_pager);
         adapter = new ImagePagerAdapter(viewPager);
-        viewPager.setAdapter(adapter);;
+        viewPager.setAdapter(adapter);
         fullscreenViewer = viewer;
         this.defaultView = defaultView;
     }

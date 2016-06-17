@@ -65,9 +65,7 @@ public class LaundryMachine {
     }
 
     /**
-     * setStart must be called before
-     * @param hour
-     * @param minute
+     * This function must be called after setStart
      */
     public void setEnd(int hour, int minute) {
         end = Date.todayAfter(hour, minute, start);

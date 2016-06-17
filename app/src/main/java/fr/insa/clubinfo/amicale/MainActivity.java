@@ -2,7 +2,6 @@ package fr.insa.clubinfo.amicale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -31,8 +29,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private int currentFragmentId = -1;
-    private NavigationView navigationView;
-    Fragment activeFragment;
+    private Fragment activeFragment;
     public static Handler handler;
 
     @Override
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         ImageViewer.instantiateImageViewer(fullscreenImageViewer, drawer);
 
         // Side navigation menu
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_home);
@@ -86,8 +83,8 @@ public class MainActivity extends AppCompatActivity
         } else {
             if(activeFragment != null
                     && activeFragment instanceof fr.insa.clubinfo.amicale.fragments.Fragment
-                    && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed())
-                return;
+                    && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed()) {
+            }
             else
                 super.onBackPressed();
         }

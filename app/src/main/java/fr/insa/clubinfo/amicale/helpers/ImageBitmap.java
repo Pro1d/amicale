@@ -3,8 +3,6 @@ package fr.insa.clubinfo.amicale.helpers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import java.io.File;
-
 /**
  * Created by Proïd on 11/06/2016.
  */

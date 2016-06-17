@@ -1,7 +1,6 @@
 package fr.insa.clubinfo.amicale.adapters;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private static final int layoutViewArticle = R.layout.adapter_article;
 
     private News news;
-    OnImageClickedListener imageClickedListener;
+    private final OnImageClickedListener imageClickedListener;
 
     public NewsAdapter(News news, OnImageClickedListener imageClickedListener) {
         this.news = news;

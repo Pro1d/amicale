@@ -26,7 +26,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
 
     private LaundryRoom laundryRoom;
     private final Context context;
-    private OnWashINSAAlarmButtonClickedListener buttonListener;
+    private final OnWashINSAAlarmButtonClickedListener buttonListener;
 
     public WashINSAAdapter(LaundryRoom laundryRoom, Context context, OnWashINSAAlarmButtonClickedListener buttonListener) {
         this.laundryRoom = laundryRoom;
@@ -93,7 +93,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
             }
 
             holder.number.setText(String.format(Locale.getDefault(), "%d", machine.getNumber()));
-            if(true || machine.getState() == LaundryMachine.State.BUSY) {
+            if(machine.getState() == LaundryMachine.State.BUSY) {
                 holder.alarm.setEnabled(true);
                 holder.alarm.setOnClickListener(new View.OnClickListener() {
                     @Override

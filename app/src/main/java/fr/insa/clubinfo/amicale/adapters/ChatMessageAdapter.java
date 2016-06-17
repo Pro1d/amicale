@@ -1,7 +1,6 @@
 package fr.insa.clubinfo.amicale.adapters;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     private static final int layoutViewSelf = R.layout.adapter_message_chat_self;
 
     private Chat chat;
-    private OnImageClickedListener imageClickedListener;
+    private final OnImageClickedListener imageClickedListener;
 
     public ChatMessageAdapter(Chat chat, OnImageClickedListener imageClickedListener) {
         this.chat = chat;

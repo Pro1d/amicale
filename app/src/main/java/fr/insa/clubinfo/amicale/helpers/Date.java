@@ -9,6 +9,7 @@ import java.util.Locale;
  * Created by Proïd on 05/06/2016.
  */
 
+@SuppressWarnings("CloneDoesntCallSuperClone")
 public class Date {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("ccc d LLL yyyy", Locale.getDefault());
 
@@ -56,7 +57,7 @@ public class Date {
         return new Date(gc);
     }
 
-    public void substract(int minutes) {
+    public void subtract(int minutes) {
         date.add(GregorianCalendar.MINUTE, -minutes);
     }
 

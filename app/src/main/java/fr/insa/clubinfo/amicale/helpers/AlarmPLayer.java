@@ -15,7 +15,7 @@ import fr.insa.clubinfo.amicale.R;
  * Created by Proïd on 16/06/2016.
  */
 
-public class AlarmPlayer {
+class AlarmPlayer {
     private static MediaPlayer mp;
 
     public static void playSound(Context context){

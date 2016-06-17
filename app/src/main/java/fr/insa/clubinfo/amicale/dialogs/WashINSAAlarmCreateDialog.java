@@ -73,6 +73,6 @@ public class WashINSAAlarmCreateDialog {
     }
 
     private static void saveDefaultMinutePickerValue(Context context, int value) {
-        context.getSharedPreferences(prefs_name, Context.MODE_PRIVATE).edit().putInt(minutesBeforeKey, value).commit();
+        context.getSharedPreferences(prefs_name, Context.MODE_PRIVATE).edit().putInt(minutesBeforeKey, value).apply();
     }
 }

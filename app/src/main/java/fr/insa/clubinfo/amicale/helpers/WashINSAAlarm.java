@@ -115,7 +115,7 @@ public class WashINSAAlarm extends BroadcastReceiver {
 
     /*** Ringtone ***/
 
-    public static void playRingtone(final Context context) {
+    private static void playRingtone(final Context context) {
         AlarmPlayer.playSound(context);
 
         // Auto stop the alarm after 60 sec
