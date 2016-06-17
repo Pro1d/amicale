@@ -15,6 +15,10 @@ import fr.insa.clubinfo.amicale.R;
 public class StartPlanexDialog {
     private static AlertDialog dialog = null;
 
+    public static void initialize() {
+        dialog = null;
+    }
+
     public static void startPlanex(Context context) {
         Intent planexIntent = getPlanexIntent(context);
         if(planexIntent == null) {

@@ -29,12 +29,21 @@
         <item quantity="one">Available in %d minute</item>
         <item quantity="other">Available in %d minutes</item>
     </plurals>
-    <string name="washinsa_alarm_dialog_title">Notice me&#8230;</string>
-    <string name="washinsa_alarm_dialog_content">minutes before the end.</string>
-    <string name="washinsa_alarm_dialog_cancel">Cancel</string>
-    <string name="washinsa_alarm_dialog_create">Add alarm</string>
+    <string name="washinsa_alarm_create_dialog_title">Notice me&#8230;</string>
+    <string name="washinsa_alarm_create_dialog_content">minutes before the end.</string>
+    <string name="washinsa_alarm_create_dialog_cancel">Cancel</string>
+    <string name="washinsa_alarm_create_dialog_create">Add alarm</string>
     <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
     <string name="washinsa_alarm_notif_content" formatted="false">The machine n°%d ends at %02d:%02d</string>
+    <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
+    <string name="washinsa_alarm_stop_dialog_content" formatted="false">The machine n°%d is finished!</string>
+    <string name="washinsa_alarm_stop_dialog_neutral">Stop alarm</string>
+    <string name="washinsa_alarm_cancel_dialog_title">WashINSAlarm</string>
+    <string name="washinsa_alarm_cancel_dialog_content">Do you want to cancel the alarm?</string>
+    <string name="washinsa_alarm_cancel_dialog_negative">No</string>
+    <string name="washinsa_alarm_cancel_dialog_positive">Yes</string>
+
+    <string name="alarm_player_toast_media_player_error">Your alarm sound was unavailable.</string>
 
     <!-- Chat -->
     <string name="chat_input_hint">New message</string>

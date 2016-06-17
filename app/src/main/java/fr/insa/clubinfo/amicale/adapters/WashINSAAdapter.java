@@ -93,12 +93,18 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
             }
 
             holder.number.setText(String.format(Locale.getDefault(), "%d", machine.getNumber()));
-            holder.alarm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    buttonListener.onAlarmButtonClicked(machine);
-                }
-            });
+            if(true || machine.getState() == LaundryMachine.State.BUSY) {
+                holder.alarm.setEnabled(true);
+                holder.alarm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        buttonListener.onAlarmButtonClicked(machine);
+                    }
+                });
+            } else {
+                holder.alarm.setEnabled(false);
+                holder.alarm.setClickable(false);
+            }
         }
     }
 

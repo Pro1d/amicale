@@ -29,12 +29,21 @@
         <item quantity="one">Disponible dans %d minute</item>
         <item quantity="other">Disponible dans %d minutes</item>
     </plurals>
-    <string name="washinsa_alarm_dialog_title">Me prévenir&#8230;</string>
-    <string name="washinsa_alarm_dialog_content">minutes avant la fin.</string>
-    <string name="washinsa_alarm_dialog_cancel">Annuler</string>
-    <string name="washinsa_alarm_dialog_create">Ajouter l\'alarme</string>
-    <string name="washinsa_alarm_notif_title">WashINSAlarme</string>
+    <string name="washinsa_alarm_create_dialog_title">Me prévenir&#8230;</string>
+    <string name="washinsa_alarm_create_dialog_content">minutes avant la fin.</string>
+    <string name="washinsa_alarm_create_dialog_cancel">Annuler</string>
+    <string name="washinsa_alarm_create_dialog_create">Ajouter l\'alarme</string>
+    <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
     <string name="washinsa_alarm_notif_content" formatted="false">La machine n°%d se termine à %02d:%02d</string>
+    <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
+    <string name="washinsa_alarm_stop_dialog_content" formatted="false">La machine n°%d est terminée !</string>
+    <string name="washinsa_alarm_stop_dialog_neutral">Arrêter l\'alarme</string>
+    <string name="washinsa_alarm_cancel_dialog_title">WashINSAlarm</string>
+    <string name="washinsa_alarm_cancel_dialog_content">Voulez-vous désactiver l\'alarme ?</string>
+    <string name="washinsa_alarm_cancel_dialog_negative">Non</string>
+    <string name="washinsa_alarm_cancel_dialog_positive">Oui</string>
+
+    <string name="alarm_player_toast_media_player_error">Impossible de faire sonner l\'alarme.</string>
 
     <!-- Chat -->
     <string name="chat_input_hint">Nouveau message</string>

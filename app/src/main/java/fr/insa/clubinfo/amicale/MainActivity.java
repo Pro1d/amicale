@@ -2,21 +2,29 @@ package fr.insa.clubinfo.amicale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import fr.insa.clubinfo.amicale.dialogs.StartPlanexDialog;
+import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmCancelDialog;
+import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmCreateDialog;
+import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmStopDialog;
 import fr.insa.clubinfo.amicale.fragments.ChatFragment;
 import fr.insa.clubinfo.amicale.fragments.HomeFragment;
 import fr.insa.clubinfo.amicale.fragments.PreferencesFragment;
 import fr.insa.clubinfo.amicale.fragments.WashINSAFragment;
+import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
 
 public class MainActivity extends AppCompatActivity
@@ -25,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private int currentFragmentId = -1;
     private NavigationView navigationView;
     Fragment activeFragment;
+    public static Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,21 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_home);
         selectFragment(R.id.nav_home);
 
+        // Static access to dialog - Initialization
+        WashINSAAlarmCreateDialog.initialize();
+        WashINSAAlarmStopDialog.initialize();
+        WashINSAAlarmCancelDialog.initialize();
+        StartPlanexDialog.initialize();
+
+        // WashINSAlarm
+        WashINSAAlarm.onActivityCreated(getIntent(), this);
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                WashINSAAlarm.handleMessage(msg, MainActivity.this);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -122,5 +146,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             return false;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler = null;
+        WashINSAAlarm.stopRingtone();
     }
 }

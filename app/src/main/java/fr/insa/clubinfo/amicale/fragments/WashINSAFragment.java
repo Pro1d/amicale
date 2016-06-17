@@ -10,16 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.GregorianCalendar;
+
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.WashINSAAdapter;
-import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmDialog;
+import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmCreateDialog;
+import fr.insa.clubinfo.amicale.helpers.Date;
+import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
+import fr.insa.clubinfo.amicale.interfaces.OnCreateAlarmListener;
 import fr.insa.clubinfo.amicale.interfaces.OnLaundryRoomUpdatedListener;
 import fr.insa.clubinfo.amicale.interfaces.OnWashINSAAlarmButtonClickedListener;
 import fr.insa.clubinfo.amicale.models.LaundryMachine;
 import fr.insa.clubinfo.amicale.models.LaundryRoom;
 import fr.insa.clubinfo.amicale.sync.LaundryRoomLoader;
 
-public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedListener, SwipeRefreshLayout.OnRefreshListener, OnWashINSAAlarmButtonClickedListener {
+public class WashINSAFragment extends Fragment implements OnCreateAlarmListener, OnLaundryRoomUpdatedListener, SwipeRefreshLayout.OnRefreshListener, OnWashINSAAlarmButtonClickedListener {
     private WashINSAAdapter adapter;
     private LaundryRoom laundryRoom;
     private LaundryRoomLoader loader;
@@ -113,6 +118,21 @@ public class WashINSAFragment extends Fragment implements OnLaundryRoomUpdatedLi
 
     @Override
     public void onAlarmButtonClicked(LaundryMachine machine) {
-        WashINSAAlarmDialog.showSettingWashINSAAlarmDialog(getActivity());
+        WashINSAAlarmCreateDialog.showDialog(getActivity(), machine, this);
+
+    }
+
+    @Override
+    public void onCreateAlarm(LaundryMachine machine, int minutesInAdvance) {
+        Date d = new Date(new GregorianCalendar());//(Date) machine.getEnd().clone();
+        d.substract(-minutesInAdvance);
+        //long timeInMillis = machine.getEnd().getDate().getTimeInMillis(); // hh:mm (+1day if machine.start>machine.end)
+        //long advanceInMillis = minutesInAdvance * 60 * 1000;
+
+        // time -= minutesInAdvance
+        WashINSAAlarm.createDelayedAlarm(getActivity(), d, machine);
+
+        // TODO created for test only
+        //WashINSAAlarm.cancelDelayedAlarm(getActivity());
     }
 }

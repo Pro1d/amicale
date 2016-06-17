@@ -1,5 +1,7 @@
 package fr.insa.clubinfo.amicale.models;
 
+import fr.insa.clubinfo.amicale.helpers.Date;
+
 public class LaundryMachine {
 	public enum Type {WASHING, DRYER}
 
@@ -8,6 +10,8 @@ public class LaundryMachine {
     private Type type;
 	private State state = State.UNKNOWN;
 	private String description;
+    private Date start;
+    private Date end;
 	private int number;
 	private int minutesRemaining;
 
@@ -50,5 +54,26 @@ public class LaundryMachine {
 
     public void setMinutesRemaining(int minutesRemaining) {
         this.minutesRemaining = minutesRemaining;
+    }
+
+    public void setStart(int hour, int minute) {
+        start = Date.today(hour, minute);
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    /**
+     * setStart must be called before
+     * @param hour
+     * @param minute
+     */
+    public void setEnd(int hour, int minute) {
+        end = Date.todayAfter(hour, minute, start);
+    }
+
+    public Date getEnd() {
+        return end;
     }
 }

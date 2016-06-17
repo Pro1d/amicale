@@ -86,6 +86,14 @@ public class LaundryRoomLoader {
         // Remaining time
         m.setMinutesRemaining(json.get("remainingTime").getAsInt());
 
+        // Start/End
+        String[] start = json.get("start").getAsString().split(":");
+        if(start.length == 2)
+            m.setStart(Integer.valueOf(start[0]), Integer.valueOf(start[1]));
+        String[] end = json.get("end").getAsString().split(":");
+        if(end.length == 2)
+            m.setEnd(Integer.valueOf(end[0]), Integer.valueOf(end[1]));
+
         // State
         String stateDescription = json.get("available").getAsString();
         if(stateDescription.contains("Disponible"))

@@ -23,6 +23,8 @@
     <dimen name="adapter_washinsa_number_background_stroke_width">1dp</dimen>
     <dimen name="adapter_washinsa_description_text_size">16sp</dimen>
     <dimen name="adapter_washinsa_availability_text_size">12sp</dimen>
+    <dimen name="adapter_washinsa_item_separator_height">1px</dimen>
+    <dimen name="adapter_washinsa_group_separator_height">3dp</dimen>
 
     <!-- Adapter Chat Message -->
     <dimen name="adapter_chat_message_vertical_margin">5dp</dimen>

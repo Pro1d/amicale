@@ -3,6 +3,7 @@
     <!-- Global -->
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303f9f</color>
+    <color name="colorPrimaryLight">#d1daed</color>
     <color name="colorAccent">#ffa920</color>
 
     <!-- News -->
@@ -15,7 +16,9 @@
     <color name ="adapter_chat_message_other_background">#afffaf</color>
 
     <!-- WashINSA -->
-    <color name="adapter_washinsa_category_background">#cce1ff</color>
+    <color name="adapter_washinsa_category_background">@color/colorPrimaryLight</color>
+    <color name="adapter_washinsa_item_separator_color">@color/colorPrimaryLight</color>
+    <color name="adapter_washinsa_group_separator_color">@color/colorPrimary</color>
     <color name="adapter_washinsa_machine_state_icon_stroke">#5000</color>
     <color name="adapter_washinsa_machine_state_icon_busy">#F02010</color>
     <color name="adapter_washinsa_machine_state_icon_busy_light">#ffa391</color>
