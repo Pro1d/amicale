@@ -34,7 +34,7 @@
     <string name="washinsa_alarm_create_dialog_cancel">Annuler</string>
     <string name="washinsa_alarm_create_dialog_create">Ajouter l\'alarme</string>
     <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_notif_content" formatted="false">La machine n°%d se termine à %02d:%02d</string>
+    <string name="washinsa_alarm_notif_content" formatted="false">La machine n°%d se termine à %d:%02d</string>
     <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
     <string name="washinsa_alarm_stop_dialog_content" formatted="false">La machine n°%d est terminée !</string>
     <string name="washinsa_alarm_stop_dialog_neutral">Arrêter l\'alarme</string>
@@ -68,7 +68,7 @@
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex !</string>
-    <string name="planex_dialog_message">Jolie, simple et éfficace, Planex est la meilleur application pour accéder à votre emploi du temps en un clic. Elle inclue aussi un widget pour votre écran de vérouillage.</string>
+    <string name="planex_dialog_message">Jolie, simple et éfficace ! Planex est la meilleure application pour accéder à votre emploi du temps en un clic. Elle inclue aussi un widget pour votre écran de vérouillage.</string>
     <string name="planex_cancel_button">Retour</string>
     <string name="planex_install_button">Je la veux !</string>
 

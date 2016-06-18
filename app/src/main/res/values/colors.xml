@@ -5,11 +5,20 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorPrimaryLight">#d1daed</color>
     <color name="colorAccent">#ffa920</color>
+    <color name="colorAccentLight">#ffd99d</color>
+    <color name="colorDisable">#cfcfcf</color>
+    <color name="transparent">#fafafa</color>
+    <color name="transparentPressed">#dfdfdf</color>
+
+    <item name="primary_dark_text_opacity" format="float" type="dimen">0.87</item>
+    <item name="secondary_dark_text_opacity" format="float" type="dimen">0.54</item>
+    <item name="active_dark_icon_opacity" format="float" type="dimen">0.54</item>
+    <color name="dark_text_color">#000000</color>
 
     <!-- News -->
-    <color name="adapter_article_title_text_color">#d7080a</color>
-    <color name="adapter_article_date_text_color">#888888</color>
-    <color name="adapter_article_content_text_color">#101010</color>
+    <color name="adapter_article_title_text_color">@color/colorPrimaryDark</color>
+    <color name="adapter_article_date_text_color">@color/dark_text_color</color>
+    <color name="adapter_article_content_text_color">@color/dark_text_color</color>
 
     <!-- Chat -->
     <color name ="adapter_chat_message_self_background">#c1d2ff</color>
@@ -26,10 +35,10 @@
     <color name="adapter_washinsa_machine_state_icon_free_light">#9ddc72</color>
     <color name="adapter_washinsa_machine_state_icon_finished">#ff8c00</color>
     <color name="adapter_washinsa_machine_state_icon_finished_light">#ffcc8e</color>
-    <color name="adapter_washinsa_machine_state_icon_unknown">#66a1b3</color>
-    <color name="adapter_washinsa_machine_state_icon_unknown_light">#c9dbe1</color>
-    <color name="adapter_washinsa_machine_state_icon_disused">#c7c7c7</color>
-    <color name="adapter_washinsa_machine_state_icon_disused_light">#e6e6e6</color>
+    <color name="adapter_washinsa_machine_state_icon_disused">#66a1b3</color>
+    <color name="adapter_washinsa_machine_state_icon_disused_light">#c9dbe1</color>
+    <color name="adapter_washinsa_machine_state_icon_unknown">#c7c7c7</color>
+    <color name="adapter_washinsa_machine_state_icon_unknown_light">#e6e6e6</color>
 
     <color name="washinsa_refresh_color1">@color/adapter_washinsa_machine_state_icon_busy</color>
     <color name="washinsa_refresh_color2">@color/adapter_washinsa_machine_state_icon_free</color>

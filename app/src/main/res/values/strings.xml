@@ -34,7 +34,7 @@
     <string name="washinsa_alarm_create_dialog_cancel">Cancel</string>
     <string name="washinsa_alarm_create_dialog_create">Add alarm</string>
     <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_notif_content" formatted="false">The machine n°%d ends at %02d:%02d</string>
+    <string name="washinsa_alarm_notif_content" formatted="false">The machine n°%d ends at %d:%02d</string>
     <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
     <string name="washinsa_alarm_stop_dialog_content" formatted="false">The machine n°%d is finished!</string>
     <string name="washinsa_alarm_stop_dialog_neutral">Stop alarm</string>
@@ -68,7 +68,7 @@
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex!</string>
-    <string name="planex_dialog_message">Planex is the best app to get your timetable in one click. Beautiful, simple and efficient! It includes a widget for your lock screen.</string>
+    <string name="planex_dialog_message">Beautiful, simple and efficient! Planex is the best app to get your timetable in one click. It includes a widget for your lock screen.</string>
     <string name="planex_cancel_button">Back</string>
     <string name="planex_install_button">I want it now!</string>
     <string name="planex_package_name" translatable="false">com.pijodev.insatpe</string>

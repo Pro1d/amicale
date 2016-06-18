@@ -25,6 +25,7 @@
             android:id="@+id/adapter_washinsa_tv_category_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/adapter_washinsa_category_text_size"
             tools:text="Category" />
 
     </LinearLayout>

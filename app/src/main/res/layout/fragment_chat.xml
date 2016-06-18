@@ -28,12 +28,29 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
-            <ImageButton
-                android:id="@+id/chat_ib_photo"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_a_photo_black_24dp"
-                android:contentDescription="@string/chat_button_take_picture_description"/>
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/chat_ib_photo"
+                    android:layout_width="@dimen/chat_image_button_size"
+                    android:layout_height="@dimen/chat_image_button_height"
+                    android:src="@drawable/ic_add_a_photo_black_24dp"
+                    android:contentDescription="@string/chat_button_take_picture_description"
+                    android:background="@drawable/background_button" />
+
+                <ImageButton
+                    android:id="@+id/chat_ib_clear_picture"
+                    android:src="@drawable/ic_cancel_black_24dp"
+                    android:layout_width="@dimen/chat_image_button_size"
+                    android:layout_height="@dimen/chat_image_button_size"
+                    android:contentDescription="@string/chat_button_clear_picture_description"
+                    android:background="@drawable/background_button"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
 
             <EditText
                 android:id="@+id/chat_et_input"
@@ -51,10 +68,11 @@
 
             <ImageButton
                 android:id="@+id/chat_ib_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/chat_image_button_size"
+                android:layout_height="@dimen/chat_image_button_height"
                 android:src="@drawable/ic_send_black_24dp"
-                android:contentDescription="@string/chat_button_send_description"/>
+                android:contentDescription="@string/chat_button_send_description"
+                android:background="@drawable/background_button" />
 
         </LinearLayout>
 
@@ -81,13 +99,6 @@
                     android:contentDescription="@string/chat_image_preview_description"/>
 
             </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
-
-            <ImageButton
-                android:id="@+id/chat_ib_clear_picture"
-                android:src="@drawable/ic_clear_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/chat_button_clear_picture_description"/>
 
         </LinearLayout>
 

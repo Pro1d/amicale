@@ -1,12 +1,15 @@
 package fr.insa.clubinfo.amicale.adapters;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
 
 import java.util.Locale;
 
@@ -101,9 +104,17 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
                         buttonListener.onAlarmButtonClicked(machine);
                     }
                 });
+                holder.swipe.setSwipeListener(null);
             } else {
                 holder.alarm.setEnabled(false);
                 holder.alarm.setClickable(false);
+                holder.swipe.setSwipeListener(new SwipeRevealLayout.SwipeListener() {
+                    @Override public void onOpened(SwipeRevealLayout view) {
+                        view.close(true);
+                    }
+                    @Override public void onSlide(SwipeRevealLayout view, float slideOffset) { }
+                    @Override public void onClosed(SwipeRevealLayout view) { }
+                });
             }
         }
     }
@@ -135,6 +146,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
         final TextView availability;
         final TextView number;
         final ImageButton alarm;
+        final SwipeRevealLayout swipe;
 
         public ViewHolder(View view) {
             super(view);
@@ -143,6 +155,7 @@ public class WashINSAAdapter extends RecyclerView.Adapter<WashINSAAdapter.ViewHo
             availability = (TextView) view.findViewById(R.id.adapter_washinsa_tv_availability);
             number = (TextView) view.findViewById(R.id.adapter_washinsa_tv_number);
             alarm = (ImageButton) view.findViewById(R.id.adapter_washinsa_ib_alarm);
+            swipe = (SwipeRevealLayout) view.findViewById(R.id.adapter_washinsa_srl_swipe);
         }
     }
 }

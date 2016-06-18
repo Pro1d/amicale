@@ -25,6 +25,7 @@
     <dimen name="adapter_washinsa_availability_text_size">12sp</dimen>
     <dimen name="adapter_washinsa_item_separator_height">1px</dimen>
     <dimen name="adapter_washinsa_group_separator_height">3dp</dimen>
+    <dimen name="adapter_washinsa_category_text_size">18sp</dimen>
 
     <!-- Adapter Chat Message -->
     <dimen name="adapter_chat_message_vertical_margin">5dp</dimen>
@@ -34,6 +35,8 @@
 
     <!-- Chat input -->
     <dimen name="chat_image_preview_height">120dp</dimen>
+    <dimen name="chat_image_button_size">64dp</dimen>
+    <dimen name="chat_image_button_height">54dp</dimen>
 
     <!-- Adapter News -->
     <dimen name="adapter_news_corner_radius">2dp</dimen>

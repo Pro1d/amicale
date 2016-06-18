@@ -35,6 +35,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private EditText input;
     private ViewGroup picturePreviewGroup;
     private SwitchImageViewAsyncLayout switchImgAsync;
+    private ImageButton btnPhoto;
+    private ImageButton btnClearImg;
 
     private Camera camera;
     private Bitmap currentPicture;
@@ -70,8 +72,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
         // Input
         input = (EditText) view.findViewById(R.id.chat_et_input);
-        ImageButton btnPhoto = (ImageButton) view.findViewById(R.id.chat_ib_photo);
-        ImageButton btnClearImg = (ImageButton) view.findViewById(R.id.chat_ib_clear_picture);
+        btnPhoto = (ImageButton) view.findViewById(R.id.chat_ib_photo);
+        btnClearImg = (ImageButton) view.findViewById(R.id.chat_ib_clear_picture);
         ImageButton btnSend = (ImageButton) view.findViewById(R.id.chat_ib_send);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,12 +154,16 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         currentPicture = null;
         picturePreviewGroup.setVisibility(View.GONE);
         switchImgAsync.hideAll();
+        btnClearImg.setVisibility(View.GONE);
+        btnPhoto.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPictureTaken() {
         // Waiting for image loading, display progress view
         picturePreviewGroup.setVisibility(View.VISIBLE);
+        btnClearImg.setVisibility(View.VISIBLE);
+        btnPhoto.setVisibility(View.GONE);
         switchImgAsync.showProgressView();
     }
 
