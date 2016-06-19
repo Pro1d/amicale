@@ -1,50 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/adapter_chat_message_nearby_margin"
+    android:orientation="vertical"
     android:layout_marginStart="@dimen/adapter_chat_message_opposite_margin"
+    android:layout_marginEnd="@dimen/adapter_chat_message_nearby_margin"
     android:layout_marginTop="@dimen/adapter_chat_message_vertical_margin"
-    android:layout_marginBottom="@dimen/adapter_chat_message_vertical_margin">
+    android:layout_marginBottom="@dimen/adapter_chat_message_vertical_margin"
+    android:gravity="end">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/adapter_message_chat_cv_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         card_view:cardBackgroundColor="@color/adapter_chat_message_self_background"
         card_view:contentPaddingLeft="@dimen/adapter_horizontal_padding"
         card_view:contentPaddingRight="@dimen/adapter_horizontal_padding"
         card_view:contentPaddingTop="@dimen/adapter_vertical_padding"
         card_view:contentPaddingBottom="@dimen/adapter_vertical_padding">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/adapter_message_chat_tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            tools:text="Message" />
 
-            <TextView
-                android:id="@+id/adapter_message_chat_tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Message" />
-
-            <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
-                android:id="@+id/adapter_message_chat_sl_picture_async"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/adapter_message_chat_iv_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/adapter_chat_message_image_height"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="@string/adapter_chat_message_image_description"/>
-
-            </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
-
-        </LinearLayout>
     </android.support.v7.widget.CardView>
-</RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/adapter_message_chat_cv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/adapter_chat_message_vertical_space"
+        card_view:cardBackgroundColor="@color/adapter_chat_message_self_background"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardCornerRadius="@dimen/adapter_chat_message_image_corner_radius">
+
+        <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
+            android:id="@+id/adapter_message_chat_sl_picture_async"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.joooonho.SelectableRoundedImageView
+                app:sriv_left_bottom_corner_radius="@dimen/adapter_chat_message_image_corner_radius"
+                app:sriv_left_top_corner_radius="@dimen/adapter_chat_message_image_corner_radius"
+                app:sriv_right_bottom_corner_radius="@dimen/adapter_chat_message_image_corner_radius"
+                app:sriv_right_top_corner_radius="@dimen/adapter_chat_message_image_corner_radius"
+                android:id="@+id/adapter_message_chat_iv_image"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/adapter_chat_message_image_height"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/adapter_chat_message_image_description"/>
+
+        </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

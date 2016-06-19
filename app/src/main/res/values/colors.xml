@@ -13,6 +13,8 @@
     <item name="primary_dark_text_opacity" format="float" type="dimen">0.87</item>
     <item name="secondary_dark_text_opacity" format="float" type="dimen">0.54</item>
     <item name="active_dark_icon_opacity" format="float" type="dimen">0.54</item>
+    <item name="dark_icon_opacity" format="float" type="dimen">0.7</item>
+    <item name="disabled_dark_icon_opacity" format="float" type="dimen">0.38</item>
     <color name="dark_text_color">#000000</color>
 
     <!-- News -->

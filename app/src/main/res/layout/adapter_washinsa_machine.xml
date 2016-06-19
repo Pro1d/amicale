@@ -21,7 +21,8 @@
             android:background="@drawable/background_add_alarm_button"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
-            android:src="@drawable/ic_alarm_add_black_24dp"/>
+            android:src="@drawable/ic_alarm_add_black_24dp"
+            android:alpha="@dimen/dark_icon_opacity"/>
 
 
         <LinearLayout

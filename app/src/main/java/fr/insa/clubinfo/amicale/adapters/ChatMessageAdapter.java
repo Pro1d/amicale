@@ -1,6 +1,7 @@
 package fr.insa.clubinfo.amicale.adapters;
 
 import android.graphics.Bitmap;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,23 +55,24 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             else
                 // TODO load image ?
                 holder.switchImgAsync.showProgressView();
-            holder.switchImgAsync.setVisibility(View.VISIBLE);
             holder.switchImgAsync.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     if(imageClickedListener != null)
                         imageClickedListener.onImageClicked(position);
                 }
             });
+            holder.imageCard.setVisibility(View.VISIBLE);
         }
-        else
-            holder.switchImgAsync.setVisibility(View.GONE);
+        else {
+            holder.imageCard.setVisibility(View.GONE);
+        }
 
         String content = chat.getMessage(position).getContent();
         if(!content.isEmpty()) {
             holder.textContent.setText(content);
-            holder.textContent.setVisibility(View.VISIBLE);
+            holder.textCard.setVisibility(View.VISIBLE);
         } else {
-            holder.textContent.setVisibility(View.GONE);
+            holder.textCard.setVisibility(View.GONE);
         }
     }
 
@@ -90,11 +92,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView textContent;
         final SwitchImageViewAsyncLayout switchImgAsync;
+        final CardView imageCard;
+        final CardView textCard;
 
         public ViewHolder(View view) {
             super(view);
             textContent = (TextView) view.findViewById(R.id.adapter_message_chat_tv_content);
             switchImgAsync = (SwitchImageViewAsyncLayout) view.findViewById(R.id.adapter_message_chat_sl_picture_async);
+            imageCard = (CardView) view.findViewById(R.id.adapter_message_chat_cv_image);
+            textCard = (CardView) view.findViewById(R.id.adapter_message_chat_cv_text);
         }
     }
 }

@@ -107,7 +107,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             ChatMessage m = new ChatMessage();
             m.setSelf(true);
             m.setContent(text);
-            m.setImage(currentPicture);
+            if(currentPicture != null)
+                m.setImage(currentPicture);
             chat.addMessage(m);
             onNewChatMessageReceived(chat, m);
         }

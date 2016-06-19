@@ -31,4 +31,6 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     // SwipeRevealLayout
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.2.1'
+    // Selectable Rounded ImageView
+    compile 'com.joooonho:selectableroundedimageview:1.0.1'
 }
