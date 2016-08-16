@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <bitmap android:alpha="@dimen/disabled_dark_icon_opacity" android:src="@drawable/ic_cancel_black_24dp"/>
+    </item>
+    <item>
+        <bitmap android:alpha="@dimen/dark_icon_opacity" android:src="@drawable/ic_cancel_black_24dp"/>
+    </item>
+</selector>

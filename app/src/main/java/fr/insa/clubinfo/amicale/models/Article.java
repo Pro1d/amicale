@@ -11,6 +11,15 @@ public class Article {
 	private boolean hasImage;
 	private String content;
 	private GregorianCalendar date;
+	private String firebaseKey;
+
+	public Article(String firebaseKey) {
+		this.firebaseKey = firebaseKey;
+	}
+
+	public String getFirebaseKey() {
+		return firebaseKey;
+	}
 
 	public GregorianCalendar getDate() {
 		return date;

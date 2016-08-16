@@ -44,6 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Bitmap image = news.getArticle(position).getImage();
         if (image != null) {
+            // Image already loaded
             holder.image.showImageView(image);
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -53,8 +54,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             });
             holder.image.setVisibility(View.VISIBLE);
         }
-        else
+        else if(news.getArticle(position).hasImage()) {
+            // Image is being loaded
+            holder.image.showProgressView();
+            holder.image.setVisibility(View.VISIBLE);
+        }
+        else {
+            // No image
             holder.image.setVisibility(View.GONE);
+        }
 
         String content = news.getArticle(position).getContent();
         if(!content.isEmpty()) {

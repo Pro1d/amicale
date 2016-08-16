@@ -34,7 +34,8 @@
         <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
             android:id="@+id/adapter_article_sl_image"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/adapter_article_image_height">
+            android:layout_height="@dimen/adapter_article_image_height"
+            android:background="@color/adapter_article_image_background">
 
             <ImageView
                 android:src="@drawable/side_nav_bar"

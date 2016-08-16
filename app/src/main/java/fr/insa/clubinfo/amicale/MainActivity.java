@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import fr.insa.clubinfo.amicale.dialogs.StartPlanexDialog;
 import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmCancelDialog;
@@ -26,11 +33,12 @@ import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener, OnCompleteListener<AuthResult> {
 
     private int currentFragmentId = -1;
     private Fragment activeFragment;
     public static Handler handler;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,22 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+
+        // Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(this);
+        firebaseAuth.signInAnonymously().addOnCompleteListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        firebaseAuth.removeAuthStateListener(this);
     }
 
     @Override
@@ -150,5 +174,17 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
         handler = null;
         WashINSAAlarm.stopRingtone();
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        Toast.makeText(this, "Authentication state changed!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<AuthResult> task) {
+        if(!task.isSuccessful())
+            task.getException().printStackTrace();
+        Toast.makeText(this, "onComplete: "+task.toString()+" success:"+task.isSuccessful(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -22,12 +22,13 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
     private NewsAdapter adapter;
     private NewsLoader loader;
     private News news;
+    private boolean loading = true;
+    private static final int visibleThreshold = 5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loader = new NewsLoader(this);
-        loader.loadAsync();
     }
 
     @Override
@@ -46,7 +47,24 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         adapter = new NewsAdapter(news, this);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.news_rv_list);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                int visibleItemCount = recyclerView.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+
+                if(!loading) {
+                    if(totalItemCount - firstVisibleItem - visibleItemCount < visibleThreshold) {
+                        loading = true;
+                        loader.loadMore(visibleItemCount+visibleThreshold);
+                    }
+                }
+            }
+        });
 
         return view;
     }
@@ -54,25 +72,38 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
     @Override
     public void onNewsLoaded(News news) {
         this.news = news;
+        loading = false;
         adapter.update(news);
     }
-
+    /*
     @Override
     public void onNewsSyncFailed() {
+        loading = false;
         adapter.update(news);
         Toast.makeText(getActivity(), R.string.loading_error_message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNewArticleReceived(News news, Article article) {
+        loading = false;
         this.news = news;
         adapter.update(news);
         // TODO update last item only
-    }
+    }*/
 
     @Override
     public void onNewsSyncCanceled() {
+        loading = false;
+    }
 
+    @Override
+    public void onImageLoaded(Article article) {
+        if(news != null) {
+            int index = news.getIndex(article.getFirebaseKey());
+            if(index >= 0) {
+                adapter.notifyItemChanged(index);
+            }
+        }
     }
 
     @Override
@@ -90,4 +121,5 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         else
             return false;
     }
+
 }

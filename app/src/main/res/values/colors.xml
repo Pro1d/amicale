@@ -21,6 +21,7 @@
     <color name="adapter_article_title_text_color">@color/colorPrimaryDark</color>
     <color name="adapter_article_date_text_color">@color/dark_text_color</color>
     <color name="adapter_article_content_text_color">@color/dark_text_color</color>
+    <color name="adapter_article_image_background">#b7c8cf</color>
 
     <!-- Chat -->
     <color name ="adapter_chat_message_self_background">#c1d2ff</color>

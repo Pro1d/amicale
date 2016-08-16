@@ -9,7 +9,9 @@ import fr.insa.clubinfo.amicale.models.News;
 
 public interface OnNewsUpdatedListener {
     void onNewsLoaded(News news);
-    void onNewsSyncFailed();
-    void onNewArticleReceived(News news, Article article);
+    /*void onNewsSyncFailed();
+    void onNewArticleReceived(News news, Article article);*/
     void onNewsSyncCanceled();
+
+    void onImageLoaded(Article article);
 }
