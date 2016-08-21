@@ -8,5 +8,5 @@ import android.graphics.Bitmap;
 
 public interface ImageList {
     Bitmap getImage(int position);
-    int getCount();
+    int getImageCount();
 }

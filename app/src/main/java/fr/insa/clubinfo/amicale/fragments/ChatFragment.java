@@ -3,15 +3,25 @@ package fr.insa.clubinfo.amicale.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.ChatMessageAdapter;
@@ -26,11 +36,18 @@ import fr.insa.clubinfo.amicale.views.ImageViewer;
 import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 
 public class ChatFragment extends Fragment implements ChatMessageListener, OnPictureTakenListener, OnImageClickedListener {
+
+    private static final int hiddenCountThresholdForScroll = 3;
+    private static final int historyTime = 31 * 24 * 3600; // 31 days
+    private static final int historyMaxCount = 50;
+    private static final int visibleThreshold = 10, loadMoreCount = 30;
+
     private Chat chat;
     private ChatLoader loader;
     private ChatMessageAdapter adapter;
     private RecyclerView recyclerView;
-
+    private LinearLayoutManager layoutManager;
+    private boolean loading;
 
     private EditText input;
     private ViewGroup picturePreviewGroup;
@@ -44,9 +61,12 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // TODO check authentication
         loader = new ChatLoader(this);
         camera = new Camera(this);
-        loader.loadAsync();
+        loader.loadMore(loadMoreCount, (double)System.currentTimeMillis() / 1000);
+        loading = true;
+        chat = new Chat();
     }
 
     @Override
@@ -64,11 +84,30 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
         // Recycler view
         adapter = new ChatMessageAdapter(chat, this);
+        adapter.setShowLoadingView(true);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.chat_rv_list);
         recyclerView.setAdapter(adapter);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setStackFromEnd(true);
-        recyclerView.setLayoutManager(llm);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = recyclerView.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                Log.i("###", "onScrolled visibleItemCount:"+visibleItemCount+" totalItemCount:"+totalItemCount+" firstVisibleItem:"+firstVisibleItem);
+                if(!loading) {
+                    if(firstVisibleItem < visibleThreshold) {
+                        loading = true;
+                        loader.loadMore(loadMoreCount, chat.getOldestTimestamp()-0.001);
+                    }
+            }
+            }
+        });
 
         // Input
         input = (EditText) view.findViewById(R.id.chat_et_input);
@@ -102,15 +141,28 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private void sendInput() {
         String text = input.getText().toString();
         if(!text.isEmpty() || currentPicture != null) {
-            // TODO send(text)
-            // TODO remove the following lines
-            ChatMessage m = new ChatMessage();
-            m.setSelf(true);
-            m.setContent(text);
+            /*
+            TODO send image before
             if(currentPicture != null)
                 m.setImage(currentPicture);
-            chat.addMessage(m);
-            onNewChatMessageReceived(chat, m);
+            */
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            String key = mDatabase.child("messages").push().getKey();
+            ChatMessage msg = new ChatMessage(key);
+            msg.setDate(new GregorianCalendar());
+            msg.setTimestamp((double) System.currentTimeMillis()/1000);
+            msg.setContent(text);
+            msg.setOwn(true);
+            msg.setSenderId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            msg.setSenderName("DevAndroid"); // TODO setDisplayName / FirebaseAuth.getInstance().getCurrentUser().getDisplayName()
+
+            Map<String, Object> postValues = msg.toMap();
+
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/messages/" + key, postValues);
+
+            mDatabase.updateChildren(childUpdates);
         }
         clearInputs();
     }
@@ -119,32 +171,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         camera.startCameraIntent(this);
     }
 
-    @Override
-    public void onChatLoaded(Chat chat) {
-        this.chat = chat;
-        adapter.update(chat);
-    }
-
-    @Override
-    public void onChatSyncFailed() {
-        chat = new Chat();
-        adapter.update(chat);
-        Toast.makeText(getActivity(), R.string.loading_error_message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onChatSyncCanceled() {
-
-    }
-
-    @Override
-    public void onNewChatMessageReceived(Chat chat, ChatMessage msg) {
-        // chat.addMessage(msg);
-        this.chat = chat;
-        adapter.update(chat);
-        recyclerView.smoothScrollToPosition(adapter.getItemCount());
-        // TODO update last item only
-    }
 
     private void clearInputs() {
         input.setText("");
@@ -195,5 +221,42 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         }
         else
             return false;
+    }
+
+    @Override
+    public void onMoreChatMessagesLoaded(List<ChatMessage> m) {
+        // Hide the progress bar if we reach the end
+        if(m.size() < loadMoreCount && adapter.getShowLoadingView()) {
+            adapter.setShowLoadingView(false);
+            adapter.notifyItemRemoved(chat.getMessagesCount());
+        }
+
+        loading = false;
+        chat.addMessagesToBack(m);
+        adapter.notifyItemRangeInserted(0, m.size());
+        Log.i("###", "onMoreChatMessagesLoaded "+m.size());
+    }
+
+    @Override
+    public void onNewChatMessageReceived(ChatMessage msg) {
+        int visibleItemCount = recyclerView.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+        int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+        boolean needScroll = totalItemCount - firstVisibleItem - visibleItemCount <= hiddenCountThresholdForScroll;
+
+        chat.addMessage(msg);
+
+        adapter.notifyItemInserted(chat.getMessagesCount()-1);
+
+        // to scroll or not to scroll, that is the question
+        if(needScroll)
+            recyclerView.smoothScrollToPosition(adapter.getItemCount());
+    }
+
+    @Override
+    public void onImageLoaded(ChatMessage msg) {
+        int idx = chat.getIndex(msg.getFirebaseKey());
+        if(idx != -1)
+            adapter.notifyItemChanged(idx);
     }
 }

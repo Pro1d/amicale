@@ -1,5 +1,7 @@
 package fr.insa.clubinfo.amicale.interfaces;
 
+import java.util.List;
+
 import fr.insa.clubinfo.amicale.models.Article;
 import fr.insa.clubinfo.amicale.models.News;
 
@@ -8,10 +10,10 @@ import fr.insa.clubinfo.amicale.models.News;
  */
 
 public interface OnNewsUpdatedListener {
-    void onNewsLoaded(News news);
-    /*void onNewsSyncFailed();
-    void onNewArticleReceived(News news, Article article);*/
-    void onNewsSyncCanceled();
-
+    void onNewsLoaded(List<Article> list);
+    void onNewArticleReceived(Article article);
     void onImageLoaded(Article article);
+    void onNewsSyncCanceled();
+    /*void onNewsSyncFailed();*/
+
 }

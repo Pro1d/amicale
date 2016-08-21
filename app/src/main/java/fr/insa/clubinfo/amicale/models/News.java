@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
 
@@ -13,7 +14,6 @@ import fr.insa.clubinfo.amicale.interfaces.ImageList;
 
 public class News implements ImageList {
     private final ArrayList<Article> articles = new ArrayList<>();
-    private final HashMap<String, Article> hashMap = new HashMap<>();
 
     public int getArticlesCount() {
         return articles.size();
@@ -23,13 +23,11 @@ public class News implements ImageList {
         return articles.get(index);
     }
 
-    public Article getArticle(String key) {
-        return hashMap.get(key);
+    public void addNewArticle(Article article) {
+        articles.add(0, article);
     }
-
-    public void addArticle(Article article) {
-        articles.add(article);
-        hashMap.put(article.getFirebaseKey(), article);
+    public void addOldArticles(List<Article> list) {
+        articles.addAll(list);
     }
 
 
@@ -57,7 +55,7 @@ public class News implements ImageList {
     }
 
     @Override
-    public int getCount() {
+    public int getImageCount() {
         int count = 0;
         for(Article m : articles)
             if(m.getImage() != null)
@@ -70,5 +68,9 @@ public class News implements ImageList {
             if(getArticle(i).getFirebaseKey().equals(firebaseKey))
                 return i;
         return 0;
+    }
+
+    public long getLastTimestampInverse() {
+        return articles.get(articles.size()-1).getTimestampInverse();
     }
 }

@@ -25,7 +25,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
     public void update(ImageList images) {
-        int count = images.getCount();
+        int count = images.getImageCount();
 
         // Delete last views if too many
         while(views.size() > count)

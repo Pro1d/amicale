@@ -11,7 +11,8 @@ import java.util.Locale;
 
 @SuppressWarnings("CloneDoesntCallSuperClone")
 public class Date {
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("ccc d LLL yyyy", Locale.getDefault());
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("ccc d LLL yyyy", Locale.getDefault());
+    private static final SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     private final GregorianCalendar date;
 
@@ -40,7 +41,14 @@ public class Date {
     }
 
     public String toText() {
-        return sdf.format(date.getTime());
+        return dateFormat.format(date.getTime());
+    }
+
+    public static String prettyFormat(GregorianCalendar gc) {
+        return dateFormat.format(gc.getTime());
+    }
+    public static String prettyFormatClock(GregorianCalendar gc) {
+        return clockFormat.format(gc.getTime());
     }
 
     public GregorianCalendar getDate() {

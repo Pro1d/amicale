@@ -8,13 +8,22 @@ public class Article {
 
 	private String title;
 	private Bitmap image;
-	private boolean hasImage;
+	private String imageURL;
 	private String content;
 	private GregorianCalendar date;
-	private String firebaseKey;
+	private final String firebaseKey;
+	private long timestampInverse;
 
 	public Article(String firebaseKey) {
 		this.firebaseKey = firebaseKey;
+	}
+
+	public void setTimestampInverse(long timestampInverse) {
+		this.timestampInverse = timestampInverse;
+	}
+
+	public long getTimestampInverse() {
+		return timestampInverse;
 	}
 
 	public String getFirebaseKey() {
@@ -54,10 +63,14 @@ public class Article {
 	}
 
 	public boolean hasImage() {
-		return hasImage;
+		return imageURL != null;
 	}
 
-	public void setHasImage(boolean hasImage) {
-		this.hasImage = hasImage;
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 }

@@ -3,6 +3,7 @@ package fr.insa.clubinfo.amicale.models;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
 
@@ -10,6 +11,9 @@ import fr.insa.clubinfo.amicale.interfaces.ImageList;
 public class Chat implements ImageList {
 	private final ArrayList<ChatMessage> messages = new ArrayList<>();
 
+	public void addMessagesToBack(List<ChatMessage> list) {
+		messages.addAll(0, list);
+	}
 	public void addMessage(ChatMessage msg) {
 		messages.add(msg);
 	}
@@ -31,7 +35,7 @@ public class Chat implements ImageList {
 	}
 
 	@Override
-	public int getCount() {
+	public int getImageCount() {
 		int count = 0;
 		for(ChatMessage m : messages)
 			if(m.getImage() != null)
@@ -51,4 +55,18 @@ public class Chat implements ImageList {
 
         return position;
     }
+
+	public int getIndex(String key) {
+		for(int i = messages.size(); --i >= 0;)
+			if(getMessage(i).getFirebaseKey().equals(key))
+				return i;
+		return -1;
+	}
+
+	public double getOldestTimestamp() {
+		if(messages.size() == 0)
+			return 0;
+		else
+			return messages.get(0).getTimestamp();
+	}
 }

@@ -32,6 +32,8 @@ import fr.insa.clubinfo.amicale.fragments.WashINSAFragment;
 import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
 
+import static android.support.design.R.styleable.NavigationView;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener, OnCompleteListener<AuthResult> {
 
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        Toast.makeText(this, "Authentication state changed!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Authentication state changed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

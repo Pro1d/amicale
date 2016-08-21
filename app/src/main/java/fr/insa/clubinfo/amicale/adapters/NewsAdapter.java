@@ -20,8 +20,10 @@ import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private static final int layoutViewArticle = R.layout.adapter_article;
+    private static final int layoutViewLoading = R.layout.adapter_loading;
 
     private News news;
+    private boolean showLoadingView = false;
     private final OnImageClickedListener imageClickedListener;
 
     public NewsAdapter(News news, OnImageClickedListener imageClickedListener) {
@@ -29,8 +31,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         this.imageClickedListener = imageClickedListener;
     }
 
+    public void setShowLoadingView(boolean showLoadingView) {
+        this.showLoadingView = showLoadingView;
+    }
+
+    public boolean getShowLoadingView() {
+        return showLoadingView;
+    }
+
     @Override
     public int getItemViewType(int position) {
+        if(showLoadingView && position == news.getArticlesCount())
+            return layoutViewLoading;
+
         return layoutViewArticle;
     }
 
@@ -41,46 +54,50 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        Bitmap image = news.getArticle(position).getImage();
-        if (image != null) {
-            // Image already loaded
-            holder.image.showImageView(image);
-            holder.image.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    if(imageClickedListener != null)
-                        imageClickedListener.onImageClicked(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        if(getItemViewType(position) == layoutViewArticle) {
+            if (news.getArticle(position).hasImage()) {
+                Bitmap image = news.getArticle(position).getImage();
+                if (image != null) {
+                    // Image already loaded
+                    holder.image.showImageView(image);
+                    holder.image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (imageClickedListener != null)
+                                imageClickedListener.onImageClicked(holder.getAdapterPosition());
+                        }
+                    });
+                    holder.image.setVisibility(View.VISIBLE);
+                } else {
+                    // Image is being loaded
+                    holder.image.showProgressView();
+                    holder.image.setVisibility(View.VISIBLE);
                 }
-            });
-            holder.image.setVisibility(View.VISIBLE);
-        }
-        else if(news.getArticle(position).hasImage()) {
-            // Image is being loaded
-            holder.image.showProgressView();
-            holder.image.setVisibility(View.VISIBLE);
-        }
-        else {
-            // No image
-            holder.image.setVisibility(View.GONE);
-        }
+            } else {
+                // No image
+                holder.image.setVisibility(View.GONE);
+            }
 
-        String content = news.getArticle(position).getContent();
-        if(!content.isEmpty()) {
-            holder.content.setText(content);
-            holder.content.setVisibility(View.VISIBLE);
-        } else
-            holder.content.setVisibility(View.GONE);
+            String content = news.getArticle(position).getContent();
+            if (!content.isEmpty()) {
+                holder.content.setText(content);
+                holder.content.setVisibility(View.VISIBLE);
+            } else
+                holder.content.setVisibility(View.GONE);
 
-        holder.title.setText(news.getArticle(position).getTitle());
-        holder.date.setText(new Date(news.getArticle(position).getDate()).toText());
+            holder.title.setText(news.getArticle(position).getTitle());
+            holder.date.setText(new Date(news.getArticle(position).getDate()).toText());
+        }
     }
 
     @Override
     public int getItemCount() {
+        int loadingView = showLoadingView ? 1 : 0;
         if(news == null)
-            return 0;
+            return 0+loadingView;
         else
-            return news.getArticlesCount();
+            return news.getArticlesCount()+loadingView;
     }
 
     public void update(News news) {

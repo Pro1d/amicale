@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import java.util.List;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.NewsAdapter;
@@ -23,12 +25,14 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
     private NewsLoader loader;
     private News news;
     private boolean loading = true;
-    private static final int visibleThreshold = 5;
+    private static final int visibleThreshold = 5, loadMoreCount = 5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loader = new NewsLoader(this);
+        loader.loadMore(loadMoreCount, 0);
+        news = new News();
     }
 
     @Override
@@ -45,8 +49,11 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
 
         // Recycler view
         adapter = new NewsAdapter(news, this);
+        adapter.setShowLoadingView(true);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.news_rv_list);
         recyclerView.setAdapter(adapter);
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -60,7 +67,7 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
                 if(!loading) {
                     if(totalItemCount - firstVisibleItem - visibleItemCount < visibleThreshold) {
                         loading = true;
-                        loader.loadMore(visibleItemCount+visibleThreshold);
+                        loader.loadMore(loadMoreCount, news.getLastTimestampInverse());//visibleItemCount);
                     }
                 }
             }
@@ -69,12 +76,6 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         return view;
     }
 
-    @Override
-    public void onNewsLoaded(News news) {
-        this.news = news;
-        loading = false;
-        adapter.update(news);
-    }
     /*
     @Override
     public void onNewsSyncFailed() {
@@ -89,11 +90,35 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         this.news = news;
         adapter.update(news);
         // TODO update last item only
-    }*/
-
+    }
+    */
     @Override
     public void onNewsSyncCanceled() {
         loading = false;
+    }
+
+    @Override
+    public void onNewsLoaded(List<Article> list) {
+        // Hide the progress bar if we reach the end
+        if(list.size() < loadMoreCount && adapter.getShowLoadingView()) {
+            adapter.setShowLoadingView(false);
+            adapter.notifyItemRemoved(news.getArticlesCount());
+        }
+
+        loading = false;
+        int lastCount = news.getArticlesCount();
+        // add articles the the news list
+        news.addOldArticles(list);
+        // insert them in the recycler view
+        adapter.notifyItemRangeInserted(lastCount, list.size());
+        Log.i("###", ""+list.size()+" articles loaded");
+    }
+
+    @Override
+    public void onNewArticleReceived(Article article) {
+        news.addNewArticle(article);
+        adapter.notifyItemInserted(0);
+        Log.i("###", "One new article loaded");
     }
 
     @Override
@@ -104,6 +129,7 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
                 adapter.notifyItemChanged(index);
             }
         }
+        Log.i("###", "Image loaded");
     }
 
     @Override
