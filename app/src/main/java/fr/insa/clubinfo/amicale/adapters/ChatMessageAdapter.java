@@ -39,10 +39,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        if(showLoadingView && position == chat.getMessagesCount()) {
+        if(showLoadingView && position == 0) {
             return layoutLoading;
         }
-        if(chat.getMessage(position).isOwn())
+        if(chat.getMessage(getIndex(position)).isOwn())
             return layoutViewSelf;
         else
             return layoutViewOther;
@@ -56,8 +56,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final int index = getIndex(position);
         if(getItemViewType(position) != layoutLoading) {
-            ChatMessage msg = chat.getMessage(position);
+            ChatMessage msg = chat.getMessage(index);
             Bitmap image = msg.getImage();
             // Image
             if (msg.hasImage()) {
@@ -69,7 +70,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     @Override
                     public void onClick(View v) {
                         if (imageClickedListener != null)
-                            imageClickedListener.onImageClicked(holder.getAdapterPosition());
+                            imageClickedListener.onImageClicked(getIndex(holder.getAdapterPosition()));
                     }
                 });
                 holder.imageCard.setVisibility(View.VISIBLE);
@@ -78,7 +79,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             }
 
             // Text
-            String content = chat.getMessage(position).getContent();
+            String content = chat.getMessage(index).getContent();
             if (!content.isEmpty()) {
                 holder.textContent.setText(content);
                 holder.textCard.setVisibility(View.VISIBLE);
@@ -87,15 +88,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             }
 
             // Date
-            boolean showDate = shouldDisplayDate(position);
-            boolean showClock = shouldDisplayClock(position, showDate);
+            boolean showDate = shouldDisplayDate(index);
+            boolean showClock = shouldDisplayClock(index, showDate);
             String time = "";
             if (showDate)
-                time += Date.prettyFormat(chat.getMessage(position).getDate());
+                time += Date.prettyFormat(chat.getMessage(index).getDate());
             if (showClock && showDate)
                 time += "\n";
             if (showClock)
-                time += Date.prettyFormatClock(chat.getMessage(position).getDate());
+                time += Date.prettyFormatClock(chat.getMessage(index).getDate());
             if (showClock || showDate) {
                 holder.date.setVisibility(View.VISIBLE);
                 holder.date.setText(time);
@@ -103,9 +104,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.date.setVisibility(View.GONE);
 
             // Sender name
-            boolean showName = shouldDisplayUserName(position, showDate, showClock);
+            boolean showName = shouldDisplayUserName(index, showDate, showClock);
             if (showName) {
-                holder.name.setText(chat.getMessage(position).getSenderName());
+                holder.name.setText(chat.getMessage(index).getSenderName());
                 holder.name.setVisibility(View.VISIBLE);
             } else
                 holder.name.setVisibility(View.GONE);
@@ -121,32 +122,32 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             return chat.getMessagesCount() + loadingView;
     }
 
-    private double previousTimestamp(int fromPosition) {
-        if(fromPosition == 0)
+    private double previousTimestamp(int fromIndex) {
+        if(fromIndex == 0)
             return 0.0;
         else
-            return chat.getMessage(fromPosition-1).getTimestamp();
+            return chat.getMessage(fromIndex-1).getTimestamp();
     }
 
-    private boolean shouldDisplayDate(int position) {
-        long daySince1970_previous = (long) previousTimestamp(position) / (3600*24);
-        long daySince1970 = (long) chat.getMessage(position).getTimestamp() / (3600*24);
+    private boolean shouldDisplayDate(int index) {
+        long daySince1970_previous = (long) previousTimestamp(index) / (3600*24);
+        long daySince1970 = (long) chat.getMessage(index).getTimestamp() / (3600*24);
 
         return daySince1970_previous != daySince1970;
     }
 
-    private boolean shouldDisplayClock(int position, boolean shouldDisplayDate) {
-        double delay = chat.getMessage(position).getTimestamp() - previousTimestamp(position);
+    private boolean shouldDisplayClock(int index, boolean shouldDisplayDate) {
+        double delay = chat.getMessage(index).getTimestamp() - previousTimestamp(index);
 
         return shouldDisplayDate || delay >= displayClockDelayThreshold;
     }
 
-    private boolean shouldDisplayUserName(int fromPosition, boolean shouldDisplayDate, boolean shouldDisplayClock) {
-        if(fromPosition == 0)
+    private boolean shouldDisplayUserName(int fromIndex, boolean shouldDisplayDate, boolean shouldDisplayClock) {
+        if(fromIndex == 0)
             return true;
         else
-            return !(chat.getMessage(fromPosition-1).getSenderName()+"_"+chat.getMessage(fromPosition-1).getSenderId())
-                    .equals(chat.getMessage(fromPosition).getSenderName()+"_"+chat.getMessage(fromPosition).getSenderId())
+            return !(chat.getMessage(fromIndex-1).getSenderName()+"_"+chat.getMessage(fromIndex-1).getSenderId())
+                    .equals(chat.getMessage(fromIndex).getSenderName()+"_"+chat.getMessage(fromIndex).getSenderId())
                     || shouldDisplayDate
                     || shouldDisplayClock;
     }

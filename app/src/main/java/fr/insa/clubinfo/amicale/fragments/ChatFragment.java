@@ -225,16 +225,25 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     @Override
     public void onMoreChatMessagesLoaded(List<ChatMessage> m) {
+        int visibleItemCount = recyclerView.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+        int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+        boolean needScroll = (totalItemCount == visibleItemCount);
+
         // Hide the progress bar if we reach the end
         if(m.size() < loadMoreCount && adapter.getShowLoadingView()) {
             adapter.setShowLoadingView(false);
-            adapter.notifyItemRemoved(chat.getMessagesCount());
+            adapter.notifyItemRemoved(0);
         }
 
         loading = false;
         chat.addMessagesToBack(m);
-        adapter.notifyItemRangeInserted(0, m.size());
+        adapter.notifyItemRangeInserted(adapter.getPosition(0), m.size());
         Log.i("###", "onMoreChatMessagesLoaded "+m.size());
+
+        // to scroll or not to scroll, that is the question
+        if(needScroll)
+            recyclerView.smoothScrollToPosition(adapter.getItemCount());
     }
 
     @Override
@@ -242,11 +251,11 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         int visibleItemCount = recyclerView.getChildCount();
         int totalItemCount = layoutManager.getItemCount();
         int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-        boolean needScroll = totalItemCount - firstVisibleItem - visibleItemCount <= hiddenCountThresholdForScroll;
+        boolean needScroll = (totalItemCount - firstVisibleItem - visibleItemCount <= hiddenCountThresholdForScroll);
 
         chat.addMessage(msg);
 
-        adapter.notifyItemInserted(chat.getMessagesCount()-1);
+        adapter.notifyItemInserted(adapter.getPosition(chat.getMessagesCount()-1));
 
         // to scroll or not to scroll, that is the question
         if(needScroll)
@@ -257,6 +266,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     public void onImageLoaded(ChatMessage msg) {
         int idx = chat.getIndex(msg.getFirebaseKey());
         if(idx != -1)
-            adapter.notifyItemChanged(idx);
+            adapter.notifyItemChanged(adapter.getPosition(idx));
     }
 }
