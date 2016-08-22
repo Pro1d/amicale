@@ -1,9 +1,12 @@
 package fr.insa.clubinfo.amicale.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,11 +40,11 @@ import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 public class ChatFragment extends Fragment implements ChatMessageListener, OnPictureTakenListener, OnImageClickedListener {
 
     private static final int hiddenCountThresholdForScroll = 3;
-    private static final int historyTime = 31 * 24 * 3600; // 31 days
-    private static final int historyMaxCount = 50;
     private static final int visibleThreshold = 10, loadMoreCount = 30;
 
+    private String displayUserName;
     private Chat chat;
+
     private ChatLoader loader;
     private ChatMessageAdapter adapter;
     private RecyclerView recyclerView;
@@ -62,11 +64,14 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO check authentication
-        loader = new ChatLoader(this);
+        loader = new ChatLoader(this, Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
         camera = new Camera(this);
         loader.loadMore(loadMoreCount, (double)System.currentTimeMillis() / 1000);
         loading = true;
         chat = new Chat();
+        displayUserName = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getString(getResources().getString(R.string.prefs_chat_nickname_key),
+                        getResources().getString(R.string.prefs_chat_nickname_default_value));
     }
 
     @Override
@@ -154,8 +159,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             msg.setTimestamp((double) System.currentTimeMillis()/1000);
             msg.setContent(text);
             msg.setOwn(true);
-            msg.setSenderId(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            msg.setSenderName("DevAndroid"); // TODO setDisplayName / FirebaseAuth.getInstance().getCurrentUser().getDisplayName()
+            msg.setSenderId(Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
+            msg.setSenderName(displayUserName);
 
             Map<String, Object> postValues = msg.toMap();
 
@@ -208,8 +213,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     @Override
-    public void onImageClicked(int position) {
-        ImageViewer.getImageViewer().show(chat, chat.getImagePosition(position));
+    public void onImageClicked(int index) {
+        ImageViewer.getImageViewer().show(chat, chat.getImagePosition(index));
     }
 
     @Override

@@ -63,8 +63,14 @@
     <string name="prefs_category_chat_title">Chat</string>
     <string name="prefs_chat_nickname_key">chat_nickname</string>
     <string name="prefs_chat_nickname_title">Nickname</string>
-    <string name="prefs_chat_nickname_summary">Your name used in the chat</string>
+    <string name="prefs_chat_nickname_summary">Your name used in the chat.</string>
     <string name="prefs_chat_nickname_dialog_title">Nickname for the chat</string>
+    <string name="prefs_chat_nickname_default_value">Anonymous</string>
+
+    <string name="prefs_category_other_title">Other</string>
+    <string name="prefs_notification_key">enable_notifications</string>
+    <string name="prefs_notification_title">Enable notifications</string>
+    <string name="prefs_notification_default_value">true</string>
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex!</string>

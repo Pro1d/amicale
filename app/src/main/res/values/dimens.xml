@@ -45,6 +45,6 @@
     <dimen name="adapter_article_image_height">120dp</dimen>
     <dimen name="adapter_article_title_text_size">20sp</dimen>
     <dimen name="adapter_article_padding_image">5dp</dimen>
-    <dimen name="adapter_article_padding_progress_bar">10dp</dimen>
+    <dimen name="adapter_article_padding_progress_bar">30dp</dimen>
 
 </resources>

@@ -65,6 +65,10 @@
     <string name="prefs_chat_nickname_title">Pseudo</string>
     <string name="prefs_chat_nickname_summary">Votre nom affiché dans le chat</string>
     <string name="prefs_chat_nickname_dialog_title">Pseudo pour le chat</string>
+    <string name="prefs_chat_nickname_default_value">Anonyme</string>
+
+    <string name="prefs_category_other_title">Autre</string>
+    <string name="prefs_notification_title">Activer les notifications</string>
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex !</string>

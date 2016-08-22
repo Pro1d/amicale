@@ -3,6 +3,7 @@ package fr.insa.clubinfo.amicale.sync;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -15,10 +16,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;
 import fr.insa.clubinfo.amicale.models.Article;
@@ -33,9 +36,12 @@ public class ChatLoader implements ChildEventListener, ValueEventListener {
     private final ChatMessageListener listener;
     private final Query childQuery;
     private Query loadMoreQuery;
+    private HashSet<String> activeImageDownload = new HashSet<>();
+    private String uid;
 
-    public ChatLoader(ChatMessageListener listener) {
+    public ChatLoader(ChatMessageListener listener, String uid) {
         this.listener = listener;
+        this.uid = uid;
         double currentTimestamp = (double) System.currentTimeMillis() / 1000;
         childQuery = FirebaseDatabase.getInstance().getReference().child("messages")
                 .startAt(currentTimestamp, "dateTimestamp")
@@ -51,37 +57,36 @@ public class ChatLoader implements ChildEventListener, ValueEventListener {
         loadMoreQuery.addListenerForSingleValueEvent(this);
     }
 
-    public void loadLast(int maxCount, double historyTimeInSeconds) {
-        double startTimestamp = (double) System.currentTimeMillis() / 1000 - historyTimeInSeconds;
-        loadMoreQuery = FirebaseDatabase.getInstance().getReference().child("messages")
-                .limitToLast(maxCount)
-                .startAt(startTimestamp, "dateTimestamp")
-                .orderByChild("dateTimestamp");
-        loadMoreQuery.addValueEventListener(this);
-    }
-
     public void cancel() {
         childQuery.removeEventListener((ChildEventListener)this);
         if(loadMoreQuery != null) {
             loadMoreQuery.removeEventListener((ValueEventListener)this);
             loadMoreQuery = null;
         }
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        for(String dataURL : activeImageDownload) {
+            for(FileDownloadTask task : storage.getReferenceFromUrl(dataURL).getActiveDownloadTasks()) {
+                task.cancel();
+            }
+        }
     }
 
     private ChatMessage createChatMessage(DataSnapshot data) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ChatMessage m = new ChatMessage(data.getKey());
         if(data.hasChild("senderDisplayName"))
             m.setSenderName((String)data.child("senderDisplayName").getValue());
         if(data.hasChild("text"))
             m.setContent((String)data.child("text").getValue());
-        if(data.hasChild("senderId") && ((String)data.child("senderId").getValue()).equals(uid))
+        if(data.hasChild("senderId") && data.child("senderId").getValue().equals(uid))
             m.setOwn(true);
         else
             m.setOwn(false);
-        if(data.hasChild("isMedia") && (boolean) data.child("isMedia").getValue() && data.hasChild("imageURL")) {
-            m.setImageURL((String) data.child("imageURL").getValue());
-            loadImage(m.getImageURL(), m);
+        if(data.hasChild("imageURL")) {
+            String url = (String) data.child("imageURL").getValue();
+            if(!url.isEmpty()) {
+                m.setImageURL(url);
+                loadImage(url, m);
+            }
         }
         if(data.hasChild("dateTimestamp")) {
             m.setTimestamp((double)data.child("dateTimestamp").getValue());
@@ -106,18 +111,20 @@ public class ChatLoader implements ChildEventListener, ValueEventListener {
     }
 
 
-    private void loadImage(String dataURL, final ChatMessage message) {
-        /// TODO cancel
+    private void loadImage(final String dataURL, final ChatMessage message) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        activeImageDownload.add(dataURL);
         storage.getReferenceFromUrl(dataURL).getBytes(1024*1024*8).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
+                activeImageDownload.remove(dataURL);
                 message.setImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
                 listener.onImageLoaded(message);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                activeImageDownload.remove(dataURL);
                 message.setImage(null);
                 message.setImageURL(null);
                 listener.onImageLoaded(message);

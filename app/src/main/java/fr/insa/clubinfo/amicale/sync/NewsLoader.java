@@ -1,7 +1,6 @@
 package fr.insa.clubinfo.amicale.sync;
 
 import android.graphics.BitmapFactory;
-import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,14 +11,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 import fr.insa.clubinfo.amicale.interfaces.OnNewsUpdatedListener;
 import fr.insa.clubinfo.amicale.models.Article;
-import fr.insa.clubinfo.amicale.models.News;
 
 /**
  * Created by Proïd on 05/06/2016.
@@ -29,6 +29,7 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
     private final OnNewsUpdatedListener listener;
     private Query query = null;
     private Query observer = null;
+    private HashSet<String> activeImageDownload = new HashSet<>();
 
     public NewsLoader(OnNewsUpdatedListener listener) {
         this.listener = listener;
@@ -49,6 +50,12 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
         if(query != null) {
             query.removeEventListener((ValueEventListener) this);
             query = null;
+        }
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        for(String dataURL : activeImageDownload) {
+            for(FileDownloadTask task : storage.getReferenceFromUrl(dataURL).getActiveDownloadTasks()) {
+                task.cancel();
+            }
         }
     }
 
@@ -92,18 +99,20 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
         return article;
     }
 
-    private void loadImage(String dataURL, final Article article) {
-        /// TODO cancel
+    private void loadImage(final String dataURL, final Article article) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        activeImageDownload.add(dataURL);
         storage.getReferenceFromUrl(dataURL).getBytes(1024*1024*8).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
+                activeImageDownload.remove(dataURL);
                 article.setImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
                 listener.onImageLoaded(article);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                activeImageDownload.remove(dataURL);
                 article.setImage(null);
                 article.setImageURL(null);
                 listener.onImageLoaded(article);

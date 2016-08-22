@@ -33,12 +33,12 @@ public class News implements ImageList {
 
     public int getImagePosition(int index) {
         // No image at given index
-        if(getImage(index) == null)
+        if(getArticle(index).getImage() == null)
             return -1;
 
         int position = 0;
         for(int i = 0; i < index; i++)
-            if(getArticle(index).getImage() != null)
+            if(getArticle(i).getImage() != null)
                 position++;
 
         return position;

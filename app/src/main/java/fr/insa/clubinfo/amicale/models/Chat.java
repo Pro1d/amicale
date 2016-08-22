@@ -45,12 +45,12 @@ public class Chat implements ImageList {
 
     public int getImagePosition(int index) {
         // No image at given index
-        if(getImage(index) == null)
+        if(getMessage(index).getImage() == null)
             return -1;
 
         int position = 0;
         for(int i = 0; i < index; i++)
-            if(getMessage(index).getImage() != null)
+            if(getMessage(i).getImage() != null)
                 position++;
 
         return position;

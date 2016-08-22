@@ -102,10 +102,14 @@ public class ChatMessage {
         map.put("date", sdf.format(getDate().getTime()));
         map.put("dateTimestamp", timestamp);
         map.put("imageURL", "");
-        map.put("hasImage", false);
+        map.put("isMedia", false);
         map.put("senderDisplayName", senderName);
         map.put("senderId", senderId);
         map.put("text", content);
+		// Generate unique hash value for the stupid iOS app
+		map.put("hashValue", Integer.toHexString(senderId.hashCode())
+				+Integer.toHexString(content.hashCode())
+				+Long.toHexString((long)(timestamp*1000)));
 
         return map;
     }
