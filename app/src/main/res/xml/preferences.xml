@@ -11,7 +11,8 @@
             android:title="@string/prefs_chat_nickname_title"
             android:summary="@string/prefs_chat_nickname_summary"
             android:dialogTitle="@string/prefs_chat_nickname_dialog_title"
-            android:defaultValue="@string/prefs_chat_nickname_default_value"/>
+            android:defaultValue="@string/prefs_chat_nickname_default_value"
+            android:inputType="textPersonName"/>
 
     </PreferenceCategory>
 

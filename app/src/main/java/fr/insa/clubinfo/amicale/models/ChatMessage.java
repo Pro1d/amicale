@@ -101,11 +101,16 @@ public class ChatMessage {
 
         map.put("date", sdf.format(getDate().getTime()));
         map.put("dateTimestamp", timestamp);
-        map.put("imageURL", "");
         map.put("isMedia", false);
         map.put("senderDisplayName", senderName);
         map.put("senderId", senderId);
-        map.put("text", content);
+        if(imageURL == null) {
+            map.put("imageURL", "");
+            map.put("text", content);
+        } else {
+            map.put("imageURL", imageURL);
+            map.put("text", "");
+        }
 		// Generate unique hash value for the stupid iOS app
 		map.put("hashValue", Integer.toHexString(senderId.hashCode())
 				+Integer.toHexString(content.hashCode())

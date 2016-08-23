@@ -52,6 +52,8 @@
     <string name="chat_button_clear_picture_description">Remove the picture</string>
     <string name="chat_button_take_picture_description">Attach a picture</string>
     <string name="adapter_chat_message_image_description">Picture attached</string>
+    <string name="chat_dialog_sending_image_content">Uploading the image&#8230;</string>
+    <string name="chat_dialog_on_send_image_failed">Something went wrong! :(</string>
 
     <!-- News -->
     <string name="adapter_article_image_description">Picture attached</string>

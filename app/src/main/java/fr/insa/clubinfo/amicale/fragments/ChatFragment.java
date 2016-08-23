@@ -1,12 +1,16 @@
 package fr.insa.clubinfo.amicale.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -53,12 +64,14 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     private EditText input;
     private ViewGroup picturePreviewGroup;
+    private ViewGroup textInputGroup;
     private SwitchImageViewAsyncLayout switchImgAsync;
     private ImageButton btnPhoto;
     private ImageButton btnClearImg;
 
     private Camera camera;
     private Bitmap currentPicture;
+    private ProgressDialog sendingDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,8 +83,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         loading = true;
         chat = new Chat();
         displayUserName = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getString(getResources().getString(R.string.prefs_chat_nickname_key),
-                        getResources().getString(R.string.prefs_chat_nickname_default_value));
+                .getString(getResources().getString(R.string.prefs_chat_nickname_key), getResources().getString(R.string.prefs_chat_nickname_default_value));
     }
 
     @Override
@@ -137,27 +149,125 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
                 cancelAndClearImageInput();
             }
         });
-        picturePreviewGroup = (ViewGroup) view.findViewById(R.id.chat_ll_input_picture);
+        picturePreviewGroup = (ViewGroup) view.findViewById(R.id.chat_ll_mode_image_preview);
+        textInputGroup = (ViewGroup) view.findViewById(R.id.chat_ll_mode_text_input);
         switchImgAsync = (SwitchImageViewAsyncLayout) view.findViewById(R.id.chat_sl_picture_async);
 
         return view;
     }
 
     private void sendInput() {
-        String text = input.getText().toString();
-        if(!text.isEmpty() || currentPicture != null) {
-            /*
-            TODO send image before
-            if(currentPicture != null)
-                m.setImage(currentPicture);
-            */
+        if(currentPicture != null) {
+            sendImage(currentPicture);
+        }
+        else {
+            String text = input.getText().toString();
+            // Remove first and last white chars.
+            text = text.replaceAll("^\\s+|\\s+$", "");
+            // Replace multiple end line by one '\n', and remove white chars at beginning or end of a line
+            text = text.replaceAll("\\s*\n\\s*", "\n");
+            // Replace white chars in a row by one ' '
+            text = text.replaceAll("[ \t]+", " ");
+            if(!text.isEmpty()) {
+                sendText(text);
+            }
 
+            clearInputs();
+        }
+    }
+
+    private void sendText(String text) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String key = mDatabase.child("messages").push().getKey();
+        ChatMessage msg = new ChatMessage(key);
+        msg.setDate(new GregorianCalendar());
+        msg.setTimestamp((double) System.currentTimeMillis()/1000);
+        msg.setContent(text);
+        msg.setOwn(true);
+        msg.setSenderId(Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
+        msg.setSenderName(displayUserName);
+
+        Map<String, Object> postValues = msg.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/messages/" + key, postValues);
+
+        mDatabase.updateChildren(childUpdates);
+    }
+
+    /**
+     * Send an image message in 3 steps.
+     * Step 1 of 3.
+     */
+    private void sendImage(Bitmap bitmap) {
+        // First step, compress the bitmap to jpeg
+        new AsyncTask<Bitmap, Void, byte[]>() {
+            @Override
+            protected byte[] doInBackground(Bitmap... bitmaps) {
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmaps[0].compress(Bitmap.CompressFormat.JPEG, 70, baos);
+                    return baos.toByteArray();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+            @Override
+            protected void onPostExecute(byte[] bytes) {
+                onImageCompressed(bytes);
+            }
+        }.execute(bitmap);
+
+        String content = getResources().getString(R.string.chat_dialog_sending_image_content);
+        if(sendingDialog == null)
+            sendingDialog = ProgressDialog.show(getActivity(), null, content, true, false);
+        else
+            sendingDialog.show();
+    }
+
+
+    /**
+     * Send an image message in 3 steps.
+     * Step 2 of 3.
+     */
+    private void onImageCompressed(byte[] data) {
+        if(data == null) {
+            onImageUploaded(null);
+        }
+        else {
+            // Second step, upload the image
+            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://project-4508461957841032139.appspot.com");
+            StorageReference imgRef = storageRef.child("chat/" + displayUserName.replace("[^a-zA-Z0-9_ .+\\-]","_") + "-" + Long.toHexString(System.currentTimeMillis()) + ".jpg");
+            UploadTask uploadTask = imgRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    onImageUploaded(null);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    onImageUploaded(downloadUrl.toString());
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Send an image message in 3 steps.
+     * Step 3 of 3.
+     */
+    private void onImageUploaded(String imageURL) {
+        if(imageURL != null) {
+            // Third step, create an message object
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             String key = mDatabase.child("messages").push().getKey();
             ChatMessage msg = new ChatMessage(key);
             msg.setDate(new GregorianCalendar());
-            msg.setTimestamp((double) System.currentTimeMillis()/1000);
-            msg.setContent(text);
+            msg.setTimestamp((double) System.currentTimeMillis() / 1000);
+            msg.setImageURL(imageURL);
             msg.setOwn(true);
             msg.setSenderId(Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
             msg.setSenderName(displayUserName);
@@ -169,13 +279,16 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
             mDatabase.updateChildren(childUpdates);
         }
+        else {
+            Toast.makeText(getActivity(), R.string.chat_dialog_on_send_image_failed, Toast.LENGTH_SHORT).show();
+        }
+        sendingDialog.cancel();
         clearInputs();
     }
 
     private void takeAndAttachPicture() {
         camera.startCameraIntent(this);
     }
-
 
     private void clearInputs() {
         input.setText("");
@@ -185,25 +298,24 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         camera.cancel();
         currentPicture = null;
         picturePreviewGroup.setVisibility(View.GONE);
-        switchImgAsync.hideAll();
-        btnClearImg.setVisibility(View.GONE);
-        btnPhoto.setVisibility(View.VISIBLE);
+        textInputGroup.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onPictureTaken() {
         // Waiting for image loading, display progress view
         picturePreviewGroup.setVisibility(View.VISIBLE);
-        btnClearImg.setVisibility(View.VISIBLE);
-        btnPhoto.setVisibility(View.GONE);
+        textInputGroup.setVisibility(View.GONE);
         switchImgAsync.showProgressView();
     }
 
     @Override
     public void onPictureLoaded(Bitmap drawable) {
-        // Getting image, save and display
-        switchImgAsync.showImageView(drawable);
-        currentPicture = drawable;
+        if(picturePreviewGroup.getVisibility() == View.VISIBLE) {
+            // Getting image, save and display
+            switchImgAsync.showImageView(drawable);
+            currentPicture = drawable;
+        }
     }
 
     @Override

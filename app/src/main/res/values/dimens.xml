@@ -36,7 +36,7 @@
     <dimen name="adapter_chat_message_image_corner_radius">5dp</dimen>
 
     <!-- Chat input -->
-    <dimen name="chat_image_preview_height">120dp</dimen>
+    <dimen name="chat_image_preview_height">160dp</dimen>
     <dimen name="chat_image_button_size">64dp</dimen>
     <dimen name="chat_image_button_height">54dp</dimen>
 
