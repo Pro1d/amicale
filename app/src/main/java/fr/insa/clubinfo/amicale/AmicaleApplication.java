@@ -15,9 +15,6 @@ public class AmicaleApplication extends Application {
         super.onCreate();
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("applicationId")
-                .server("server")
-                .clientKey("clientKey")
                 .build()
         );
 
