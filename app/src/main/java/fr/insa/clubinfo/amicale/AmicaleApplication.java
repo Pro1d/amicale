@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 
 /**
  * Created by Proïd on 24/08/2016.
@@ -19,5 +20,6 @@ public class AmicaleApplication extends Application {
         );
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParsePush.subscribeInBackground("global");
     }
 }
