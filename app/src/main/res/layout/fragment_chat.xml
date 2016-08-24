@@ -35,7 +35,7 @@
 
                 <LinearLayout
                     android:id="@+id/chat_ll_mode_image_preview"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
@@ -67,7 +67,7 @@
 
                 <LinearLayout
                     android:id="@+id/chat_ll_mode_text_input"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
@@ -84,11 +84,12 @@
                         android:id="@+id/chat_et_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
                         android:maxLength="1000"
                         android:maxLines="5"
                         android:labelFor="@+id/chat_ib_send"
-                        android:hint="@string/chat_input_hint">
+                        android:hint="@string/chat_input_hint"
+                        android:imeOptions="actionSend"
+                        android:inputType="textCapSentences">
 
                         <requestFocus />
                     </EditText>

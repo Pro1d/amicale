@@ -2,6 +2,7 @@ package fr.insa.clubinfo.amicale.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -15,11 +16,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -72,6 +76,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private Camera camera;
     private Bitmap currentPicture;
     private ProgressDialog sendingDialog;
+    private UploadTask uploadTask;
+    AsyncTask<Bitmap, Void, byte[]> compressionTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,7 +122,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
                 int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-                Log.i("###", "onScrolled visibleItemCount:"+visibleItemCount+" totalItemCount:"+totalItemCount+" firstVisibleItem:"+firstVisibleItem);
+
                 if(!loading) {
                     if(firstVisibleItem < visibleThreshold) {
                         loading = true;
@@ -128,6 +134,16 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
         // Input
         input = (EditText) view.findViewById(R.id.chat_et_input);
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if((actionId&EditorInfo.IME_MASK_ACTION) == EditorInfo.IME_ACTION_SEND) {
+                    sendInput();
+                    return true;
+                }
+                return false;
+            }
+        });
         btnPhoto = (ImageButton) view.findViewById(R.id.chat_ib_photo);
         btnClearImg = (ImageButton) view.findViewById(R.id.chat_ib_clear_picture);
         ImageButton btnSend = (ImageButton) view.findViewById(R.id.chat_ib_send);
@@ -201,26 +217,42 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
      */
     private void sendImage(Bitmap bitmap) {
         // First step, compress the bitmap to jpeg
-        new AsyncTask<Bitmap, Void, byte[]>() {
+        compressionTask = new AsyncTask<Bitmap, Void, byte[]>() {
             @Override
             protected byte[] doInBackground(Bitmap... bitmaps) {
                 try {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmaps[0].compress(Bitmap.CompressFormat.JPEG, 70, baos);
-                    return baos.toByteArray();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmaps[0].compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                    return stream.toByteArray();
                 } catch (Exception e) {
                     return null;
                 }
             }
             @Override
             protected void onPostExecute(byte[] bytes) {
+                compressionTask = null;
                 onImageCompressed(bytes);
+            }
+            @Override
+            protected void onCancelled() {
+                compressionTask = null;
+                onImageCompressed(null);
             }
         }.execute(bitmap);
 
         String content = getResources().getString(R.string.chat_dialog_sending_image_content);
         if(sendingDialog == null)
-            sendingDialog = ProgressDialog.show(getActivity(), null, content, true, false);
+            sendingDialog = ProgressDialog.show(getActivity(), null, content, true, true, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    if(compressionTask != null) {
+                        compressionTask.cancel(false);
+                    }
+                    if(uploadTask != null) {
+                        uploadTask.cancel();
+                    }
+                }
+            });
         else
             sendingDialog.show();
     }
@@ -238,15 +270,17 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             // Second step, upload the image
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://project-4508461957841032139.appspot.com");
             StorageReference imgRef = storageRef.child("chat/" + displayUserName.replace("[^a-zA-Z0-9_ .+\\-]","_") + "-" + Long.toHexString(System.currentTimeMillis()) + ".jpg");
-            UploadTask uploadTask = imgRef.putBytes(data);
+            uploadTask = imgRef.putBytes(data);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+                    uploadTask = null;
                     onImageUploaded(null);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    uploadTask = null;
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     onImageUploaded(downloadUrl.toString());
                 }

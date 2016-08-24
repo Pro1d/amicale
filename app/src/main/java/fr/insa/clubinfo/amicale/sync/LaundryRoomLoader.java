@@ -37,6 +37,7 @@ public class LaundryRoomLoader {
         }
         else {
             currentTask = Ion.with(context).load("http://92.222.86.168/washinsa/json")
+                    .noCache()
                     .asJsonObject()
                     .setCallback(new FutureCallback<JsonObject>() {
                         @Override
