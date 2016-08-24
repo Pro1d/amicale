@@ -180,13 +180,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        //Toast.makeText(this, "Authentication state changed!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onComplete(@NonNull Task<AuthResult> task) {
-        if(!task.isSuccessful())
-            task.getException().printStackTrace();
-        Toast.makeText(this, "onComplete: "+task.toString()+" success:"+task.isSuccessful(), Toast.LENGTH_SHORT).show();
+
     }
 }
