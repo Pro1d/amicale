@@ -2,6 +2,8 @@ package fr.insa.clubinfo.amicale.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 
 import fr.insa.clubinfo.amicale.R;
@@ -40,8 +42,9 @@ public class WashINSAAlarmStopDialog {
 
             dialog = builder.create();
         }
-
-        String content = context.getResources().getString(R.string.washinsa_alarm_stop_dialog_content, machine.getNumber());
+        int minutesBefore = WashINSAAlarmCreateDialog.getDefaultMinutePickerValue(context);
+        String content = context.getResources().getString(R.string.washinsa_alarm_stop_dialog_content_sentence_start, machine.getNumber())
+        +" "+context.getResources().getQuantityString(R.plurals.washinsa_alarm_stop_dialog_content_sentence_end, minutesBefore, minutesBefore);
         dialog.setMessage(content);
 
         dialog.show();

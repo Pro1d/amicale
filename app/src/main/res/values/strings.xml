@@ -34,9 +34,14 @@
     <string name="washinsa_alarm_create_dialog_cancel">Cancel</string>
     <string name="washinsa_alarm_create_dialog_create">Add alarm</string>
     <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_notif_content" formatted="false">The machine n°%d ends at %d:%02d</string>
+    <string name="washinsa_alarm_notif_content" formatted="false">Machine n°%d: alarm at %d:%02d</string>
     <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_stop_dialog_content" formatted="false">The machine n°%d is finished!</string>
+    <string name="washinsa_alarm_stop_dialog_content_sentence_start" formatted="false">The machine n°%d</string>
+    <plurals name="washinsa_alarm_stop_dialog_content_sentence_end">
+        <item quantity="zero">is finished!</item>
+        <item quantity="one">ends in %d minute!</item>
+        <item quantity="other">ends in %d minutes!</item>
+    </plurals>
     <string name="washinsa_alarm_stop_dialog_neutral">Stop alarm</string>
     <string name="washinsa_alarm_cancel_dialog_title">WashINSAlarm</string>
     <string name="washinsa_alarm_cancel_dialog_content">Do you want to cancel the alarm?</string>
@@ -70,9 +75,9 @@
     <string name="prefs_chat_nickname_default_value">Anonymous</string>
 
     <string name="prefs_category_other_title">Other</string>
-    <string name="prefs_notification_key">enable_notifications</string>
+    <string name="prefs_notification_key" translatable="false">enable_notifications</string>
     <string name="prefs_notification_title">Enable notifications</string>
-    <string name="prefs_notification_default_value">true</string>
+    <string name="prefs_notification_default_value" translatable="false">true</string>
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex!</string>

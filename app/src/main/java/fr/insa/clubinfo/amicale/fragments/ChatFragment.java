@@ -222,7 +222,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             protected byte[] doInBackground(Bitmap... bitmaps) {
                 try {
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmaps[0].compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                    bitmaps[0].compress(Bitmap.CompressFormat.JPEG, 50, stream);
                     return stream.toByteArray();
                 } catch (Exception e) {
                     return null;

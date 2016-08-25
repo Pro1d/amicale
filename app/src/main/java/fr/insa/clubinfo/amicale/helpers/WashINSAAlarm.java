@@ -1,5 +1,6 @@
 package fr.insa.clubinfo.amicale.helpers;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Message;
 import android.util.Log;
+import android.view.WindowManager;
 
 import java.util.GregorianCalendar;
 import java.util.Timer;
@@ -95,7 +97,7 @@ public class WashINSAAlarm extends BroadcastReceiver {
 
         Notification notification = new Notification.Builder(context)
                 .setContentTitle(res.getString(R.string.washinsa_alarm_notif_title))
-                .setSmallIcon(R.drawable.ic_alarm_on_black_24dp)
+                .setSmallIcon(R.drawable.ic_local_laundry_service_white_24dp)
                 .setContentText(content)
                 .setTicker(content)
                 .setShowWhen(false)
@@ -157,26 +159,31 @@ public class WashINSAAlarm extends BroadcastReceiver {
 
 
     /** Called when the activity has been started by this receiver **/
-    public static void onActivityCreated(Intent intent, Context context) {
+    public static void onActivityCreated(Intent intent, Activity activity) {
         if(intent.hasExtra(ALARM_EXTRA)) {
             int action = intent.getIntExtra(ALARM_EXTRA, -1);
-            executeAlarmActionGUI(action, context);
+            intent.removeExtra(ALARM_EXTRA);
+            executeAlarmActionGUI(action, activity);
         }
     }
 
-    public static void handleMessage(Message msg, Context context) {
+    public static void handleMessage(Message msg, Activity activity) {
         if(msg.what == ALARM_WHAT)
-            executeAlarmActionGUI(msg.arg1, context);
+            executeAlarmActionGUI(msg.arg1, activity);
     }
 
-    private static void executeAlarmActionGUI(int action, Context context) {
+    private static void executeAlarmActionGUI(int action, Activity activity) {
         if(action == ALARM_ACTION_CANCEL_ALARM_CONFIRMATION) {
-            WashINSAAlarmCancelDialog.showDialog(context, machine);
+            WashINSAAlarmCancelDialog.showDialog(activity, machine);
         }
         else if(action == ALARM_ACTION_ALARM_RINGING) {
-            cancelDelayedAlarm(context);
-            playRingtone(context);
-            WashINSAAlarmStopDialog.showDialog(context, machine);
+            cancelDelayedAlarm(activity);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            playRingtone(activity);
+            WashINSAAlarmStopDialog.showDialog(activity, machine);
         }
     }
 }

@@ -80,6 +80,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     private PhotoView createView(PhotoView recycleView, Bitmap image) {
         final PhotoView photoView = (recycleView == null ? new PhotoView(attachedViewPager.getContext()) : recycleView);
         photoView.setImageBitmap(image);
+        photoView.setScale(1.0f);
         return photoView;
     }
 

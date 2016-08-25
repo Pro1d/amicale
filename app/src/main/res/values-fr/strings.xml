@@ -34,9 +34,14 @@
     <string name="washinsa_alarm_create_dialog_cancel">Annuler</string>
     <string name="washinsa_alarm_create_dialog_create">Ajouter l\'alarme</string>
     <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_notif_content" formatted="false">La machine n°%d se termine à %d:%02d</string>
+    <string name="washinsa_alarm_notif_content" formatted="false">Machine n°%d: alarme à %d:%02d</string>
     <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_stop_dialog_content" formatted="false">La machine n°%d est terminée !</string>
+    <string name="washinsa_alarm_stop_dialog_content_sentence_start" formatted="false">La machine n°%d</string>
+    <plurals name="washinsa_alarm_stop_dialog_content_sentence_end">
+        <item quantity="zero">est terminée !</item>
+        <item quantity="one">se termine dans %d minute !</item>
+        <item quantity="other">se termine dans %d minutes !</item>
+    </plurals>
     <string name="washinsa_alarm_stop_dialog_neutral">Arrêter l\'alarme</string>
     <string name="washinsa_alarm_cancel_dialog_title">WashINSAlarm</string>
     <string name="washinsa_alarm_cancel_dialog_content">Voulez-vous désactiver l\'alarme ?</string>
@@ -52,6 +57,9 @@
     <string name="chat_button_clear_picture_description">Supprimer la photo</string>
     <string name="chat_button_take_picture_description">Joindre une photo</string>
     <string name="adapter_chat_message_image_description">Photo jointe</string>
+    <string name="chat_dialog_on_send_image_failed">Image non envoyée ! :(</string>
+    <string name="chat_dialog_sending_image_content">Envoi de l\'image&#8230;</string>
+
 
     <!-- News -->
     <string name="adapter_article_image_description">Image jointe</string>
@@ -79,5 +87,4 @@
     <!-- Navigation header -->
     <string name="navigation_drawer_open">Ouvrir menu de navigation</string>
     <string name="navigation_drawer_close">Fermer menu de navigation</string>
-
 </resources>

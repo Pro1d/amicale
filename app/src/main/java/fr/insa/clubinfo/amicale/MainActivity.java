@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
+        // Remove washinsa handler, to force activity to be sent to foreground
+        handler = null;
         firebaseAuth.removeAuthStateListener(this);
     }
 
@@ -174,7 +176,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler = null;
         WashINSAAlarm.stopRingtone();
     }
 

@@ -68,7 +68,7 @@ public class WashINSAAlarmCreateDialog {
         return view;
     }
 
-    private static int getDefaultMinutePickerValue(Context context) {
+    public static int getDefaultMinutePickerValue(Context context) {
         return context.getSharedPreferences(prefs_name, Context.MODE_PRIVATE).getInt(minutesBeforeKey, defaultMinutesBefore);
     }
 
