@@ -66,7 +66,7 @@ public class Date {
     }
 
     public void subtract(int minutes) {
-        date.add(GregorianCalendar.SECOND, -minutes);
+        date.add(GregorianCalendar.MINUTE, -minutes);
     }
 
     public boolean isBeforeNow() {

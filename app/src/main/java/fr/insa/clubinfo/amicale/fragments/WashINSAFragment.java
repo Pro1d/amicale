@@ -50,9 +50,6 @@ public class WashINSAFragment extends Fragment implements OnCreateAlarmListener,
             loader.loadAsync(false);
             initialLoadDone = true;
         }
-        Date d= new Date(new GregorianCalendar());
-        d.subtract(-15);
-        WashINSAAlarm.createDelayedAlarm(this.getActivity(), d, new LaundryMachine());
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Message;
-import android.util.Log;
 import android.view.WindowManager;
 
 import java.util.GregorianCalendar;
@@ -138,18 +137,18 @@ public class WashINSAAlarm extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // Transfer action request to the gui
-        Log.i("###", "onReceive action:"+intent.getIntExtra(ALARM_EXTRA, -1)+" "+intent.getExtras().getInt(ALARM_EXTRA, -1)+" "+intent.hasExtra(ALARM_EXTRA));
         int action = intent.getExtras().getInt(ALARM_EXTRA, -1);
         if(action == -1)
             return;
 
+        // Make sure to see the app in foreground
+        Intent activityIntent = new Intent(context, MainActivity.class);
+        activityIntent.putExtra(ALARM_EXTRA, action);
+        activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        context.startActivity(activityIntent);
 
-        if (MainActivity.handler == null) {
-            Intent activityIntent = new Intent(context, MainActivity.class);
-            activityIntent.putExtra(ALARM_EXTRA, action);
-            activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            context.startActivity(activityIntent);
-        } else {
+        // If the app is started, execute the action
+        if (MainActivity.handler != null) {
             Message msg = new Message();
             msg.what = ALARM_WHAT;
             msg.arg1 = action;
@@ -178,12 +177,14 @@ public class WashINSAAlarm extends BroadcastReceiver {
         }
         else if(action == ALARM_ACTION_ALARM_RINGING) {
             cancelDelayedAlarm(activity);
+            playRingtone(activity);
+            WashINSAAlarmStopDialog.showDialog(activity, machine);
+
+            // Make the app turn on and unlock the screen for the alarm
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-            playRingtone(activity);
-            WashINSAAlarmStopDialog.showDialog(activity, machine);
         }
     }
 }

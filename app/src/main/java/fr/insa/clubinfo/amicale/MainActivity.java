@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -98,9 +99,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        // Remove washinsa handler, to force activity to be sent to foreground
-        handler = null;
         firebaseAuth.removeAuthStateListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WashINSAAlarm.stopRingtone();
+        // Remove washinsa handler
+        handler = null;
     }
 
     @Override
@@ -171,12 +178,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        WashINSAAlarm.stopRingtone();
     }
 
     @Override
