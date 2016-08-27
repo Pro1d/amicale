@@ -57,7 +57,7 @@
 
                         <ImageView
                             android:id="@+id/chat_iv_picture_preview"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/chat_image_preview_height"
                             android:scaleType="centerCrop"
                             android:contentDescription="@string/chat_image_preview_description"/>

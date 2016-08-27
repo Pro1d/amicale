@@ -25,21 +25,27 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
     public void update(ImageList images) {
-        int count = images.getImageCount();
+        if(images == null) {
+            // remove image
+            for(PhotoView pv : views)
+                pv.setImageDrawable(null);
+        } else {
+            int count = images.getImageCount();
 
-        // Delete last views if too many
-        while(views.size() > count)
-            removeView(views.size()-1);
+            // Delete last views if too many
+            while (views.size() > count)
+                removeView(views.size() - 1);
 
-        // Replace image
-        for(int i = 0; i < views.size(); i++) {
-            createView(views.get(i), images.getImage(i));
-        }
+            // Replace image
+            for (int i = 0; i < views.size(); i++) {
+                createView(views.get(i), images.getImage(i));
+            }
 
-        // Add views and set image if necessary
-        while(views.size() < count) {
-            PhotoView v = createView(null, images.getImage(views.size()));
-            addView(v, views.size());
+            // Add views and set image if necessary
+            while (views.size() < count) {
+                PhotoView v = createView(null, images.getImage(views.size()));
+                addView(v, views.size());
+            }
         }
         notifyDataSetChanged();
     }
@@ -67,8 +73,6 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-        // free image
-        //((PhotoView) object).setImageDrawable(null);
     }
 
     @Override

@@ -43,6 +43,7 @@ public class ImageViewer {
         fullscreenViewer.setVisibility(View.GONE);
         defaultView.setVisibility(View.VISIBLE);
         isVisible = false;
+        adapter.update(null);
     }
 
     public void show(ImageList images, int position) {
@@ -50,6 +51,6 @@ public class ImageViewer {
         defaultView.setVisibility(View.GONE);
         isVisible = true;
         adapter.update(images);
-        viewPager.setCurrentItem(position);
+        viewPager.setCurrentItem(position, false);
     }
 }
