@@ -84,22 +84,6 @@ public class ChatLoader implements ChildEventListener, ValueEventListener {
         if(data.hasChild("dateTimestamp")) {
             m.setTimestamp((double)data.child("dateTimestamp").getValue());
         }
-        if(data.hasChild("date")) {
-            try {
-                String[] s = ((String) data.child("date").getValue()).split("[ :-]");
-                int year = Integer.parseInt(s[0]);
-                int month = Integer.parseInt(s[1]);
-                int day = Integer.parseInt(s[2]);
-                int hour = Integer.parseInt(s[3]);
-                int min = Integer.parseInt(s[4]);
-                int sec = Integer.parseInt(s[5]);
-                GregorianCalendar gc = new GregorianCalendar(year, month - 1, day, hour, min, sec);
-                m.setDate(gc);
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
         return m;
     }
 

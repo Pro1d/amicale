@@ -8,14 +8,13 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class ChatMessage {
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss '+0000'", Locale.getDefault());
 
     private Bitmap image;
 	private String imageURL = null;
 	private String content = "";
 	private String senderName = "";
 	private boolean own = false;
-	private GregorianCalendar date;
+    GregorianCalendar date = new GregorianCalendar();
 	private String firebaseKey = "";
 	private double timestamp = 0.0;
     private String senderId = "";
@@ -38,6 +37,7 @@ public class ChatMessage {
 
 	public void setTimestamp(double timestamp) {
 		this.timestamp = timestamp;
+        date.setTimeInMillis((long) (timestamp * 1000));
 	}
 
 	public String getFirebaseKey() {
@@ -80,10 +80,6 @@ public class ChatMessage {
 		return date;
 	}
 
-	public void setDate(GregorianCalendar date) {
-		this.date = date;
-	}
-
 	public boolean hasImage() {
 		return imageURL != null;
 	}
@@ -95,7 +91,6 @@ public class ChatMessage {
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> map = new HashMap<>();
 
-        map.put("date", sdf.format(getDate().getTime()));
         map.put("dateTimestamp", timestamp);
         map.put("isMedia", false);
         map.put("senderDisplayName", senderName);

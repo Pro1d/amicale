@@ -205,7 +205,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private void sendText(String text) {
         String key = mDatabase.child("messages").push().getKey();
         ChatMessage msg = new ChatMessage(key);
-        msg.setDate(new GregorianCalendar());
         msg.setTimestamp((double) System.currentTimeMillis()/1000);
         msg.setContent(text);
         msg.setOwn(true);
@@ -304,7 +303,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             // Third step, create an message object
             String key = mDatabase.child("messages").push().getKey();
             ChatMessage msg = new ChatMessage(key);
-            msg.setDate(new GregorianCalendar());
             msg.setTimestamp((double) System.currentTimeMillis() / 1000);
             msg.setImageURL(imageURL);
             msg.setOwn(true);

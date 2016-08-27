@@ -73,7 +73,7 @@
     <string name="prefs_chat_nickname_title">Nickname</string>
     <string name="prefs_chat_nickname_summary">Your name used in the chat.</string>
     <string name="prefs_chat_nickname_dialog_title">Nickname for the chat</string>
-    <string name="prefs_chat_nickname_default_value">Anonymous</string>
+    <string name="prefs_chat_nickname_default_value">invite</string>
 
     <string name="prefs_category_other_title">Other</string>
     <string name="prefs_notification_key" translatable="false">enable_notifications</string>
