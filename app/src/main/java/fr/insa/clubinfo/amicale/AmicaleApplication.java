@@ -19,7 +19,9 @@ public class AmicaleApplication extends Application {
                 .build()
         );
 
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-        ParsePush.subscribeInBackground("global");
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("GCMSenderId", "301365828536");
+        installation.saveInBackground();
+        ParsePush.subscribeInBackground("test");
     }
 }
