@@ -60,17 +60,7 @@ public class Camera {
             @Override
             protected Bitmap doInBackground(File... params) {
                 File file = params[0];
-                //BitmapFactory.Options opt = new BitmapFactory.Options();
-                return BitmapFactory.decodeFile(file.getPath());
-                /*
-                get image size without allocate memory for bitmap data
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeResource(getResources(), R.id.my_image, options);
-                int imageHeight = options.outHeight;
-                int imageWidth = options.outWidth;
-                String imageType = options.outMimeType;
-                 */
+                return ImageBitmap.decodeSampledBitmapFromFile(file.getPath(), 1000, 1000);
             }
 
             @Override

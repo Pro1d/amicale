@@ -75,6 +75,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 });
                 holder.imageCard.setVisibility(View.VISIBLE);
             } else {
+                holder.switchImgAsync.hideAll();
                 holder.imageCard.setVisibility(View.GONE);
             }
 
@@ -110,6 +111,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.name.setVisibility(View.VISIBLE);
             } else
                 holder.name.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        // free image
+        if(holder.switchImgAsync != null) {
+            holder.switchImgAsync.hideAll();
         }
     }
 

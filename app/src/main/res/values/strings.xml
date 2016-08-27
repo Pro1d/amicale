@@ -77,7 +77,7 @@
     <string name="prefs_category_other_title">Other</string>
     <string name="prefs_notification_key" translatable="false">enable_notifications</string>
     <string name="prefs_notification_title">Enable notifications</string>
-    <string name="prefs_notification_default_value" translatable="false">true</string>
+    <bool name="prefs_notification_default_value">true</bool>
 
     <!-- Planex -->
     <string name="planex_dialog_title">Planex!</string>

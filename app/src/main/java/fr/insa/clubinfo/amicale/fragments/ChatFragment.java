@@ -43,6 +43,7 @@ import java.util.Map;
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.ChatMessageAdapter;
 import fr.insa.clubinfo.amicale.helpers.Camera;
+import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;
 import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
@@ -215,15 +216,14 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
      * Send an image message in 3 steps.
      * Step 1 of 3.
      */
-    private void sendImage(Bitmap bitmap) {
+    private void sendImage(final Bitmap bitmap) {
         // First step, compress the bitmap to jpeg
         compressionTask = new AsyncTask<Bitmap, Void, byte[]>() {
             @Override
             protected byte[] doInBackground(Bitmap... bitmaps) {
                 try {
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmaps[0].compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                    return stream.toByteArray();
+                    // Image has been already downsized in Camera helper
+                    return ImageBitmap.compressAsJPEG(bitmaps[0], 50);
                 } catch (Exception e) {
                     return null;
                 }

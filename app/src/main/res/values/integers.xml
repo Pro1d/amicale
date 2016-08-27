@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="washinsa_alarm_maximum_time_before_machine_end">15</integer>
+    <integer name="chat_max_message_length">256</integer>
+    <integer name="prefs_max_pseudo_length">16</integer>
 </resources>

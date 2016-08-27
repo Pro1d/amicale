@@ -7,10 +7,12 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
+
 public class ChatMessage {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss '+0000'", Locale.getDefault());
 
-	private Bitmap image;
+    private Bitmap image;
 	private String imageURL = null;
 	private String content = "";
 	private String senderName = "";
@@ -52,13 +54,13 @@ public class ChatMessage {
 		this.senderName = senderName;
 	}
 
-	public Bitmap getImage() {
-		return image;
-	}
+    public Bitmap getImage() {
+        return image;
+    }
 
-	public void setImage(Bitmap image) {
-		this.image = image;
-	}
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
 
 	public String getContent() {
 		return content;

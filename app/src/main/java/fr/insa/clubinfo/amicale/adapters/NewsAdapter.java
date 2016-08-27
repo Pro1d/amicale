@@ -76,6 +76,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 }
             } else {
                 // No image
+                holder.image.hideAll();
                 holder.image.setVisibility(View.GONE);
             }
 
@@ -88,6 +89,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
             holder.title.setText(news.getArticle(position).getTitle());
             holder.date.setText(new Date(news.getArticle(position).getDate()).toText());
+        }
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        // free image
+        if(holder.image != null) {
+            holder.image.hideAll();
         }
     }
 

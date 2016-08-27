@@ -67,6 +67,8 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+        // free image
+        //((PhotoView) object).setImageDrawable(null);
     }
 
     @Override

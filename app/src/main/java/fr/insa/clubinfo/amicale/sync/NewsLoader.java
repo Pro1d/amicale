@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
+import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
 import fr.insa.clubinfo.amicale.interfaces.OnNewsUpdatedListener;
 import fr.insa.clubinfo.amicale.models.Article;
 
@@ -83,9 +84,9 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
             article.setTimestampInverse((long)item.child("timestampInverse").getValue());
         }
 
-        if(item.hasChild("imagePresents") && ((Boolean) item.child("imagePresents").getValue())) {
+        if(item.hasChild("imageURL")) {
             String url = (String) item.child("imageURL").getValue();
-            if(article.getImageURL() == null || !article.getImageURL().equals(url)) {
+            if(!url.isEmpty()) {
                 article.setImageURL(url);
                 article.setImage(null);
                 loadImage(url, article);
@@ -106,7 +107,8 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
             @Override
             public void onSuccess(byte[] bytes) {
                 activeImageDownload.remove(dataURL);
-                article.setImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                // Should be done asynchronously
+                article.setImage(ImageBitmap.decodeSampledBitmapFromData(bytes, 1000, 1000));
                 listener.onImageLoaded(article);
             }
         }).addOnFailureListener(new OnFailureListener() {

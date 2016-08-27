@@ -84,7 +84,7 @@
                         android:id="@+id/chat_et_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="1000"
+                        android:maxLength="@integer/chat_max_message_length"
                         android:maxLines="5"
                         android:labelFor="@+id/chat_ib_send"
                         android:hint="@string/chat_input_hint"
