@@ -47,6 +47,7 @@
     <string name="washinsa_alarm_cancel_dialog_content">Voulez-vous désactiver l\'alarme ?</string>
     <string name="washinsa_alarm_cancel_dialog_negative">Non</string>
     <string name="washinsa_alarm_cancel_dialog_positive">Oui</string>
+    <string name="adapter_washinsa_alarm_content_description">Ajouter alarme</string>
 
     <string name="alarm_player_toast_media_player_error">Impossible de faire sonner l\'alarme.</string>
 

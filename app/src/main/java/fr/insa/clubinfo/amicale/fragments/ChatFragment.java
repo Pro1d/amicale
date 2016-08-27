@@ -55,7 +55,7 @@ import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 
 public class ChatFragment extends Fragment implements ChatMessageListener, OnPictureTakenListener, OnImageClickedListener {
 
-    private static final int hiddenCountThresholdForScroll = 3;
+    private static final int hiddenCountThresholdForScroll = 2;
     private static final int visibleThreshold = 10, loadMoreCount = 30;
 
     private String displayUserName;
@@ -80,10 +80,14 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private UploadTask uploadTask;
     AsyncTask<Bitmap, Void, byte[]> compressionTask;
 
+    Map<String, Object> ownActiveUserObject;
+    String ownActiveUserKey = null;
+    DatabaseReference mDatabase;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO check authentication
+
         loader = new ChatLoader(this, Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
         camera = new Camera(this);
         loader.loadMore(loadMoreCount, (double)System.currentTimeMillis() / 1000);
@@ -91,12 +95,24 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         chat = new Chat();
         displayUserName = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getString(getResources().getString(R.string.prefs_chat_nickname_key), getResources().getString(R.string.prefs_chat_nickname_default_value));
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Notify firebase that a new user is active
+        ownActiveUserKey = mDatabase.child("activeUsers").push().getKey();
+        ownActiveUserObject = new HashMap<>();
+        ownActiveUserObject.put("/activeUsers/" + ownActiveUserKey, displayUserName);
+        mDatabase.updateChildren(ownActiveUserObject);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         loader.cancel();
+
+        // Notify firebase that this user is not active anymore
+        ownActiveUserObject.put("/activeUsers/"+ownActiveUserKey, null);
+        mDatabase.updateChildren(ownActiveUserObject);
     }
 
     @Nullable
@@ -120,8 +136,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int visibleItemCount = recyclerView.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
 
                 if(!loading) {
@@ -194,7 +208,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     private void sendText(String text) {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         String key = mDatabase.child("messages").push().getKey();
         ChatMessage msg = new ChatMessage(key);
         msg.setDate(new GregorianCalendar());
@@ -257,7 +270,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             sendingDialog.show();
     }
 
-
     /**
      * Send an image message in 3 steps.
      * Step 2 of 3.
@@ -288,7 +300,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         }
     }
 
-
     /**
      * Send an image message in 3 steps.
      * Step 3 of 3.
@@ -296,7 +307,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private void onImageUploaded(String imageURL) {
         if(imageURL != null) {
             // Third step, create an message object
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             String key = mDatabase.child("messages").push().getKey();
             ChatMessage msg = new ChatMessage(key);
             msg.setDate(new GregorianCalendar());
@@ -325,8 +335,11 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     private void clearInputs() {
-        input.setText("");
-        cancelAndClearImageInput();
+        if(currentPicture == null) {
+            input.setText("");
+        } else {
+            cancelAndClearImageInput();
+        }
     }
     private void cancelAndClearImageInput() {
         camera.cancel();

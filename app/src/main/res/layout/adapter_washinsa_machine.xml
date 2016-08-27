@@ -22,6 +22,7 @@
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
             android:src="@drawable/ic_alarm_add_black_24dp"
+            android:contentDescription="@string/adapter_washinsa_alarm_content_description"
             android:alpha="@dimen/dark_icon_opacity"/>
 
 

@@ -47,6 +47,7 @@
     <string name="washinsa_alarm_cancel_dialog_content">Do you want to cancel the alarm?</string>
     <string name="washinsa_alarm_cancel_dialog_negative">No</string>
     <string name="washinsa_alarm_cancel_dialog_positive">Yes</string>
+    <string name="adapter_washinsa_alarm_content_description">Add alarm</string>
 
     <string name="alarm_player_toast_media_player_error">Your alarm sound was unavailable.</string>
 
