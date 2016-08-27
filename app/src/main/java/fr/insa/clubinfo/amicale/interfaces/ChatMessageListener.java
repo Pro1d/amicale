@@ -1,10 +1,7 @@
 package fr.insa.clubinfo.amicale.interfaces;
 
-import android.graphics.Bitmap;
-
 import java.util.List;
 
-import fr.insa.clubinfo.amicale.models.Chat;
 import fr.insa.clubinfo.amicale.models.ChatMessage;
 
 /**

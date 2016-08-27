@@ -68,10 +68,6 @@ public class LaundryMachine {
         start = Date.today(hour, minute);
     }
 
-    public Date getStart() {
-        return start;
-    }
-
     /**
      * This function must be called after setStart
      */
@@ -79,7 +75,4 @@ public class LaundryMachine {
         end = Date.todayAfter(hour, minute, start);
     }
 
-    public Date getEnd() {
-        return end;
-    }
 }

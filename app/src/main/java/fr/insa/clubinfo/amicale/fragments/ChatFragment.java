@@ -1,10 +1,8 @@
 package fr.insa.clubinfo.amicale.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -34,7 +32,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +40,7 @@ import java.util.Map;
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.ChatMessageAdapter;
 import fr.insa.clubinfo.amicale.helpers.Camera;
+import fr.insa.clubinfo.amicale.helpers.DynamicDefaultPreferences;
 import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;
 import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
@@ -71,18 +69,16 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private ViewGroup picturePreviewGroup;
     private ViewGroup textInputGroup;
     private SwitchImageViewAsyncLayout switchImgAsync;
-    private ImageButton btnPhoto;
-    private ImageButton btnClearImg;
 
     private Camera camera;
     private Bitmap currentPicture;
     private ProgressDialog sendingDialog;
     private UploadTask uploadTask;
-    AsyncTask<Bitmap, Void, byte[]> compressionTask;
+    private AsyncTask<Bitmap, Void, byte[]> compressionTask;
 
-    Map<String, Object> ownActiveUserObject;
-    String ownActiveUserKey = null;
-    DatabaseReference mDatabase;
+    private Map<String, Object> ownActiveUserObject;
+    private String ownActiveUserKey = null;
+    private DatabaseReference mDatabase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,8 +89,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         loader.loadMore(loadMoreCount, (double)System.currentTimeMillis() / 1000);
         loading = true;
         chat = new Chat();
-        displayUserName = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getString(getResources().getString(R.string.prefs_chat_nickname_key), getResources().getString(R.string.prefs_chat_nickname_default_value));
+        displayUserName = DynamicDefaultPreferences.getUserNameFromPreferences(getActivity());
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -159,8 +154,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
                 return false;
             }
         });
-        btnPhoto = (ImageButton) view.findViewById(R.id.chat_ib_photo);
-        btnClearImg = (ImageButton) view.findViewById(R.id.chat_ib_clear_picture);
+        ImageButton btnPhoto = (ImageButton) view.findViewById(R.id.chat_ib_photo);
+        ImageButton btnClearImg = (ImageButton) view.findViewById(R.id.chat_ib_clear_picture);
         ImageButton btnSend = (ImageButton) view.findViewById(R.id.chat_ib_send);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -391,7 +386,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     public void onMoreChatMessagesLoaded(List<ChatMessage> m) {
         int visibleItemCount = recyclerView.getChildCount();
         int totalItemCount = layoutManager.getItemCount();
-        int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
         boolean needScroll = (totalItemCount == visibleItemCount);
 
         // Hide the progress bar if we reach the end

@@ -1,15 +1,10 @@
 package fr.insa.clubinfo.amicale.sync;
 
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,8 +19,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;
-import fr.insa.clubinfo.amicale.models.Article;
-import fr.insa.clubinfo.amicale.models.Chat;
 import fr.insa.clubinfo.amicale.models.ChatMessage;
 
 /**
@@ -36,8 +29,8 @@ public class ChatLoader implements ChildEventListener, ValueEventListener {
     private final ChatMessageListener listener;
     private final Query childQuery;
     private Query loadMoreQuery;
-    private HashSet<String> activeImageDownload = new HashSet<>();
-    private String uid;
+    private final HashSet<String> activeImageDownload = new HashSet<>();
+    private final String uid;
 
     public ChatLoader(ChatMessageListener listener, String uid) {
         this.listener = listener;

@@ -3,7 +3,6 @@ package fr.insa.clubinfo.amicale.adapters;
 import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +125,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public int getItemCount() {
         int loadingView = showLoadingView ? 1 : 0;
         if(chat == null)
-            return 0 + loadingView;
+            return loadingView;
         else
             return chat.getMessagesCount() + loadingView;
     }
@@ -173,7 +172,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         return showLoadingView ? index + 1 : index;
     }
 
-    public int getIndex(int position) {
+    private int getIndex(int position) {
         return showLoadingView ? position - 1 : position;
     }
 

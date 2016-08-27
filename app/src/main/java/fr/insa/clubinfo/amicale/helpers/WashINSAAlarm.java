@@ -85,7 +85,7 @@ public class WashINSAAlarm extends BroadcastReceiver {
 
     private static void createNotification(Context context, Date time) {
         Resources res = context.getResources();
-        String content = res.getString(R.string.washinsa_alarm_notif_content, machine.getNumber(),
+        String content = res.getString(R.string.washinsa_alarm_notification_content, machine.getNumber(),
                 time.getDate().get(GregorianCalendar.HOUR_OF_DAY),
                 time.getDate().get(GregorianCalendar.MINUTE));
 
@@ -95,7 +95,7 @@ public class WashINSAAlarm extends BroadcastReceiver {
         PendingIntent resultPendingIntent = PendingIntent.getBroadcast(context, NOTIFICATION_REQUEST_CODE, intent, 0);
 
         Notification notification = new Notification.Builder(context)
-                .setContentTitle(res.getString(R.string.washinsa_alarm_notif_title))
+                .setContentTitle(res.getString(R.string.washinsa_alarm_notification_title))
                 .setSmallIcon(R.drawable.ic_local_laundry_service_white_24dp)
                 .setContentText(content)
                 .setTicker(content)
@@ -173,7 +173,7 @@ public class WashINSAAlarm extends BroadcastReceiver {
 
     private static void executeAlarmActionGUI(int action, Activity activity) {
         if(action == ALARM_ACTION_CANCEL_ALARM_CONFIRMATION) {
-            WashINSAAlarmCancelDialog.showDialog(activity, machine);
+            WashINSAAlarmCancelDialog.showDialog(activity);
         }
         else if(action == ALARM_ACTION_ALARM_RINGING) {
             cancelDelayedAlarm(activity);

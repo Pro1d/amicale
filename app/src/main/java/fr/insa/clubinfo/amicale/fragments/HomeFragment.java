@@ -76,22 +76,6 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         return view;
     }
 
-    /*
-    @Override
-    public void onNewsSyncFailed() {
-        loading = false;
-        adapter.update(news);
-        Toast.makeText(getActivity(), R.string.loading_error_message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onNewArticleReceived(News news, Article article) {
-        loading = false;
-        this.news = news;
-        adapter.update(news);
-        // TODO update last item only
-    }
-    */
     @Override
     public void onNewsSyncCanceled() {
         loading = false;

@@ -9,9 +9,7 @@ public class LaundryRoom {
 	public int getMachinesCount() {
 		return washingMachines.size() + dryers.size();
 	}
-	public int getWashingMachinesCount() {
-		return washingMachines.size();
-	}
+
 	public int getDryersCount() {
 		return dryers.size();
 	}

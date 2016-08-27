@@ -109,11 +109,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             return news.getArticlesCount()+loadingView;
     }
 
-    public void update(News news) {
-        this.news = news;
-        notifyDataSetChanged();
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView content;
         final TextView title;

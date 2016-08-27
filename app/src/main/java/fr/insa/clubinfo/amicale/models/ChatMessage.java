@@ -7,8 +7,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
-
 public class ChatMessage {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss '+0000'", Locale.getDefault());
 
@@ -92,10 +90,6 @@ public class ChatMessage {
 
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
-	}
-
-	public String getImageURL() {
-		return imageURL;
 	}
 
     public HashMap<String, Object> toMap() {

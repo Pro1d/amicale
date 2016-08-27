@@ -70,7 +70,4 @@ public class Article {
 		this.imageURL = imageURL;
 	}
 
-	public String getImageURL() {
-		return imageURL;
-	}
 }

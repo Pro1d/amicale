@@ -1,6 +1,5 @@
 package fr.insa.clubinfo.amicale.sync;
 
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,7 +29,7 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
     private final OnNewsUpdatedListener listener;
     private Query query = null;
     private Query observer = null;
-    private HashSet<String> activeImageDownload = new HashSet<>();
+    private final HashSet<String> activeImageDownload = new HashSet<>();
 
     public NewsLoader(OnNewsUpdatedListener listener) {
         this.listener = listener;
@@ -76,7 +75,7 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
                 int year = Integer.parseInt(s[2]);
                 article.setDate(new GregorianCalendar(year, month - 1, day));
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
 

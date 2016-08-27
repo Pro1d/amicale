@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -44,9 +43,6 @@ public class Camera {
 
     private void deleteImageFile() {
         file.delete();
-    }
-    public File getImageFile() {
-        return file;
     }
 
     private void loadImageAsync() {

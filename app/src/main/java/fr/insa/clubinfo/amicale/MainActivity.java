@@ -12,10 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,8 +30,6 @@ import fr.insa.clubinfo.amicale.fragments.PreferencesFragment;
 import fr.insa.clubinfo.amicale.fragments.WashINSAFragment;
 import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
-
-import static android.support.design.R.styleable.NavigationView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener, OnCompleteListener<AuthResult> {
@@ -116,17 +112,15 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(activeFragment != null
+            if(!(activeFragment != null
                     && activeFragment instanceof fr.insa.clubinfo.amicale.fragments.Fragment
-                    && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed()) {
-            }
-            else
+                    && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed()))
                 super.onBackPressed();
         }
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

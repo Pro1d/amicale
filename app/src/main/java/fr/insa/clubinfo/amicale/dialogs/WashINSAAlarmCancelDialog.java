@@ -19,7 +19,7 @@ public class WashINSAAlarmCancelDialog {
         dialog = null;
     }
 
-    public static void showDialog(final Context context, LaundryMachine machine) {
+    public static void showDialog(final Context context) {
         if (dialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.washinsa_alarm_cancel_dialog_title);

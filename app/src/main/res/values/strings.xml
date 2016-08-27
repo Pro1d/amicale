@@ -33,8 +33,8 @@
     <string name="washinsa_alarm_create_dialog_content">minutes before the end.</string>
     <string name="washinsa_alarm_create_dialog_cancel">Cancel</string>
     <string name="washinsa_alarm_create_dialog_create">Add alarm</string>
-    <string name="washinsa_alarm_notif_title">WashINSAlarm</string>
-    <string name="washinsa_alarm_notif_content" formatted="false">Machine n°%d: alarm at %d:%02d</string>
+    <string name="washinsa_alarm_notification_title">WashINSAlarm</string>
+    <string name="washinsa_alarm_notification_content" formatted="false">Machine n°%d: alarm at %d:%02d</string>
     <string name="washinsa_alarm_stop_dialog_title">WashINSAlarm</string>
     <string name="washinsa_alarm_stop_dialog_content_sentence_start" formatted="false">The machine n°%d</string>
     <plurals name="washinsa_alarm_stop_dialog_content_sentence_end">

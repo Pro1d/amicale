@@ -3,7 +3,6 @@ package fr.insa.clubinfo.amicale.models;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
