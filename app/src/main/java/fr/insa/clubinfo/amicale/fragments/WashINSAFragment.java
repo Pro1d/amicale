@@ -124,7 +124,11 @@ public class WashINSAFragment extends Fragment implements OnCreateAlarmListener,
 
     @Override
     public void onCreateAlarm(LaundryMachine machine, int minutesInAdvance) {
-        Date d = (Date) machine.getEnd().clone();
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(machine.getTimestampEnd());
+        gc.set(GregorianCalendar.SECOND, 0);
+        gc.set(GregorianCalendar.MILLISECOND, 0);
+        Date d = new Date(gc);
         d.subtract(minutesInAdvance);
 
         WashINSAAlarm.createDelayedAlarm(getActivity(), d, machine);

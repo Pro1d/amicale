@@ -14,7 +14,15 @@ public class LaundryMachine {
     private Date end;
 	private int number;
 	private int minutesRemaining;
+    private final long timestampUpdate;
 
+    public LaundryMachine() {
+        timestampUpdate = System.currentTimeMillis();
+    }
+
+    public long getTimestampEnd() {
+        return timestampUpdate + minutesRemaining * 60 * 1000;
+    }
 
     public Type getType() {
         return type;
