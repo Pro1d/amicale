@@ -13,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -78,6 +80,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     private Map<String, Object> ownActiveUserObject;
     private String ownActiveUserKey = null;
+    private Map<String, Object> ownTypingIndicatorObject;
+    private String ownTypingIndicatorKey = null;
     private DatabaseReference mDatabase;
 
     @Override
@@ -98,6 +102,12 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         ownActiveUserObject = new HashMap<>();
         ownActiveUserObject.put("/activeUsers/" + ownActiveUserKey, displayUserName);
         mDatabase.updateChildren(ownActiveUserObject);
+
+        // create typing indicator
+        ownTypingIndicatorKey = mDatabase.child("typingIndicator").push().getKey();
+        ownTypingIndicatorObject = new HashMap<>();
+        ownTypingIndicatorObject.put("/typingIndicator/"+ownTypingIndicatorKey, false);
+        mDatabase.updateChildren(ownTypingIndicatorObject);
     }
 
     @Override
@@ -108,6 +118,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         // Notify firebase that this user is not active anymore
         ownActiveUserObject.put("/activeUsers/"+ownActiveUserKey, null);
         mDatabase.updateChildren(ownActiveUserObject);
+        ownTypingIndicatorObject.put("/typingIndicator/"+ownTypingIndicatorKey, null);
+        mDatabase.updateChildren(ownTypingIndicatorObject);
     }
 
     @Nullable
@@ -152,6 +164,24 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
                     return true;
                 }
                 return false;
+            }
+        });
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                boolean savedTypingState = (Boolean) ownTypingIndicatorObject.get("/typingIndicator/"+ownTypingIndicatorKey);
+                boolean currentTypingState = editable.length() > 0;
+
+                if(savedTypingState != currentTypingState) {
+                    ownTypingIndicatorObject.put("/typingIndicator/"+ownTypingIndicatorKey, currentTypingState);
+                    mDatabase.updateChildren(ownTypingIndicatorObject);
+                }
             }
         });
         ImageButton btnPhoto = (ImageButton) view.findViewById(R.id.chat_ib_photo);
