@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/chat_ll_input">
+        android:layout_above="@+id/chat_tv_typing_indicator">
          	<android.support.v7.widget.RecyclerView
                 android:id="@+id/chat_rv_list"
          	    android:layout_width="match_parent"
@@ -14,6 +15,15 @@
 
          	</android.support.v7.widget.RecyclerView>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/chat_tv_typing_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/chat_typing_indicator_left_margin"
+        tools:text="Someone is writing..."
+        android:text="@string/chat_typing_indicator"
+        android:layout_above="@+id/chat_ll_input"/>
 
     <LinearLayout
         android:id="@+id/chat_ll_input"

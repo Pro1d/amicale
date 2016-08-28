@@ -28,8 +28,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -67,6 +71,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private LinearLayoutManager layoutManager;
     private boolean loading;
 
+    private View typingIndicatorView;
     private EditText input;
     private ViewGroup picturePreviewGroup;
     private ViewGroup textInputGroup;
@@ -83,6 +88,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private Map<String, Object> ownTypingIndicatorObject;
     private String ownTypingIndicatorKey = null;
     private DatabaseReference mDatabase;
+    private Query typingIndicatorQuery;
+    private ValueEventListener typingIndicatorListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,12 +115,26 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         ownTypingIndicatorObject = new HashMap<>();
         ownTypingIndicatorObject.put("/typingIndicator/"+ownTypingIndicatorKey, false);
         mDatabase.updateChildren(ownTypingIndicatorObject);
+
+        // create query ti count the number of active typing
+        typingIndicatorQuery = mDatabase.child("typingIndicator").orderByValue().equalTo(true);
+        typingIndicatorListener = typingIndicatorQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean savedTypingState = (Boolean) ownTypingIndicatorObject.get("/typingIndicator/"+ownTypingIndicatorKey);
+                boolean typingVisible = (dataSnapshot.getChildrenCount() > (savedTypingState ? 1 : 0));
+                typingIndicatorView.setVisibility(typingVisible ? View.VISIBLE : View.INVISIBLE);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         loader.cancel();
+        typingIndicatorQuery.removeEventListener(typingIndicatorListener);
 
         // Notify firebase that this user is not active anymore
         ownActiveUserObject.put("/activeUsers/"+ownActiveUserKey, null);
@@ -154,6 +175,9 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             }
         });
 
+        typingIndicatorView = view.findViewById(R.id.chat_tv_typing_indicator);
+        typingIndicatorView.setVisibility(View.INVISIBLE);
+
         // Input
         input = (EditText) view.findViewById(R.id.chat_et_input);
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -169,10 +193,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 boolean savedTypingState = (Boolean) ownTypingIndicatorObject.get("/typingIndicator/"+ownTypingIndicatorKey);

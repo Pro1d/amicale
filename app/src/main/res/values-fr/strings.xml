@@ -60,6 +60,7 @@
     <string name="adapter_chat_message_image_description">Photo jointe</string>
     <string name="chat_dialog_on_send_image_failed">Image non envoyée ! :(</string>
     <string name="chat_dialog_sending_image_content">Envoi de l\'image&#8230;</string>
+    <string name="chat_typing_indicator">Quelqu'un écrit...</string>
 
 
     <!-- News -->

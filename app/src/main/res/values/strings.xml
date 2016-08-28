@@ -60,6 +60,7 @@
     <string name="adapter_chat_message_image_description">Picture attached</string>
     <string name="chat_dialog_sending_image_content">Uploading the image&#8230;</string>
     <string name="chat_dialog_on_send_image_failed">Image not send! :(</string>
+    <string name="chat_typing_indicator">Someone is writing...</string>
 
     <!-- News -->
     <string name="adapter_article_image_description">Picture attached</string>
