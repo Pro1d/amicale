@@ -6,7 +6,6 @@ import android.support.v7.app.AlertDialog;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
-import fr.insa.clubinfo.amicale.models.LaundryMachine;
 
 /**
  * Created by Proïd on 08/06/2016.

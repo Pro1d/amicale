@@ -2,10 +2,8 @@ package fr.insa.clubinfo.amicale.models;
 
 import android.graphics.Bitmap;
 
-import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class ChatMessage {
 

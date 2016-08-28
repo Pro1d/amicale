@@ -2,7 +2,6 @@ package fr.insa.clubinfo.amicale.helpers;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 
 import fr.insa.clubinfo.amicale.R;
 
@@ -28,6 +27,6 @@ public class DynamicDefaultPreferences {
 
     public static void saveUserNameInPreferences(Context context, String name) {
         String key = context.getResources().getString(R.string.prefs_chat_nickname_key);
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, name).commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, name).apply();
     }
 }

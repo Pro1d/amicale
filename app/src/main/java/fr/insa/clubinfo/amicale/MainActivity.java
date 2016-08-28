@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity
     private Fragment activeFragment;
     public static Handler handler;
     private FirebaseAuth firebaseAuth;
-    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         ImageViewer.instantiateImageViewer(fullscreenImageViewer, drawer);
 
         // Side navigation menu
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_home);
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         // Remove washinsa handler
         handler = null;
         // save current selected fragment
-        getSharedPreferences("fragment", MODE_PRIVATE).edit().putInt("current_fragment", currentFragmentId).commit();
+        getSharedPreferences("fragment", MODE_PRIVATE).edit().putInt("current_fragment", currentFragmentId).apply();
     }
 
     @Override

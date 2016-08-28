@@ -15,7 +15,6 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;

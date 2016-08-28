@@ -104,7 +104,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public int getItemCount() {
         int loadingView = showLoadingView ? 1 : 0;
         if(news == null)
-            return 0+loadingView;
+            return loadingView;
         else
             return news.getArticlesCount()+loadingView;
     }
