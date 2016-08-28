@@ -19,7 +19,7 @@ import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
 
 public class Camera {
     private final File file = new File(Environment.getExternalStorageDirectory(),  ".amicale_chat_picture.jpg");
-    private static final int TAKE_PICTURE_REQUEST_CODE = 1;
+    public static final int TAKE_PICTURE_REQUEST_CODE = 1;
     private AsyncTask<File, Void, Bitmap> currentTask;
     private final OnPictureTakenListener listener;
 
@@ -29,9 +29,14 @@ public class Camera {
     }
 
     public void startCameraIntent(Fragment fragment) {
+        Intent intent = getCameraIntent();
+        fragment.startActivityForResult(intent, TAKE_PICTURE_REQUEST_CODE);
+    }
+
+    public Intent getCameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        fragment.startActivityForResult(intent, TAKE_PICTURE_REQUEST_CODE);
+        return intent;
     }
 
     public void onActivityResult(int requestCode, int resultCode) {
@@ -56,25 +61,37 @@ public class Camera {
             @Override
             protected Bitmap doInBackground(File... params) {
                 File file = params[0];
-                return ImageBitmap.decodeSampledBitmapFromFile(file.getPath(), 1000, 1000);
+
+                int width = 1000;
+                int height = 1000;
+                if(ImageBitmap.getScreenWidth() < 1000) {
+                    width = (int) (ImageBitmap.getScreenWidth() * 0.9);
+                    height = 0;
+                }
+
+                return ImageBitmap.decodeSampledBitmapFromFile(file.getPath(), width, height);
             }
 
             @Override
             protected void onPostExecute(Bitmap drawable) {
                 listener.onPictureLoaded(drawable);
+                deleteImageFile();
             }
 
             @Override
-            protected void onCancelled(Bitmap drawable) {
+            protected void onCancelled() {
                 listener.onPictureLoaded(null);
+                deleteImageFile();
             }
         }.execute(file);
     }
 
 
     public void cancel() {
-        if(currentTask != null)
+        if(currentTask != null) {
             currentTask.cancel(true);
+            currentTask = null;
+        }
         deleteImageFile();
     }
 }

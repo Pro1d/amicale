@@ -48,6 +48,7 @@ import fr.insa.clubinfo.amicale.adapters.ChatMessageAdapter;
 import fr.insa.clubinfo.amicale.helpers.Camera;
 import fr.insa.clubinfo.amicale.helpers.DynamicDefaultPreferences;
 import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
+import fr.insa.clubinfo.amicale.helpers.ImagePicker;
 import fr.insa.clubinfo.amicale.interfaces.ChatMessageListener;
 import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
@@ -78,6 +79,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private SwitchImageViewAsyncLayout switchImgAsync;
 
     private Camera camera;
+    private ImagePicker imagePicker;
     private Bitmap currentPicture;
     private ProgressDialog sendingDialog;
     private UploadTask uploadTask;
@@ -97,6 +99,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
         loader = new ChatLoader(this, Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
         camera = new Camera(this);
+        imagePicker = new ImagePicker(this);
         loader.loadMore(loadMoreCount, (double)System.currentTimeMillis() / 1000);
         loading = true;
         chat = new Chat();
@@ -376,7 +379,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     private void takeAndAttachPicture() {
-        camera.startCameraIntent(this);
+        imagePicker.startPickerIntent(this, camera.getCameraIntent());
+//        camera.startCameraIntent(this);
     }
 
     private void clearInputs() {
@@ -388,6 +392,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
     private void cancelAndClearImageInput() {
         camera.cancel();
+        imagePicker.cancel();
         currentPicture = null;
         picturePreviewGroup.setVisibility(View.GONE);
         textInputGroup.setVisibility(View.VISIBLE);
@@ -413,7 +418,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        camera.onActivityResult(requestCode, resultCode);
+        int newRequestCode = imagePicker.onActivityResult(requestCode, resultCode, data, getActivity());
+        camera.onActivityResult(newRequestCode, resultCode);
     }
 
     @Override

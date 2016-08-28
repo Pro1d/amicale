@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,7 @@ import fr.insa.clubinfo.amicale.fragments.ChatFragment;
 import fr.insa.clubinfo.amicale.fragments.HomeFragment;
 import fr.insa.clubinfo.amicale.fragments.PreferencesFragment;
 import fr.insa.clubinfo.amicale.fragments.WashINSAFragment;
+import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
 import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
 
@@ -38,11 +40,14 @@ public class MainActivity extends AppCompatActivity
     private Fragment activeFragment;
     public static Handler handler;
     private FirebaseAuth firebaseAuth;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ImageBitmap.initScreenWidthAndHeight(this);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         ImageViewer.instantiateImageViewer(fullscreenImageViewer, drawer);
 
         // Side navigation menu
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_home);
@@ -83,6 +88,11 @@ public class MainActivity extends AppCompatActivity
 
         // Firebase
         firebaseAuth = FirebaseAuth.getInstance();
+
+        // restore selected fragment
+        int fragmentId = getSharedPreferences("fragment", MODE_PRIVATE).getInt("current_fragment", R.id.nav_home);
+        navigationView.setCheckedItem(fragmentId);
+        selectFragment(fragmentId);
     }
 
     @Override
@@ -96,6 +106,7 @@ public class MainActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         firebaseAuth.removeAuthStateListener(this);
+
     }
 
     @Override
@@ -104,6 +115,8 @@ public class MainActivity extends AppCompatActivity
         WashINSAAlarm.stopRingtone();
         // Remove washinsa handler
         handler = null;
+        // save current selected fragment
+        getSharedPreferences("fragment", MODE_PRIVATE).edit().putInt("current_fragment", currentFragmentId).commit();
     }
 
     @Override

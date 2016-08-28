@@ -60,7 +60,7 @@
     <string name="adapter_chat_message_image_description">Picture attached</string>
     <string name="chat_dialog_sending_image_content">Uploading the image&#8230;</string>
     <string name="chat_dialog_on_send_image_failed">Image not send! :(</string>
-    <string name="chat_typing_indicator">Someone is writing...</string>
+    <string name="chat_typing_indicator">Someone is writing&#8230;</string>
 
     <!-- News -->
     <string name="adapter_article_image_description">Picture attached</string>
@@ -93,5 +93,9 @@
 
     <string name="navigation_drawer_open">Open navigation</string>
     <string name="navigation_drawer_close">Close navigation</string>
+
+    <!-- Image picker -->
+    <string name="image_picker_title">Choose an image</string>
+    <string name="image_picker_error">No image selected! :(</string>
 
 </resources>

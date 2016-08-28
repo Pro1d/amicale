@@ -1,7 +1,11 @@
 package fr.insa.clubinfo.amicale.helpers;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.view.Display;
+import android.view.WindowManager;
 
 import java.io.ByteArrayOutputStream;
 
@@ -10,6 +14,26 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class ImageBitmap {
+
+    /** Store the screen width and height.
+     * It is used to minimize the size of loaded bitmap for better performances **/
+    private static Point screenSize;
+
+    public static void initScreenWidthAndHeight(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        screenSize = new Point();
+        display.getSize(screenSize);
+    }
+
+    public static int getScreenWidth() {
+        return screenSize.x;
+    }
+
+    public static int getScreenHeight() {
+        return screenSize.y;
+    }
+
 
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
