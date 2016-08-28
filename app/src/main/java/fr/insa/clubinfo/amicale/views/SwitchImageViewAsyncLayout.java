@@ -68,9 +68,9 @@ public class SwitchImageViewAsyncLayout extends FrameLayout {
         getChildAt(imageViewIndex).setVisibility(View.VISIBLE);
         if(drawable != null) {
             ImageView view = ((ImageView) getChildAt(imageViewIndex));
-            view.setDrawingCacheEnabled(false);
+            //view.setDrawingCacheEnabled(false);
             view.setImageBitmap(drawable);
-            view.setDrawingCacheEnabled(true);
+            //view.setDrawingCacheEnabled(true);
         }
     }
 }

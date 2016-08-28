@@ -409,9 +409,14 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onPictureLoaded(Bitmap drawable) {
         if(picturePreviewGroup.getVisibility() == View.VISIBLE) {
-            // Getting image, save and display
-            switchImgAsync.showImageView(drawable);
-            currentPicture = drawable;
+            if(drawable != null) {
+                // Getting image, save and display
+                switchImgAsync.showImageView(drawable);
+                currentPicture = drawable;
+            } else {
+                Toast.makeText(getActivity(), R.string.image_picker_error, Toast.LENGTH_SHORT).show();
+                cancelAndClearImageInput();
+            }
         }
     }
 
