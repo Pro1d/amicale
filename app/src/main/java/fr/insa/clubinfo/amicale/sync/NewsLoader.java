@@ -83,42 +83,15 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
             article.setTimestampInverse((long)item.child("timestampInverse").getValue());
         }
 
+        article.setImageURL(null);
         if(item.hasChild("imageURL")) {
             String url = (String) item.child("imageURL").getValue();
             if(!url.isEmpty()) {
                 article.setImageURL(url);
-                article.setImage(null);
-                loadImage(url, article);
             }
-        }
-        else {
-            article.setImageURL(null);
-            article.setImage(null);
         }
 
         return article;
-    }
-
-    private void loadImage(final String dataURL, final Article article) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        activeImageDownload.add(dataURL);
-        storage.getReferenceFromUrl(dataURL).getBytes(1024*1024*8).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                activeImageDownload.remove(dataURL);
-                // Should be done asynchronously
-                article.setImage(ImageBitmap.decodeSampledBitmapFromData(bytes, 1000, 1000));
-                listener.onImageLoaded(article);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                activeImageDownload.remove(dataURL);
-                article.setImage(null);
-                article.setImageURL(null);
-                listener.onImageLoaded(article);
-            }
-        });
     }
 
     @Override

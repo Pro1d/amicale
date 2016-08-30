@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 public class ChatMessage {
 
-    private Bitmap image;
 	private String imageURL = null;
 	private String content = "";
 	private String senderName = "";
@@ -50,14 +49,6 @@ public class ChatMessage {
 		this.senderName = senderName;
 	}
 
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
-
 	public String getContent() {
 		return content;
 	}
@@ -79,11 +70,15 @@ public class ChatMessage {
 	}
 
 	public boolean hasImage() {
-		return imageURL != null;
+		return imageURL != null && !imageURL.isEmpty();
 	}
 
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 
     public HashMap<String, Object> toMap() {
@@ -93,7 +88,7 @@ public class ChatMessage {
         map.put("isMedia", false);
         map.put("senderDisplayName", senderName);
         map.put("senderId", senderId);
-        if(imageURL == null) {
+        if(!hasImage()) {
             map.put("imageURL", "");
             map.put("text", content);
         } else {

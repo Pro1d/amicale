@@ -32,24 +32,24 @@ public class News implements ImageList {
 
     public int getImagePosition(int index) {
         // No image at given index
-        if(getArticle(index).getImage() == null)
+        if(!getArticle(index).hasImage())
             return -1;
 
         int position = 0;
         for(int i = 0; i < index; i++)
-            if(getArticle(i).getImage() != null)
+            if(getArticle(i).hasImage())
                 position++;
 
         return position;
     }
 
     @Override
-    public Bitmap getImage(int position) {
+    public String getImageURL(int position) {
         int count = 0;
         for(Article m : articles)
-            if(m.getImage() != null)
+            if(m.hasImage())
                 if(count++ == position)
-                    return m.getImage();
+                    return m.getImageURL();
         return null;
     }
 
@@ -57,7 +57,7 @@ public class News implements ImageList {
     public int getImageCount() {
         int count = 0;
         for(Article m : articles)
-            if(m.getImage() != null)
+            if(m.hasImage())
                 count++;
         return count;
     }

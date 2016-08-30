@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +55,6 @@ import fr.insa.clubinfo.amicale.models.Chat;
 import fr.insa.clubinfo.amicale.models.ChatMessage;
 import fr.insa.clubinfo.amicale.sync.ChatLoader;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
-import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 
 public class ChatFragment extends Fragment implements ChatMessageListener, OnPictureTakenListener, OnImageClickedListener {
 
@@ -74,7 +74,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private EditText input;
     private ViewGroup picturePreviewGroup;
     private ViewGroup textInputGroup;
-    private SwitchImageViewAsyncLayout switchImgAsync;
+    private ImageView imagePreview;
 
     private Camera camera;
     private ImagePicker imagePicker;
@@ -152,7 +152,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
         // Recycler view
-        adapter = new ChatMessageAdapter(chat, this);
+        adapter = new ChatMessageAdapter(chat, this, getActivity());
         adapter.setShowLoadingView(true);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.chat_rv_list);
@@ -230,7 +230,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         });
         picturePreviewGroup = (ViewGroup) view.findViewById(R.id.chat_ll_mode_image_preview);
         textInputGroup = (ViewGroup) view.findViewById(R.id.chat_ll_mode_text_input);
-        switchImgAsync = (SwitchImageViewAsyncLayout) view.findViewById(R.id.chat_sl_picture_async);
+        imagePreview = (ImageView) view.findViewById(R.id.chat_iv_picture_preview);
 
         return view;
     }
@@ -394,6 +394,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         currentPicture = null;
         picturePreviewGroup.setVisibility(View.GONE);
         textInputGroup.setVisibility(View.VISIBLE);
+        imagePreview.setImageDrawable(null);
     }
 
     @Override
@@ -401,7 +402,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         // Waiting for image loading, display progress view
         picturePreviewGroup.setVisibility(View.VISIBLE);
         textInputGroup.setVisibility(View.GONE);
-        switchImgAsync.showProgressView();
+        //imagePreview.showProgressView();
     }
 
     @Override
@@ -409,7 +410,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         if(picturePreviewGroup.getVisibility() == View.VISIBLE) {
             if(drawable != null) {
                 // Getting image, save and display
-                switchImgAsync.showImageView(drawable);
+                imagePreview.setImageBitmap(drawable);
                 currentPicture = drawable;
             } else {
                 Toast.makeText(getActivity(), R.string.image_picker_error, Toast.LENGTH_SHORT).show();

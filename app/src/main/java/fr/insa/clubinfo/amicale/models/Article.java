@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 public class Article {
 
 	private String title;
-	private Bitmap image;
 	private String imageURL;
 	private String content;
 	private GregorianCalendar date;
@@ -46,14 +45,6 @@ public class Article {
 		this.title = title;
 	}
 
-	public Bitmap getImage() {
-		return image;
-	}
-
-	public void setImage(Bitmap image) {
-		this.image = image;
-	}
-
 	public String getContent() {
 		return content;
 	}
@@ -63,11 +54,14 @@ public class Article {
 	}
 
 	public boolean hasImage() {
-		return imageURL != null;
+		return imageURL != null && !imageURL.isEmpty();
 	}
 
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
 
+	public String getImageURL() {
+		return imageURL;
+	}
 }

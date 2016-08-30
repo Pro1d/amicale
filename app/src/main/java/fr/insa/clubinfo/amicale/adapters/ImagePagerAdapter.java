@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import fr.insa.clubinfo.amicale.interfaces.ImageList;
@@ -38,12 +40,12 @@ public class ImagePagerAdapter extends PagerAdapter {
 
             // Replace image
             for (int i = 0; i < views.size(); i++) {
-                createView(views.get(i), images.getImage(i));
+                createView(views.get(i), images.getImageURL(i));
             }
 
             // Add views and set image if necessary
             while (views.size() < count) {
-                PhotoView v = createView(null, images.getImage(views.size()));
+                PhotoView v = createView(null, images.getImageURL(views.size()));
                 addView(v, views.size());
             }
         }
@@ -83,9 +85,9 @@ public class ImagePagerAdapter extends PagerAdapter {
         return view;
     }
 
-    private PhotoView createView(PhotoView recycleView, Bitmap image) {
+    private PhotoView createView(PhotoView recycleView, String imageURL) {
         final PhotoView photoView = (recycleView == null ? new PhotoView(attachedViewPager.getContext()) : recycleView);
-        photoView.setImageBitmap(image);
+        Glide.with(attachedViewPager.getContext()).load(imageURL).into(photoView);
         photoView.setScale(1.0f);
         return photoView;
     }

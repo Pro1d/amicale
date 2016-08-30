@@ -1,19 +1,23 @@
 package fr.insa.clubinfo.amicale.adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.joooonho.SelectableRoundedImageView;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.helpers.Date;
 import fr.insa.clubinfo.amicale.interfaces.OnImageClickedListener;
 import fr.insa.clubinfo.amicale.models.Chat;
 import fr.insa.clubinfo.amicale.models.ChatMessage;
-import fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout;
 
 /**
  * Created by Proïd on 06/06/2016.
@@ -23,17 +27,21 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     private static final double displayClockDelayThreshold = 20 * 60; // 20 minutes
 
-    private static final int layoutViewOther = R.layout.adapter_message_chat_other;
-    private static final int layoutViewSelf = R.layout.adapter_message_chat_self;
+    private static final int layoutMessageOther = R.layout.adapter_message_chat_other;
+    private static final int layoutMessageSelf = R.layout.adapter_message_chat_self;
+    private static final int layoutImageOther = R.layout.adapter_image_chat_other;
+    private static final int layoutImageSelf = R.layout.adapter_image_chat_self;
     private static final int layoutLoading = R.layout.adapter_loading;
 
     private final Chat chat;
     private final OnImageClickedListener imageClickedListener;
+    private Context context;
     private boolean showLoadingView;
 
-    public ChatMessageAdapter(Chat chat, OnImageClickedListener imageClickedListener) {
+    public ChatMessageAdapter(Chat chat, OnImageClickedListener imageClickedListener, Context context) {
         this.chat = chat;
         this.imageClickedListener = imageClickedListener;
+        this.context = context;
     }
 
     @Override
@@ -41,10 +49,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         if(showLoadingView && position == 0) {
             return layoutLoading;
         }
-        if(chat.getMessage(getIndex(position)).isOwn())
-            return layoutViewSelf;
+        ChatMessage msg = chat.getMessage(getIndex(position));
+        if(msg.isOwn())
+            return msg.hasImage() ? layoutImageSelf : layoutMessageSelf;
         else
-            return layoutViewOther;
+            return msg.hasImage() ? layoutImageOther : layoutMessageOther;
     }
 
     @Override
@@ -58,34 +67,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         final int index = getIndex(position);
         if(getItemViewType(position) != layoutLoading) {
             ChatMessage msg = chat.getMessage(index);
-            Bitmap image = msg.getImage();
-            // Image
-            if (msg.hasImage()) {
-                if (image != null)
-                    holder.switchImgAsync.showImageView(image);
-                else
-                    holder.switchImgAsync.showProgressView();
-                holder.switchImgAsync.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (imageClickedListener != null)
-                            imageClickedListener.onImageClicked(getIndex(holder.getAdapterPosition()));
-                    }
-                });
-                holder.imageCard.setVisibility(View.VISIBLE);
-            } else {
-                holder.switchImgAsync.hideAll();
-                holder.imageCard.setVisibility(View.GONE);
-            }
 
+            // Image
+            if(msg.hasImage())
+                Glide.with(context).load(msg.getImageURL()).into(holder.image);
             // Text
-            String content = chat.getMessage(index).getContent();
-            if (!content.isEmpty()) {
-                holder.textContent.setText(content);
-                holder.textCard.setVisibility(View.VISIBLE);
-            } else {
-                holder.textCard.setVisibility(View.GONE);
-            }
+            else
+                holder.textContent.setText(msg.getContent());
 
             // Date
             boolean showDate = shouldDisplayDate(index);
@@ -115,10 +103,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public void onViewRecycled(ViewHolder holder) {
-        // free image
-        if(holder.switchImgAsync != null) {
-            holder.switchImgAsync.hideAll();
-        }
+        // Images are automatically freed/cached
     }
 
     @Override
@@ -178,20 +163,26 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView textContent;
-        final SwitchImageViewAsyncLayout switchImgAsync;
-        final CardView imageCard;
-        final CardView textCard;
+        final SelectableRoundedImageView image;
         final TextView date;
         final TextView name;
 
         public ViewHolder(View view) {
             super(view);
             textContent = (TextView) view.findViewById(R.id.adapter_message_chat_tv_content);
-            switchImgAsync = (SwitchImageViewAsyncLayout) view.findViewById(R.id.adapter_message_chat_sl_picture_async);
-            imageCard = (CardView) view.findViewById(R.id.adapter_message_chat_cv_image);
-            textCard = (CardView) view.findViewById(R.id.adapter_message_chat_cv_text);
+            image = (SelectableRoundedImageView) view.findViewById(R.id.adapter_message_chat_iv_image);
             date = (TextView) view.findViewById(R.id.adapter_message_chat_tv_date);
             name = (TextView) view.findViewById(R.id.adapter_message_chat_tv_name);
+
+            if(image != null) {
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (imageClickedListener != null)
+                            imageClickedListener.onImageClicked(getIndex(ViewHolder.this.getAdapterPosition()));
+                    }
+                });
+            }
         }
     }
 }

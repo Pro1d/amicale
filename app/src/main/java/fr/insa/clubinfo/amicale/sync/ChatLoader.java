@@ -77,35 +77,12 @@ public class ChatLoader implements ChildEventListener, ValueEventListener {
             String url = (String) data.child("imageURL").getValue();
             if(!url.isEmpty()) {
                 m.setImageURL(url);
-                loadImage(url, m);
             }
         }
         if(data.hasChild("dateTimestamp")) {
             m.setTimestamp((double)data.child("dateTimestamp").getValue());
         }
         return m;
-    }
-
-
-    private void loadImage(final String dataURL, final ChatMessage message) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        activeImageDownload.add(dataURL);
-        storage.getReferenceFromUrl(dataURL).getBytes(1024*1024*8).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                activeImageDownload.remove(dataURL);
-                message.setImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                listener.onImageLoaded(message);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                activeImageDownload.remove(dataURL);
-                message.setImage(null);
-                message.setImageURL(null);
-                listener.onImageLoaded(message);
-            }
-        });
     }
 
     @Override

@@ -7,6 +7,6 @@ import android.graphics.Bitmap;
  */
 
 public interface ImageList {
-    Bitmap getImage(int position);
+    String getImageURL(int position);
     int getImageCount();
 }

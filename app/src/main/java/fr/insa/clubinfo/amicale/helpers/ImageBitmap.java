@@ -68,6 +68,7 @@ public class ImageBitmap {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
         return BitmapFactory.decodeFile(filePath, options);
     }
 
@@ -82,6 +83,7 @@ public class ImageBitmap {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
         return BitmapFactory.decodeByteArray(data, 0, data.length, options);
     }
 

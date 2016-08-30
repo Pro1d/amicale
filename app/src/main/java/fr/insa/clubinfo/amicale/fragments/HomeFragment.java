@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         // Recycler view
-        adapter = new NewsAdapter(news, this);
+        adapter = new NewsAdapter(news, this, getActivity());
         adapter.setShowLoadingView(true);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.news_rv_list);

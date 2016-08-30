@@ -25,12 +25,12 @@ public class Chat implements ImageList {
 	}
 
 	@Override
-	public Bitmap getImage(int position) {
+	public String getImageURL(int position) {
 		int count = 0;
 		for(ChatMessage m : messages)
-			if(m.getImage() != null)
+			if(m.hasImage())
 				if(count++ == position)
-					return m.getImage();
+					return m.getImageURL();
 		return null;
 	}
 
@@ -38,19 +38,19 @@ public class Chat implements ImageList {
 	public int getImageCount() {
 		int count = 0;
 		for(ChatMessage m : messages)
-			if(m.getImage() != null)
+			if(m.hasImage())
 				count++;
 		return count;
 	}
 
     public int getImagePosition(int index) {
         // No image at given index
-        if(getMessage(index).getImage() == null)
+        if(!getMessage(index).hasImage())
             return -1;
 
         int position = 0;
         for(int i = 0; i < index; i++)
-            if(getMessage(i).getImage() != null)
+            if(getMessage(i).hasImage())
                 position++;
 
         return position;

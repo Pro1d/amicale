@@ -45,6 +45,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:visibility="gone">
+
                 <ImageButton
                     android:id="@+id/chat_ib_clear_picture"
                     android:src="@drawable/ic_cancel_black_24dp"
@@ -54,20 +55,14 @@
                     android:contentDescription="@string/chat_button_clear_picture_description"
                     android:background="@drawable/background_button"/>
 
-                <fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout
-                    android:id="@+id/chat_sl_picture_async"
+                <ImageView
+                    android:id="@+id/chat_iv_picture_preview"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/chat_image_preview_height"
-                    android:gravity="center">
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/chat_image_preview_description"
+                    android:gravity="center"/>
 
-                    <ImageView
-                        android:id="@+id/chat_iv_picture_preview"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/chat_image_preview_height"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/chat_image_preview_description"/>
-
-                </fr.insa.clubinfo.amicale.views.SwitchImageViewAsyncLayout>
             </LinearLayout>
 
             <LinearLayout
