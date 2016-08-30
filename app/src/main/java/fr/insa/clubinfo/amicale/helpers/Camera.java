@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 
@@ -25,7 +26,6 @@ public class Camera {
 
     public Camera(OnPictureTakenListener listener) {
         this.listener = listener;
-        deleteImageFile();
     }
 
     public void startCameraIntent(Fragment fragment) {
@@ -46,11 +46,15 @@ public class Camera {
         }
     }
 
+    public boolean fileExist() {
+        return file.exists();
+    }
+
     private void deleteImageFile() {
         file.delete();
     }
 
-    private void loadImageAsync() {
+    public void loadImageAsync() {
         currentTask = new AsyncTask<File, Void, Bitmap>() {
 
             @Override
@@ -64,10 +68,6 @@ public class Camera {
 
                 int width = 1000;
                 int height = 1000;
-                if(ImageBitmap.getScreenWidth() < 1000) {
-                    width = (int) (ImageBitmap.getScreenWidth() * 0.9);
-                    height = 0;
-                }
 
                 return ImageBitmap.decodeSampledBitmapFromFile(file.getPath(), width, height);
             }

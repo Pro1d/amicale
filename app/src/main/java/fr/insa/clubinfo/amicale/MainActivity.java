@@ -2,6 +2,7 @@ package fr.insa.clubinfo.amicale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment activeFragment;
     public static Handler handler;
     private FirebaseAuth firebaseAuth;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         ImageViewer.instantiateImageViewer(fullscreenImageViewer, drawer);
 
         // Side navigation menu
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_home);
@@ -98,6 +100,24 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         firebaseAuth.addAuthStateListener(this);
         firebaseAuth.signInAnonymously().addOnCompleteListener(this);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState.containsKey("current_fragment")) {
+            int fragmentId = savedInstanceState.getInt("current_fragment");
+            navigationView.setCheckedItem(fragmentId);
+            selectFragment(fragmentId);
+        }
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("current_fragment", currentFragmentId);
     }
 
     @Override

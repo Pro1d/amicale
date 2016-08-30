@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -25,7 +26,6 @@ import fr.insa.clubinfo.amicale.interfaces.OnPictureTakenListener;
  */
 
 public class ImagePicker {
-    private final File file = new File(Environment.getExternalStorageDirectory(),  ".amicale_chat_picture.jpg");
     private static final int PICK_IMAGE_REQUEST_CODE = 10;
     private static final int MULTI_SOURCE_PICK_IMAGE_REQUEST_CODE = 11;
     private AsyncTask<String, Void, Bitmap> currentTask;
@@ -97,10 +97,6 @@ public class ImagePicker {
                     protected Bitmap doInBackground(String... params) {
                         int width = 1000;
                         int height = 1000;
-                        if(ImageBitmap.getScreenWidth() < 1000) {
-                            width = (int) (ImageBitmap.getScreenWidth() * 0.9);
-                            height = 0;
-                        }
 
                         return ImageBitmap.decodeSampledBitmapFromFile(params[0], width, height);
                     }
@@ -127,7 +123,5 @@ public class ImagePicker {
             currentTask.cancel(true);
             currentTask = null;
         }
-
-        file.delete();
     }
 }

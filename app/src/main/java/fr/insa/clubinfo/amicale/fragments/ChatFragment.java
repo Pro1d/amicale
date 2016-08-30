@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +75,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private ViewGroup textInputGroup;
     private ImageView imagePreview;
 
+    private boolean gettingImage;
     private Camera camera;
     private ImagePicker imagePicker;
     private Bitmap currentPicture;
@@ -142,6 +142,25 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         mDatabase.updateChildren(ownActiveUserObject);
         ownTypingIndicatorObject.put("/typingIndicator/"+ownTypingIndicatorKey, null);
         mDatabase.updateChildren(ownTypingIndicatorObject);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("gettingImage", gettingImage);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null) {
+            if(savedInstanceState.containsKey("gettingImage")) {
+                // App was closed when trying to take a picture from camera
+                if(savedInstanceState.getBoolean("gettingImage") && camera.fileExist()) {
+                    camera.loadImageAsync();
+                }
+            }
+        }
     }
 
     @Nullable
@@ -377,6 +396,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     private void takeAndAttachPicture() {
+        gettingImage = true;
         imagePicker.startPickerIntent(this, camera.getCameraIntent());
 //        camera.startCameraIntent(this);
     }
@@ -422,6 +442,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        gettingImage =  false;
         int newRequestCode = imagePicker.onActivityResult(requestCode, resultCode, data, getActivity());
         camera.onActivityResult(newRequestCode, resultCode);
     }
@@ -457,7 +478,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         loading = false;
         chat.addMessagesToBack(m);
         adapter.notifyItemRangeInserted(adapter.getPosition(0), m.size());
-        Log.i("###", "onMoreChatMessagesLoaded "+m.size());
 
         // to scroll or not to scroll, that is the question
         if(needScroll)
