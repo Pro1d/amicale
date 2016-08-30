@@ -31,14 +31,24 @@
             tools:text="Mar. 12 Déc. 2012"
             android:paddingBottom="@dimen/adapter_article_padding_image"/>
 
-        <ImageView
-            android:id="@+id/adapter_article_iv_image"
-            android:src="@drawable/side_nav_bar"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/adapter_article_image_height"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/adapter_article_image_description"
-            android:background="@color/adapter_article_image_background"/>
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/adapter_article_iv_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/adapter_article_image_height"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/adapter_article_image_description"/>
+
+        </FrameLayout>
 
 
         <TextView
