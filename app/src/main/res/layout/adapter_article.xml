@@ -32,6 +32,7 @@
             android:paddingBottom="@dimen/adapter_article_padding_image"/>
 
         <FrameLayout
+            android:id="@+id/adapter_article_fl_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

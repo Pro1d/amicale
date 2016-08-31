@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,11 +66,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             Article article  = news.getArticle(position);
             if (article.hasImage()) {
                 // Get the image
-                holder.image.setVisibility(View.VISIBLE);
+                holder.frameImage.setVisibility(View.VISIBLE);
                 Glide.with(context).load(article.getImageURL()).into(holder.image);
             } else {
                 // No image
-                holder.image.setVisibility(View.GONE);
+                holder.frameImage.setVisibility(View.GONE);
                 holder.image.setImageDrawable(null);
             }
 
@@ -110,6 +111,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         final TextView title;
         final TextView date;
         final ImageView image;
+        final FrameLayout frameImage;
 
         public ViewHolder(View view) {
             super(view);
@@ -117,6 +119,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             title = (TextView) view.findViewById(R.id.adapter_article_tv_title);
             date = (TextView) view.findViewById(R.id.adapter_article_tv_date);
             image = (ImageView) view.findViewById(R.id.adapter_article_iv_image);
+            frameImage = (FrameLayout) view.findViewById(R.id.adapter_article_fl_image);
 
             if(image != null) {
                 image.setOnClickListener(new View.OnClickListener() {

@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:background="@color/fullscreen_image_viewer">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
     <fr.insa.clubinfo.amicale.views.MultiTouchViewPager
         android:id="@+id/image_viewer_multi_touch_view_pager"
         android:layout_width="match_parent"
