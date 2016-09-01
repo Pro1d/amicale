@@ -93,4 +93,10 @@
     <!-- Image picker -->
     <string name="image_picker_title">Choisir une image</string>
     <string name="image_picker_error">Erreur : image invalide ! :(</string>
+
+    <!-- Dialog set nickname -->
+    <string name="nickname_dialog_title">Modifiez votre pseudo !</string>
+    <string name="nickname_dialog_message">Votre pseudo actuel est %s, Voulez-vous le changer ?</string>
+    <string name="nickname_cancel_button">Plus tard</string>
+    <string name="nickname_go_button">Réglages</string>
 </resources>

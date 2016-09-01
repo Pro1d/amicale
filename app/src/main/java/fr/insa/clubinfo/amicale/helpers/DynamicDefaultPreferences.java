@@ -30,4 +30,12 @@ public class DynamicDefaultPreferences {
         String key = context.getResources().getString(R.string.prefs_chat_nickname_key);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, name).apply();
     }
+
+    public static boolean userIsAwareOfNicknameParameter(Context context) {
+        boolean isAware = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("chat_already_used", false);
+        if(!isAware) {
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("chat_already_used", true).apply();
+        }
+        return isAware;
+    }
 }

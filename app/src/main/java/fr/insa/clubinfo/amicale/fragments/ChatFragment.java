@@ -1,5 +1,6 @@
 package fr.insa.clubinfo.amicale.fragments;
 
+import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,7 @@ import java.util.Map;
 
 import fr.insa.clubinfo.amicale.R;
 import fr.insa.clubinfo.amicale.adapters.ChatMessageAdapter;
+import fr.insa.clubinfo.amicale.dialogs.NoticeNicknameChat;
 import fr.insa.clubinfo.amicale.helpers.Camera;
 import fr.insa.clubinfo.amicale.helpers.DynamicDefaultPreferences;
 import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
@@ -129,6 +131,9 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
+
+        if(!DynamicDefaultPreferences.userIsAwareOfNicknameParameter(getActivity()))
+            NoticeNicknameChat.show();
     }
 
     @Override

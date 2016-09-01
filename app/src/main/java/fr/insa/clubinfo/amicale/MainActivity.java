@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import fr.insa.clubinfo.amicale.dialogs.NoticeNicknameChat;
 import fr.insa.clubinfo.amicale.dialogs.StartPlanexDialog;
 import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmCancelDialog;
 import fr.insa.clubinfo.amicale.dialogs.WashINSAAlarmCreateDialog;
@@ -33,7 +34,7 @@ import fr.insa.clubinfo.amicale.helpers.WashINSAAlarm;
 import fr.insa.clubinfo.amicale.views.ImageViewer;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener, OnCompleteListener<AuthResult> {
+        implements NavigationView.OnNavigationItemSelectedListener, OnCompleteListener<AuthResult> {
 
     private int currentFragmentId = -1;
     private int lastConsistentFragmentId = -1;
@@ -67,14 +68,12 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.setCheckedItem(R.id.nav_home);
-        selectFragment(R.id.nav_home);
-
         // Static access to dialog - Initialization
         WashINSAAlarmCreateDialog.initialize();
         WashINSAAlarmStopDialog.initialize();
         WashINSAAlarmCancelDialog.initialize();
         StartPlanexDialog.initialize();
+        NoticeNicknameChat.initialize(this);
 
         // WashINSAlarm
         WashINSAAlarm.onActivityCreated(getIntent(), this);
@@ -91,13 +90,12 @@ public class MainActivity extends AppCompatActivity
 
         // restore selected fragment
         int fragmentId = getSharedPreferences("fragment", MODE_PRIVATE).getInt("current_fragment", R.id.nav_home);
-        switchToActiveFragment(fragmentId);
+        switchToFragment(fragmentId);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(this);
         firebaseAuth.signInAnonymously().addOnCompleteListener(this);
     }
 
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if(savedInstanceState.containsKey("current_fragment")) {
             int fragmentId = savedInstanceState.getInt("current_fragment");
-            switchToActiveFragment(fragmentId);
+            switchToFragment(fragmentId);
         }
 
         super.onRestoreInstanceState(savedInstanceState);
@@ -121,7 +119,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseAuth.removeAuthStateListener(this);
 
     }
 
@@ -145,7 +142,7 @@ public class MainActivity extends AppCompatActivity
                     && activeFragment instanceof fr.insa.clubinfo.amicale.fragments.Fragment
                     && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed())) {
                 if(currentFragmentId != lastConsistentFragmentId) {
-                    switchToActiveFragment(lastConsistentFragmentId);
+                    switchToFragment(lastConsistentFragmentId);
                 } else {
                     super.onBackPressed();
                 }
@@ -215,14 +212,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void switchToActiveFragment(int fragmentId) {
+    private void switchToFragment(int fragmentId) {
         selectFragment(fragmentId);
         navigationView.setCheckedItem(fragmentId);
     }
 
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
+    public void switchToSettingsFragment() {
+        switchToFragment(R.id.nav_preferences);
     }
 
     @Override

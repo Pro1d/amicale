@@ -98,4 +98,10 @@
     <string name="image_picker_title">Choose an image</string>
     <string name="image_picker_error">Invalid input image! :(</string>
 
+    <!-- Dialog set nickname -->
+    <string name="nickname_dialog_title">Set your nickname!</string>
+    <string name="nickname_dialog_message">Your current name is %s. Do you want to change it?</string>
+    <string name="nickname_cancel_button">Later</string>
+    <string name="nickname_go_button">Settings</string>
+
 </resources>
