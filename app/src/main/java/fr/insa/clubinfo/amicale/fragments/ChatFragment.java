@@ -136,28 +136,8 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         if(!DynamicDefaultPreferences.userIsAwareOfNicknameParameter(getActivity()))
             NoticeNicknameChat.show();
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i("###", "onResume");
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.i("###", "onViewCreated");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i("###", "onStart");
-    }
-
     @Override
     public void onDestroy() {
-        Log.i("###", "onDestroy");
         super.onDestroy();
         loader.cancel();
         typingIndicatorQuery.removeEventListener(typingIndicatorListener);
@@ -169,34 +149,9 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         mDatabase.updateChildren(ownTypingIndicatorObject);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Log.i("###", "onSaveInstanceState "+gettingImage);
-        outState.putBoolean("gettingImage", gettingImage);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        Log.i("###", "onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-        /*if(savedInstanceState != null) {
-            if(savedInstanceState.containsKey("gettingImage")) {
-                Log.i("###", "onViewStateRestored contains");
-                // App was closed when trying to take a picture from camera
-                Log.i("###", "onViewStateRestored "+savedInstanceState.getBoolean("gettingImage"));
-                if(savedInstanceState.getBoolean("gettingImage") && camera.fileExist()) {
-                    Log.i("###", "onViewStateRestored file");
-                    camera.loadImageAsync();
-                }
-            }
-        }*/
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i("###", "onCreateView");
         getActivity().setTitle(R.string.title_chat);
 
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -263,7 +218,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("###", "onClick "+imagePreview.getDrawable()+ " "+imagePreview+" "+picturePreviewGroup.getVisibility()+ " "+picturePreviewGroup);
                 sendInput();
             }
         });
@@ -428,14 +382,12 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     private void takeAndAttachPicture() {
-        Log.i("###", "takeAndAttachPicture");
         gettingImage = true;
         imagePicker.startPickerIntent(this, camera.getCameraIntent());
         //camera.startCameraIntent(this);
     }
 
     private void clearInputs() {
-        Log.i("###", "clearInputs");
         if(currentPicture == null) {
             input.setText("");
         } else {
@@ -443,7 +395,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         }
     }
     private void cancelAndClearImageInput() {
-        Log.i("###", "cancelAndClearImageInput");
         camera.cancel();
         imagePicker.cancel();
         currentPicture = null;
@@ -454,7 +405,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     @Override
     public void onPictureTaken() {
-        Log.i("###", "onPictureTaken "+gettingImage);
         // Waiting for image loading, display progress view
         textInputGroup.setVisibility(View.GONE);
         picturePreviewGroup.setVisibility(View.VISIBLE);
@@ -463,16 +413,12 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     @Override
     public void onPictureLoaded(Bitmap drawable) {
-        Log.i("###", "onPictureLoaded "+gettingImage);
         textInputGroup.setVisibility(View.GONE);
         picturePreviewGroup.setVisibility(View.VISIBLE);
 
-        Log.i("###", "setImageBitmap? "+drawable);
         if(drawable != null) {
-            Log.i("###", "setImageBitmap "+drawable);
             // Getting image, save and display
             imagePreview.setImageBitmap(drawable);
-            Log.i("###", "setImageBitmap "+imagePreview.getDrawable()+ " "+imagePreview+" "+picturePreviewGroup.getVisibility()+ " "+picturePreviewGroup);
             currentPicture = drawable;
         } else {
             Toast.makeText(getActivity(), R.string.image_picker_error, Toast.LENGTH_SHORT).show();
@@ -483,7 +429,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("###", "onActivityResult "+requestCode);
         //gettingImage =  false;
         int newRequestCode = imagePicker.onActivityResult(requestCode, resultCode, data, getActivity());
         camera.onActivityResult(newRequestCode, resultCode);

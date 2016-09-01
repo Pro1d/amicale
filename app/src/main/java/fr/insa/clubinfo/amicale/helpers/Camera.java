@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.File;
 
@@ -65,24 +64,20 @@ public class Camera {
             @Override
             protected Bitmap doInBackground(File... params) {
                 File file = params[0];
-                Log.i("###", "doInBackground "+file.getPath());
                 int width = 1000;
                 int height = 1000;
                 Bitmap bmp = ImageBitmap.decodeSampledBitmapFromFile(file.getPath(), width, height);
-                Log.i("###", "bmp "+bmp.getWidth()+" "+bmp.getHeight());
                 return bmp;
             }
 
             @Override
             protected void onPostExecute(Bitmap drawable) {
-                Log.i("###", "onPostExecute "+drawable);
                 listener.onPictureLoaded(drawable);
                 deleteImageFile();
             }
 
             @Override
             protected void onCancelled() {
-                Log.i("###", "onCancelled "+null);
                 listener.onPictureLoaded(null);
                 deleteImageFile();
             }
