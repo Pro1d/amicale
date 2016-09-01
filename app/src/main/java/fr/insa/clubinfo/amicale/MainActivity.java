@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnCompleteListener<AuthResult> {
 
     private int currentFragmentId = -1;
-    private int lastConsistentFragmentId = -1;
+    private int lastConsistentFragmentId = R.id.nav_home;
     private Fragment activeFragment;
     public static Handler handler;
     private FirebaseAuth firebaseAuth;
@@ -88,9 +88,15 @@ public class MainActivity extends AppCompatActivity
         // Firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // restore selected fragment
+        activeFragment = getFragmentManager().findFragmentByTag("activeFragment");
         int fragmentId = getSharedPreferences("fragment", MODE_PRIVATE).getInt("current_fragment", R.id.nav_home);
-        switchToFragment(fragmentId);
+        if(activeFragment != null) {
+            currentFragmentId = lastConsistentFragmentId = fragmentId;
+        }
+        else {
+            // restore selected fragment
+            switchToFragment(fragmentId);
+        }
     }
 
     @Override
@@ -101,10 +107,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        if(savedInstanceState.containsKey("current_fragment")) {
+        /*if(savedInstanceState.containsKey("current_fragment")) {
             int fragmentId = savedInstanceState.getInt("current_fragment");
             switchToFragment(fragmentId);
-        }
+        }*/
 
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("current_fragment", lastConsistentFragmentId);
+        //outState.putInt("current_fragment", lastConsistentFragmentId);
     }
 
     @Override
@@ -200,7 +206,7 @@ public class MainActivity extends AppCompatActivity
 
         if(fragment != null) {
             // Switch to the new fragment
-            fragmentManager.beginTransaction().replace(R.id.main_fl_content, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.main_fl_content, fragment, "activeFragment").commit();
             activeFragment = fragment;
             currentFragmentId = id;
             if(isConsistentFragment)

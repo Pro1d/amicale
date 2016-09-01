@@ -8,13 +8,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,15 +74,20 @@ public class ImagePicker {
 
     private void loadImageAsync(Uri imageUri, Context context) {
         if (imageUri != null){
+            String filePath;
             try {
                 //We get the file path from the media info returned by the content resolver
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = context.getContentResolver().query(imageUri, filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String filePath = cursor.getString(columnIndex);
+                filePath = cursor.getString(columnIndex);
                 cursor.close();
+            } catch(Exception e) {
+                filePath = imageUri.getPath();
+            }
 
+            if(filePath != null) {
                 currentTask = new AsyncTask<String, Void, Bitmap>() {
 
                     @Override
@@ -111,8 +113,7 @@ public class ImagePicker {
                         listener.onPictureLoaded(null);
                     }
                 }.execute(filePath);
-
-            }catch(Exception e){
+            } else {
                 Toast.makeText(context, R.string.image_picker_error, Toast.LENGTH_SHORT).show();
             }
         }
