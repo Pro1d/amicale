@@ -95,25 +95,12 @@ public class HomeFragment extends Fragment implements OnNewsUpdatedListener, OnI
         news.addOldArticles(list);
         // insert them in the recycler view
         adapter.notifyItemRangeInserted(lastCount, list.size());
-        Log.i("###", ""+list.size()+" articles loaded");
     }
 
     @Override
     public void onNewArticleReceived(Article article) {
         news.addNewArticle(article);
         adapter.notifyItemInserted(0);
-        Log.i("###", "One new article loaded");
-    }
-
-    @Override
-    public void onImageLoaded(Article article) {
-        if(news != null) {
-            int index = news.getIndex(article.getFirebaseKey());
-            if(index >= 0) {
-                adapter.notifyItemChanged(index);
-            }
-        }
-        Log.i("###", "Image loaded");
     }
 
     @Override

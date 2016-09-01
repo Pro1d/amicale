@@ -499,11 +499,4 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         if(needScroll)
             recyclerView.smoothScrollToPosition(adapter.getItemCount());
     }
-
-    @Override
-    public void onImageLoaded(ChatMessage msg) {
-        int idx = chat.getIndex(msg.getFirebaseKey());
-        if(idx != -1)
-            adapter.notifyItemChanged(adapter.getPosition(idx));
-    }
 }

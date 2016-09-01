@@ -11,7 +11,6 @@ import fr.insa.clubinfo.amicale.models.Article;
 public interface OnNewsUpdatedListener {
     void onNewsLoaded(List<Article> list);
     void onNewArticleReceived(Article article);
-    void onImageLoaded(Article article);
     void onNewsSyncCanceled();
     /*void onNewsSyncFailed();*/
 

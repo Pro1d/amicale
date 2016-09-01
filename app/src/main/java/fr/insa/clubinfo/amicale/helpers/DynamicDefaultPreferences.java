@@ -14,7 +14,8 @@ public class DynamicDefaultPreferences {
         String key = context.getResources().getString(R.string.prefs_chat_nickname_key);
         String defaultNickname = context.getResources().getString(R.string.prefs_chat_nickname_default_value);
         String nicknameFromPrefs = PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultNickname);
-        if(defaultNickname.equals(nicknameFromPrefs)) {
+        nicknameFromPrefs = nicknameFromPrefs.replaceAll("^\\s+|\\s+$", "");
+        if(defaultNickname.equals(nicknameFromPrefs) || nicknameFromPrefs.isEmpty()) {
             // generate a pseudo with a random odd number inferior to 10000
             String generatedNickname = defaultNickname + ((System.currentTimeMillis()%10000)|1);
             saveUserNameInPreferences(context, generatedNickname);

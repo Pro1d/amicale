@@ -2,7 +2,6 @@ package fr.insa.clubinfo.amicale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener, OnCompleteListener<AuthResult> {
 
     private int currentFragmentId = -1;
+    private int lastConsistentFragmentId = -1;
     private Fragment activeFragment;
     public static Handler handler;
     private FirebaseAuth firebaseAuth;
@@ -91,8 +91,7 @@ public class MainActivity extends AppCompatActivity
 
         // restore selected fragment
         int fragmentId = getSharedPreferences("fragment", MODE_PRIVATE).getInt("current_fragment", R.id.nav_home);
-        navigationView.setCheckedItem(fragmentId);
-        selectFragment(fragmentId);
+        switchToActiveFragment(fragmentId);
     }
 
     @Override
@@ -106,8 +105,7 @@ public class MainActivity extends AppCompatActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if(savedInstanceState.containsKey("current_fragment")) {
             int fragmentId = savedInstanceState.getInt("current_fragment");
-            navigationView.setCheckedItem(fragmentId);
-            selectFragment(fragmentId);
+            switchToActiveFragment(fragmentId);
         }
 
         super.onRestoreInstanceState(savedInstanceState);
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("current_fragment", currentFragmentId);
+        outState.putInt("current_fragment", lastConsistentFragmentId);
     }
 
     @Override
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         // Remove washinsa handler
         handler = null;
         // save current selected fragment
-        getSharedPreferences("fragment", MODE_PRIVATE).edit().putInt("current_fragment", currentFragmentId).apply();
+        getSharedPreferences("fragment", MODE_PRIVATE).edit().putInt("current_fragment", lastConsistentFragmentId).apply();
     }
 
     @Override
@@ -145,8 +143,13 @@ public class MainActivity extends AppCompatActivity
         } else {
             if(!(activeFragment != null
                     && activeFragment instanceof fr.insa.clubinfo.amicale.fragments.Fragment
-                    && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed()))
-                super.onBackPressed();
+                    && ((fr.insa.clubinfo.amicale.fragments.Fragment) activeFragment).onBackPressed())) {
+                if(currentFragmentId != lastConsistentFragmentId) {
+                    switchToActiveFragment(lastConsistentFragmentId);
+                } else {
+                    super.onBackPressed();
+                }
+            }
         }
     }
 
@@ -175,16 +178,20 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = null;
+        boolean isConsistentFragment = false;
 
         switch(id) {
             case R.id.nav_home:
                 fragment = new HomeFragment();
+                isConsistentFragment = true;
                 break;
             case R.id.nav_chat:
                 fragment = new ChatFragment();
+                isConsistentFragment = true;
                 break;
             case R.id.nav_washinsa:
                 fragment = new WashINSAFragment();
+                isConsistentFragment = true;
                 break;
             case R.id.nav_preferences:
                 fragment = new PreferencesFragment();
@@ -199,10 +206,18 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.main_fl_content, fragment).commit();
             activeFragment = fragment;
             currentFragmentId = id;
+            if(isConsistentFragment)
+                lastConsistentFragmentId = id;
             return true;
-        } else {
+        }
+        else {
             return false;
         }
+    }
+
+    private void switchToActiveFragment(int fragmentId) {
+        selectFragment(fragmentId);
+        navigationView.setCheckedItem(fragmentId);
     }
 
     @Override
