@@ -1,7 +1,6 @@
 package fr.insa.clubinfo.amicale.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

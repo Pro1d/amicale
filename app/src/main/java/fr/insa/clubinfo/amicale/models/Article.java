@@ -1,7 +1,5 @@
 package fr.insa.clubinfo.amicale.models;
 
-import android.graphics.Bitmap;
-
 import java.util.GregorianCalendar;
 
 public class Article {

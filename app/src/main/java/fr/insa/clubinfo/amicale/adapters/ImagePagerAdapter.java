@@ -1,7 +1,6 @@
 
 package fr.insa.clubinfo.amicale.adapters;
 
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;

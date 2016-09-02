@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.File;
 
@@ -40,7 +39,6 @@ public class Camera {
     }
 
     public void onActivityResult(int requestCode, int resultCode) {
-
         if (requestCode == TAKE_PICTURE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK)
                 loadImageAsync();
@@ -56,7 +54,6 @@ public class Camera {
     }
 
     public void loadImageAsync() {
-        Log.i("###", "loadImageAsync camera");
         currentTask = new AsyncTask<File, Void, Bitmap>() {
 
             @Override
@@ -66,12 +63,10 @@ public class Camera {
 
             @Override
             protected Bitmap doInBackground(File... params) {
-                Log.i("###", "doInBackground");
                 File file = params[0];
                 int width = 1000;
                 int height = 1000;
                 Bitmap bmp = ImageBitmap.decodeSampledBitmapFromFile(file.getPath(), width, height);
-                Log.i("###", "doInBackground " + bmp);
                 return bmp;
             }
 

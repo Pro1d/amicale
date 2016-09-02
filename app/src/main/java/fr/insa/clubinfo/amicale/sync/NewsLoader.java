@@ -1,9 +1,5 @@
 package fr.insa.clubinfo.amicale.sync;
 
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +13,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
-import fr.insa.clubinfo.amicale.helpers.ImageBitmap;
 import fr.insa.clubinfo.amicale.interfaces.OnNewsUpdatedListener;
 import fr.insa.clubinfo.amicale.models.Article;
 
@@ -29,7 +24,6 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
     private final OnNewsUpdatedListener listener;
     private Query query = null;
     private Query observer = null;
-    private final HashSet<String> activeImageDownload = new HashSet<>();
 
     public NewsLoader(OnNewsUpdatedListener listener) {
         this.listener = listener;
@@ -50,12 +44,6 @@ public class NewsLoader implements ValueEventListener, ChildEventListener {
         if(query != null) {
             query.removeEventListener((ValueEventListener) this);
             query = null;
-        }
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        for(String dataURL : activeImageDownload) {
-            for(FileDownloadTask task : storage.getReferenceFromUrl(dataURL).getActiveDownloadTasks()) {
-                task.cancel();
-            }
         }
     }
 

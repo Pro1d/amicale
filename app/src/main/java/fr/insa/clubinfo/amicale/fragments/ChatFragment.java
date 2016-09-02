@@ -1,6 +1,5 @@
 package fr.insa.clubinfo.amicale.fragments;
 
-import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +76,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     private ViewGroup textInputGroup;
     private ImageView imagePreview;
 
-    private boolean gettingImage;
     private Camera camera;
     private ImagePicker imagePicker;
     private Bitmap currentPicture;
@@ -96,7 +93,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i("###", "onCreate");
         super.onCreate(savedInstanceState);
 
         loader = new ChatLoader(this, Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
@@ -139,7 +135,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
     @Override
     public void onDestroy() {
-        Log.i("###", "onDestroy");
         super.onDestroy();
         loader.cancel();
         typingIndicatorQuery.removeEventListener(typingIndicatorListener);
@@ -384,7 +379,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
 
     private void takeAndAttachPicture() {
-        gettingImage = true;
         imagePicker.startPickerIntent(this, camera.getCameraIntent());
         //camera.startCameraIntent(this);
     }
@@ -410,12 +404,10 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
         // Waiting for image loading, display progress view
         textInputGroup.setVisibility(View.GONE);
         picturePreviewGroup.setVisibility(View.VISIBLE);
-        //imagePreview.showProgressView();
     }
 
     @Override
     public void onPictureLoaded(Bitmap drawable) {
-        Log.i("###", "onPictureLoaded");
         textInputGroup.setVisibility(View.GONE);
         picturePreviewGroup.setVisibility(View.VISIBLE);
 
@@ -432,8 +424,6 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("###", "onActivityResult"+requestCode);
-        //gettingImage =  false;
         int newRequestCode = imagePicker.onActivityResult(requestCode, resultCode, data, getActivity());
         camera.onActivityResult(newRequestCode, resultCode);
     }

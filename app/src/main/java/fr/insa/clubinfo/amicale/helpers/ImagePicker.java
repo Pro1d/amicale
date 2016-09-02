@@ -12,8 +12,6 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,31 +53,24 @@ public class ImagePicker {
     public int onActivityResult(int requestCode, int resultCode, Intent intent, Context context) {
         // Only image picker intent
         if (requestCode == PICK_IMAGE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK)
+            if (resultCode == Activity.RESULT_OK && intent != null)
                 loadImageAsync(intent.getData(), context);
             return resultCode;
         }
         // Image picker or camera intent
         else if (requestCode == MULTI_SOURCE_PICK_IMAGE_REQUEST_CODE) {
-            if(intent == null) {
+            boolean imagePicked = false;
+            if(intent != null && resultCode == Activity.RESULT_OK) {
+                imagePicked = loadImageAsync(intent.getData(), context);
+            }
+            if(!imagePicked)
                 return Camera.TAKE_PICTURE_REQUEST_CODE;
-            }
-            else {
-                if (resultCode == Activity.RESULT_OK) {
-                    boolean imagePicked = loadImageAsync(intent.getData(), context);
-                    if(!imagePicked)
-                        return Camera.TAKE_PICTURE_REQUEST_CODE;
-                }
-                return resultCode;
-            }
         }
-        else {
-            return resultCode;
-        }
+
+        return resultCode;
     }
 
     private boolean loadImageAsync(Uri imageUri, Context context) {
-        Log.i("###", "loadImageAsync "+imageUri);
         if (imageUri != null){
             String filePath = getFilePath(imageUri, context);
             if(filePath != null) {
@@ -108,6 +99,7 @@ public class ImagePicker {
                         listener.onPictureLoaded(null);
                     }
                 }.execute(filePath);
+
                 return true;
             }
         }
@@ -115,11 +107,10 @@ public class ImagePicker {
     }
 
     private String getFilePath(Uri imageUri, Context context) {
-        String filePath=null;
+        String filePath = null;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && isMediaDocument(imageUri))
         {
-            Log.i("###", "hack");
             String wholeID = DocumentsContract.getDocumentId(imageUri);
 
             // Split at colon, use second item in the array
@@ -150,13 +141,11 @@ public class ImagePicker {
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 filePath = cursor.getString(columnIndex);
-                Log.i("###", "loadImageAsync " + filePath);
                 cursor.close();
             } catch (Exception e) {
                 filePath = imageUri.getPath();
             }
         }
-        Log.i("###", "loadImageAsync " + filePath);
         return filePath;
     }
 
@@ -164,27 +153,6 @@ public class ImagePicker {
     private static boolean isMediaDocument(Uri uri)
     {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs)
-    {
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {
-                column
-        };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst())
-            {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
     }
 
     public void cancel() {
