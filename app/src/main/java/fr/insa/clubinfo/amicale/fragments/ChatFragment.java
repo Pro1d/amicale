@@ -96,6 +96,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i("###", "onCreate");
         super.onCreate(savedInstanceState);
 
         loader = new ChatLoader(this, Settings.Secure.getString(this.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
@@ -138,6 +139,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     }
     @Override
     public void onDestroy() {
+        Log.i("###", "onDestroy");
         super.onDestroy();
         loader.cancel();
         typingIndicatorQuery.removeEventListener(typingIndicatorListener);
@@ -413,6 +415,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
 
     @Override
     public void onPictureLoaded(Bitmap drawable) {
+        Log.i("###", "onPictureLoaded");
         textInputGroup.setVisibility(View.GONE);
         picturePreviewGroup.setVisibility(View.VISIBLE);
 
@@ -429,6 +432,7 @@ public class ChatFragment extends Fragment implements ChatMessageListener, OnPic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("###", "onActivityResult"+requestCode);
         //gettingImage =  false;
         int newRequestCode = imagePicker.onActivityResult(requestCode, resultCode, data, getActivity());
         camera.onActivityResult(newRequestCode, resultCode);
